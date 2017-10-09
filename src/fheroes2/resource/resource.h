@@ -26,13 +26,13 @@
 
 struct cost_t
 {
-    u16 gold;
-    u8 wood;
-    u8 mercury;
-    u8 ore;
-    u8 sulfur;
-    u8 crystal;
-    u8 gems;
+  u16 gold;
+  u8 wood;
+  u8 mercury;
+  u8 ore;
+  u8 sulfur;
+  u8 crystal;
+  u8 gems;
 };
 
 #define COST_NONE { 0, 0, 0, 0, 0, 0 ,0 }
@@ -40,89 +40,89 @@ struct cost_t
 class ResourceCount;
 
 #ifdef WITH_XML
-struct TiXmlElement;                                                                                                     
+struct TiXmlElement;
 void   LoadCostFromXMLElement(cost_t &, const TiXmlElement &);
 #endif
 
 namespace Resource
 {
-    enum
-    {
-	UNKNOWN = 0x00,
-        WOOD	= 0x01,
-        MERCURY	= 0x02,
-        ORE	= 0x04,
-        SULFUR	= 0x08,
-        CRYSTAL	= 0x10,
-        GEMS	= 0x20,
-        GOLD	= 0x40,
-	ALL	= WOOD | MERCURY | ORE | SULFUR | CRYSTAL | GEMS | GOLD
-    };
+  enum
+  {
+    UNKNOWN = 0x00,
+    WOOD    = 0x01,
+    MERCURY = 0x02,
+    ORE = 0x04,
+    SULFUR  = 0x08,
+    CRYSTAL = 0x10,
+    GEMS    = 0x20,
+    GOLD    = 0x40,
+    ALL = WOOD | MERCURY | ORE | SULFUR | CRYSTAL | GEMS | GOLD
+  };
 }
 
 struct Funds
 {
-	Funds();
-	Funds(s32 _ore, s32 _wood, s32 _mercury, s32 _sulfur, s32 _crystal, s32 _gems, s32 _gold);
-	Funds(u8 rs, u32 count);
-	Funds(const cost_t &);
-	Funds(const ResourceCount &);
+  Funds();
+  Funds(s32 _ore, s32 _wood, s32 _mercury, s32 _sulfur, s32 _crystal, s32 _gems, s32 _gold);
+  Funds(u8 rs, u32 count);
+  Funds(const cost_t &);
+  Funds(const ResourceCount &);
 
-	Funds operator+ (const Funds &) const;
-	Funds operator* (u32 mul) const;
-	Funds operator- (const Funds &) const;
-	Funds & operator+= (const Funds &);
-	Funds & operator*= (u32 mul);
-	Funds & operator-= (const Funds &);
-	Funds & operator= (const cost_t &);
+  Funds operator+ (const Funds &) const;
+  Funds operator* (u32 mul) const;
+  Funds operator- (const Funds &) const;
+  Funds & operator+= (const Funds &);
+  Funds & operator*= (u32 mul);
+  Funds & operator-= (const Funds &);
+  Funds & operator= (const cost_t &);
 
-	s32  Get(u8 rs) const;
-	s32* GetPtr(u8 rs);
-	s32  GetFirstValidItems(u8 rs = Resource::ALL) const;
+  s32  Get(u8 rs) const;
+  s32* GetPtr(u8 rs);
+  s32  GetFirstValidItems(u8 rs = Resource::ALL) const;
 
-	bool operator< (const Funds &) const;
-	bool operator<= (const Funds &) const;
-	bool operator> (const Funds &) const;
-	bool operator>= (const Funds &) const;
+  bool operator< (const Funds &) const;
+  bool operator<= (const Funds &) const;
+  bool operator> (const Funds &) const;
+  bool operator>= (const Funds &) const;
 
-	u8 GetValidItems(void) const;
-	void Reset(void);
-	std::string String(void) const;
+  u8 GetValidItems(void) const;
+  void Reset(void);
+  std::string String(void) const;
 
-        s32 wood;
-        s32 mercury;
-        s32 ore;
-        s32 sulfur;
-        s32 crystal;
-        s32 gems;
-        s32 gold;
+  s32 wood;
+  s32 mercury;
+  s32 ore;
+  s32 sulfur;
+  s32 crystal;
+  s32 gems;
+  s32 gold;
 };
 
 namespace Resource
 {
-    const char* String(u8 resource);
+  const char* String(u8 resource);
 
-    u8 Rand(bool with_gold = false);
+  u8 Rand(bool with_gold = false);
 
-    /* return index sprite objnrsrc.icn */
-    u8 GetIndexSprite(u8 resource);
-    u8 FromIndexSprite(u8 index);
+  /* return index sprite objnrsrc.icn */
+  u8 GetIndexSprite(u8 resource);
+  u8 FromIndexSprite(u8 index);
 
-    /* return index sprite resource.icn */
-    u8 GetIndexSprite2(u8 resource);
-    u8 FromIndexSprite2(u8 index);
+  /* return index sprite resource.icn */
+  u8 GetIndexSprite2(u8 resource);
+  u8 FromIndexSprite2(u8 index);
 
-    class BoxSprite : protected Rect
-    {
+  class BoxSprite : protected Rect
+  {
     public:
-	BoxSprite(const Funds &, u16);
+      BoxSprite(const Funds &, u16);
 
-	const Rect & GetArea(void) const;
-	void SetPos(s16, s16);
-	void Redraw(void) const;
+      const Rect & GetArea(void) const;
+      void SetPos(s16, s16);
+      void Redraw(void) const;
 
-	const Funds & rs;
-    };
+      const Funds & rs;
+  };
 }
 
 #endif

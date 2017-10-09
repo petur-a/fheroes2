@@ -40,48 +40,48 @@ enum { FOCUS_UNSEL = 0, FOCUS_HEROES = 1, FOCUS_CASTLE = 2 };
 
 struct Focus : std::pair<u8, void*>
 {
-    Focus() : std::pair<u8, void*>(FOCUS_UNSEL, NULL) {}
+  Focus() : std::pair<u8, void*>(FOCUS_UNSEL, NULL) {}
 
-    bool	isValid(void) const { return first != FOCUS_UNSEL && second; }
+  bool    isValid(void) const { return first != FOCUS_UNSEL && second; }
 
-    void	Reset(void) { first = FOCUS_UNSEL; second = NULL; }
-    void	Set(Castle* ptr) { first = FOCUS_CASTLE; second = ptr; }
-    void	Set(Heroes* ptr) { first = FOCUS_HEROES; second = ptr; }
+  void    Reset(void) { first = FOCUS_UNSEL; second = NULL; }
+  void    Set(Castle* ptr) { first = FOCUS_CASTLE; second = ptr; }
+  void    Set(Heroes* ptr) { first = FOCUS_HEROES; second = ptr; }
 
-    Castle*	GetCastle(void) { return first == FOCUS_CASTLE && second ? reinterpret_cast<Castle*>(second) : NULL; }
-    Heroes*	GetHeroes(void) { return first == FOCUS_HEROES && second ? reinterpret_cast<Heroes*>(second) : NULL; }
+  Castle* GetCastle(void) { return first == FOCUS_CASTLE && second ? reinterpret_cast<Castle*>(second) : NULL; }
+  Heroes* GetHeroes(void) { return first == FOCUS_HEROES && second ? reinterpret_cast<Heroes*>(second) : NULL; }
 };
 
 struct Player
 {
-    Player(u8 col = Color::NONE);
+  Player(u8 col = Color::NONE);
 
-    bool isID(u32) const;
-    bool isColor(u8) const;
-    bool isName(const std::string &) const;
-    bool isPlay(void) const;
+  bool isID(u32) const;
+  bool isColor(u8) const;
+  bool isName(const std::string &) const;
+  bool isPlay(void) const;
 
-    void SetControl(u8);
-    void SetPlay(bool);
+  void SetControl(u8);
+  void SetPlay(bool);
 
-    bool isRemote(void) const;
-    bool isLocal(void) const;
-    bool isHuman(void) const;
-    bool isAI(void) const;
+  bool isRemote(void) const;
+  bool isLocal(void) const;
+  bool isHuman(void) const;
+  bool isAI(void) const;
 
-    u8		control;
-    u8		color;
-    u8		race;
-    u8		friends;
-    u8		mode;
-    std::string	name;
-    u32		id;
-    Focus	focus;
+  u8      control;
+  u8      color;
+  u8      race;
+  u8      friends;
+  u8      mode;
+  std::string name;
+  u32     id;
+  Focus   focus;
 };
 
 class Players : public std::vector<Player*>
 {
-public:
+  public:
     Players();
     ~Players();
 
@@ -89,62 +89,62 @@ public:
     void Init(const Maps::FileInfo &);
     void clear(void);
 
-    void	SetHumanColors(u8 colors);
-    void	SetStartGame(void);
-    u8	 	GetColors(u8 control = 0xFF, bool strong = false) const;
-    u8		GetActualColors(void) const;
-    std::string	String(void) const;
+    void    SetHumanColors(u8 colors);
+    void    SetStartGame(void);
+    u8      GetColors(u8 control = 0xFF, bool strong = false) const;
+    u8      GetActualColors(void) const;
+    std::string String(void) const;
 
-    Player*		GetCurrent(void);
-    const Player*	GetCurrent(void) const;
+    Player*     GetCurrent(void);
+    const Player*   GetCurrent(void) const;
 
-    static Player*	Get(u8 color);
-    static u8		GetPlayerControl(u8 color);
-    static u8		GetPlayerRace(u8 color);
-    static u8		GetPlayerFriends(u8 color);
-    static bool		GetPlayerInGame(u8 color);
-    static bool		isFriends(u8 player, u8 colors);
-    static void		SetPlayerRace(u8 color, u8 race);
-    static void		SetPlayerControl(u8 color, u8 ctrl);
-    static void		SetPlayerInGame(u8 color, bool);
-    static u8		HumanColors(void);
-    static u8 		FriendColors(void);
+    static Player*  Get(u8 color);
+    static u8       GetPlayerControl(u8 color);
+    static u8       GetPlayerRace(u8 color);
+    static u8       GetPlayerFriends(u8 color);
+    static bool     GetPlayerInGame(u8 color);
+    static bool     isFriends(u8 player, u8 colors);
+    static void     SetPlayerRace(u8 color, u8 race);
+    static void     SetPlayerControl(u8 color, u8 ctrl);
+    static void     SetPlayerInGame(u8 color, bool);
+    static u8       HumanColors(void);
+    static u8       FriendColors(void);
 
-    u8		current_color;
+    u8      current_color;
 };
 
 namespace Interface
 {
-    struct PlayerInfo
-    {
-	PlayerInfo() : player(NULL) {}
+  struct PlayerInfo
+  {
+    PlayerInfo() : player(NULL) {}
 
-	bool operator== (const Player*) const;
+    bool operator== (const Player*) const;
 
-	Player*     player;
-	Rect        rect1; // opponent
-	Rect        rect2; // class
-	Rect        rect3; // change
-    };
-    
-    struct PlayersInfo : std::vector<PlayerInfo>
-    {
-	PlayersInfo(bool, bool, bool);
+    Player*     player;
+    Rect        rect1; // opponent
+    Rect        rect2; // class
+    Rect        rect3; // change
+  };
 
-	void UpdateInfo(Players &, const Point & opponents, const Point & classes);
+  struct PlayersInfo : std::vector<PlayerInfo>
+  {
+    PlayersInfo(bool, bool, bool);
 
-	Player* GetFromOpponentClick(const Point & pt);
-	Player* GetFromOpponentNameClick(const Point & pt);
-	Player* GetFromOpponentChangeClick(const Point & pt);
-	Player* GetFromClassClick(const Point & pt);
+    void UpdateInfo(Players &, const Point & opponents, const Point & classes);
 
-	void RedrawInfo(bool show_play_info = false) const;
-	bool QueueEventProcessing(void);
+    Player* GetFromOpponentClick(const Point & pt);
+    Player* GetFromOpponentNameClick(const Point & pt);
+    Player* GetFromOpponentChangeClick(const Point & pt);
+    Player* GetFromClassClick(const Point & pt);
 
-	bool show_name;
-	bool show_race;
-	bool show_swap;
-    };
+    void RedrawInfo(bool show_play_info = false) const;
+    bool QueueEventProcessing(void);
+
+    bool show_name;
+    bool show_race;
+    bool show_swap;
+  };
 }
 
 #endif

@@ -28,81 +28,81 @@
 
 bool Dialog::SelectGoldOrExp(const std::string &header, const std::string &message, const u16 gold, const u16 expr)
 {
-    Display & display = Display::Get();
-    const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
-        
-    // preload
-    AGG::PreloadObject(system);
+  Display & display = Display::Get();
+  const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
 
-    // cursor
-    Cursor & cursor = Cursor::Get();
+  // preload
+  AGG::PreloadObject(system);
 
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  // cursor
+  Cursor & cursor = Cursor::Get();
 
-    const Sprite & sprite_gold = AGG::GetICN(ICN::RESOURCE, 6);
-    const Sprite & sprite_expr = AGG::GetICN(ICN::EXPMRL, 4);
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    Point pt;
-    TextBox box1(header, Font::YELLOW_BIG, BOXAREA_WIDTH);
-    TextBox box2(message, Font::BIG, BOXAREA_WIDTH);
+  const Sprite & sprite_gold = AGG::GetICN(ICN::RESOURCE, 6);
+  const Sprite & sprite_expr = AGG::GetICN(ICN::EXPMRL, 4);
 
-    Text text;
-    text.Set(GetString(gold), Font::SMALL);
+  Point pt;
+  TextBox box1(header, Font::YELLOW_BIG, BOXAREA_WIDTH);
+  TextBox box2(message, Font::BIG, BOXAREA_WIDTH);
 
-    const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
+  Text text;
+  text.Set(GetString(gold), Font::SMALL);
 
-    Box box(box1.h() + spacer + box2.h() + spacer + sprite_expr.h() + 2 + text.h(), true);
+  const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
 
-    pt.x = box.GetArea().x + box.GetArea().w / 2 - AGG::GetICN(system, 9).w() - 20;
-    pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 5).h();
-    Button button_yes(pt, system, 5, 6);
+  Box box(box1.h() + spacer + box2.h() + spacer + sprite_expr.h() + 2 + text.h(), true);
 
-    pt.x = box.GetArea().x + box.GetArea().w / 2 + 20;
-    pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 7).h();
-    Button button_no(pt, system, 7, 8);
+  pt.x = box.GetArea().x + box.GetArea().w / 2 - AGG::GetICN(system, 9).w() - 20;
+  pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 5).h();
+  Button button_yes(pt, system, 5, 6);
 
-    Rect pos = box.GetArea();
+  pt.x = box.GetArea().x + box.GetArea().w / 2 + 20;
+  pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 7).h();
+  Button button_no(pt, system, 7, 8);
 
-    if(header.size()) box1.Blit(pos);
-    pos.y += box1.h() + spacer;
+  Rect pos = box.GetArea();
 
-    if(message.size()) box2.Blit(pos);
-    pos.y += box2.h() + spacer;
+  if(header.size()) box1.Blit(pos);
+  pos.y += box1.h() + spacer;
 
-    pos.y += sprite_expr.h();
-    // sprite1
-    pos.x = box.GetArea().x + box.GetArea().w / 2 - sprite_gold.w() - 30;
-    sprite_gold.Blit(pos.x, pos.y - sprite_gold.h());
-    // text
-    text.Blit(pos.x + (sprite_gold.w() - text.w()) / 2, pos.y + 2);
+  if(message.size()) box2.Blit(pos);
+  pos.y += box2.h() + spacer;
 
-    // sprite2
-    pos.x = box.GetArea().x + box.GetArea().w / 2 + 30;
-    sprite_expr.Blit(pos.x, pos.y - sprite_expr.h());
-    // text
-    text.Set(GetString(expr), Font::SMALL);
-    text.Blit(pos.x + (sprite_expr.w() - text.w()) / 2, pos.y + 2);
+  pos.y += sprite_expr.h();
+  // sprite1
+  pos.x = box.GetArea().x + box.GetArea().w / 2 - sprite_gold.w() - 30;
+  sprite_gold.Blit(pos.x, pos.y - sprite_gold.h());
+  // text
+  text.Blit(pos.x + (sprite_gold.w() - text.w()) / 2, pos.y + 2);
 
-    button_yes.Draw();
-    button_no.Draw();
+  // sprite2
+  pos.x = box.GetArea().x + box.GetArea().w / 2 + 30;
+  sprite_expr.Blit(pos.x, pos.y - sprite_expr.h());
+  // text
+  text.Set(GetString(expr), Font::SMALL);
+  text.Blit(pos.x + (sprite_expr.w() - text.w()) / 2, pos.y + 2);
 
-    cursor.Show();
-    display.Flip();
-    LocalEvent & le = LocalEvent::Get();
-    bool result = false;
+  button_yes.Draw();
+  button_no.Draw();
 
-    // message loop
-    while(le.HandleEvents())
-    {
-	le.MousePressLeft(button_yes) ? button_yes.PressDraw() : button_yes.ReleaseDraw();
-	le.MousePressLeft(button_no) ? button_no.PressDraw() : button_no.ReleaseDraw();
+  cursor.Show();
+  display.Flip();
+  LocalEvent & le = LocalEvent::Get();
+  bool result = false;
 
-        if(Game::HotKeyPress(Game::EVENT_DEFAULT_READY) || le.MouseClickLeft(button_yes)){ result = true; break; }
-        if(Game::HotKeyPress(Game::EVENT_DEFAULT_EXIT) || le.MouseClickLeft(button_no)){ result = false; break; }
-    }
+  // message loop
+  while(le.HandleEvents())
+  {
+    le.MousePressLeft(button_yes) ? button_yes.PressDraw() : button_yes.ReleaseDraw();
+    le.MousePressLeft(button_no) ? button_no.PressDraw() : button_no.ReleaseDraw();
 
-    cursor.Hide();
+    if(Game::HotKeyPress(Game::EVENT_DEFAULT_READY) || le.MouseClickLeft(button_yes)){ result = true; break; }
+    if(Game::HotKeyPress(Game::EVENT_DEFAULT_EXIT) || le.MouseClickLeft(button_no)){ result = false; break; }
+  }
 
-    return result;
+  cursor.Hide();
+
+  return result;
 }

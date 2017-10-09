@@ -29,14 +29,14 @@
 
 namespace Font
 {
-    enum type_t { SMALL = 0x01, BIG = 0x02, YELLOW_BIG = 0x04, YELLOW_SMALL = 0x08 };
+  enum type_t { SMALL = 0x01, BIG = 0x02, YELLOW_BIG = 0x04, YELLOW_SMALL = 0x08 };
 }
 
 enum { ALIGN_NONE, ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT };
 
 class TextInterface
 {
-public:
+  public:
     TextInterface(Font::type_t ft = Font::BIG);
     virtual ~TextInterface(){};
 
@@ -56,7 +56,7 @@ public:
 
 class TextAscii : public TextInterface
 {
-public:
+  public:
     TextAscii() {};
     TextAscii(const std::string &, Font::type_t = Font::BIG);
 
@@ -76,14 +76,14 @@ public:
     static u8 CharAscent(Font::type_t);
     static u8 CharDescent(Font::type_t);
 
-private:
+  private:
     std::string message;
 };
 
 #ifdef WITH_TTF
 class TextUnicode : public TextInterface
 {
-public:
+  public:
     TextUnicode() {};
     TextUnicode(const std::string & msg, Font::type_t ft = Font::BIG);
     TextUnicode(const u16 *, size_t, Font::type_t ft = Font::BIG);
@@ -106,14 +106,14 @@ public:
     static u8 CharAscent(Font::type_t);
     static u8 CharDescent(Font::type_t);
 
-private:
+  private:
     std::vector<u16> message;
 };
 #endif
 
 class Text
 {
-public:
+  public:
     Text();
     Text(const std::string &, Font::type_t ft = Font::BIG);
 #ifdef WITH_TTF
@@ -141,7 +141,7 @@ public:
     static u16 width(const std::string &str, Font::type_t ft, u16 start = 0, u16 count = 0);
     static u16 height(const std::string &str, Font::type_t ft, u16 width = 0);
 
-protected:
+  protected:
     TextInterface *message;
     u16 gw;
     u16 gh;
@@ -149,7 +149,7 @@ protected:
 
 class TextSprite : protected Text
 {
-public:
+  public:
     TextSprite();
     TextSprite(const std::string & msg, Font::type_t ft, const Point & pt);
     TextSprite(const std::string & msg, Font::type_t ft, u16 ax, u16 ay);
@@ -169,14 +169,14 @@ public:
     u16  h(void);
     const Rect & GetRect(void) const;
 
-private:
+  private:
     Background back;
     bool hide;
 };
 
 class TextBox : protected Rect
 {
-public:
+  public:
     TextBox();
     TextBox(const std::string &, Font::type_t, u16);
     TextBox(const std::string &, Font::type_t, const Rect &);
@@ -194,7 +194,7 @@ public:
     void Blit(u16 ax, u16 ay, Surface & sf = Display::Get());
     void Blit(const Point & pt, Surface & sf = Display::Get());
 
-private:
+  private:
     void Append(const std::string &, Font::type_t, u16);
 #ifdef WITH_TTF
     void Append(const std::vector<u16> &, Font::type_t, u16);

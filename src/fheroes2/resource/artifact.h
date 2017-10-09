@@ -30,129 +30,129 @@ class Spell;
 
 class Artifact
 {
-public:
+  public:
     enum level_t
     {
-	ART_NONE	= 0,
-	ART_LEVEL1	= 0x01,
-	ART_LEVEL2	= 0x02,
-	ART_LEVEL3	= 0x04,
-	ART_LEVEL123	= ART_LEVEL1|ART_LEVEL2|ART_LEVEL3,
-	ART_ULTIMATE	= 0x08,
-	ART_LOYALTY	= 0x10,
-	ART_NORANDOM	= 0x20
+      ART_NONE    = 0,
+      ART_LEVEL1  = 0x01,
+      ART_LEVEL2  = 0x02,
+      ART_LEVEL3  = 0x04,
+      ART_LEVEL123    = ART_LEVEL1|ART_LEVEL2|ART_LEVEL3,
+      ART_ULTIMATE    = 0x08,
+      ART_LOYALTY = 0x10,
+      ART_NORANDOM    = 0x20
     };
 
     enum
     {
-	ULTIMATE_BOOK,
-	ULTIMATE_SWORD,
-	ULTIMATE_CLOAK,
-	ULTIMATE_WAND,
-	ULTIMATE_SHIELD,
-	ULTIMATE_STAFF,
-	ULTIMATE_CROWN,
-	GOLDEN_GOOSE,
-	ARCANE_NECKLACE,
-	CASTER_BRACELET,
-	MAGE_RING,
-	WITCHES_BROACH,
-	MEDAL_VALOR,
-	MEDAL_COURAGE,
-	MEDAL_HONOR,
-	MEDAL_DISTINCTION,
-	FIZBIN_MISFORTUNE,
-	THUNDER_MACE,
-	ARMORED_GAUNTLETS,
-	DEFENDER_HELM,
-	GIANT_FLAIL,
-	BALLISTA,
-	STEALTH_SHIELD,
-	DRAGON_SWORD,
-	POWER_AXE,
-	DIVINE_BREASTPLATE,
-	MINOR_SCROLL,
-	MAJOR_SCROLL,
-	SUPERIOR_SCROLL,
-	FOREMOST_SCROLL,
-	ENDLESS_SACK_GOLD,
-	ENDLESS_BAG_GOLD,
-	ENDLESS_PURSE_GOLD,
-	NOMAD_BOOTS_MOBILITY,
-	TRAVELER_BOOTS_MOBILITY,
-	RABBIT_FOOT,
-	GOLDEN_HORSESHOE,
-	GAMBLER_LUCKY_COIN,
-	FOUR_LEAF_CLOVER,
-	TRUE_COMPASS_MOBILITY,
-	SAILORS_ASTROLABE_MOBILITY,
-	EVIL_EYE,
-	ENCHANTED_HOURGLASS,
-	GOLD_WATCH,
-	SKULLCAP,
-	ICE_CLOAK,
-	FIRE_CLOAK,
-	LIGHTNING_HELM,
-	EVERCOLD_ICICLE,
-	EVERHOT_LAVA_ROCK,
-	LIGHTNING_ROD,
-	SNAKE_RING,
-	ANKH,
-	BOOK_ELEMENTS,
-	ELEMENTAL_RING,
-	HOLY_PENDANT,
-	PENDANT_FREE_WILL,
-	PENDANT_LIFE,
-	SERENITY_PENDANT,
-	SEEING_EYE_PENDANT,
-	KINETIC_PENDANT,
-	PENDANT_DEATH,
-	WAND_NEGATION,
-	GOLDEN_BOW,
-	TELESCOPE,
-	STATESMAN_QUILL,
-	WIZARD_HAT,
-	POWER_RING,
-	AMMO_CART,
-	TAX_LIEN,
-	HIDEOUS_MASK,
-	ENDLESS_POUCH_SULFUR,
-	ENDLESS_VIAL_MERCURY,
-	ENDLESS_POUCH_GEMS,
-	ENDLESS_CORD_WOOD,
-	ENDLESS_CART_ORE,
-	ENDLESS_POUCH_CRYSTAL,
-	SPIKED_HELM,
-	SPIKED_SHIELD,
-	WHITE_PEARL,
-	BLACK_PEARL,
+      ULTIMATE_BOOK,
+      ULTIMATE_SWORD,
+      ULTIMATE_CLOAK,
+      ULTIMATE_WAND,
+      ULTIMATE_SHIELD,
+      ULTIMATE_STAFF,
+      ULTIMATE_CROWN,
+      GOLDEN_GOOSE,
+      ARCANE_NECKLACE,
+      CASTER_BRACELET,
+      MAGE_RING,
+      WITCHES_BROACH,
+      MEDAL_VALOR,
+      MEDAL_COURAGE,
+      MEDAL_HONOR,
+      MEDAL_DISTINCTION,
+      FIZBIN_MISFORTUNE,
+      THUNDER_MACE,
+      ARMORED_GAUNTLETS,
+      DEFENDER_HELM,
+      GIANT_FLAIL,
+      BALLISTA,
+      STEALTH_SHIELD,
+      DRAGON_SWORD,
+      POWER_AXE,
+      DIVINE_BREASTPLATE,
+      MINOR_SCROLL,
+      MAJOR_SCROLL,
+      SUPERIOR_SCROLL,
+      FOREMOST_SCROLL,
+      ENDLESS_SACK_GOLD,
+      ENDLESS_BAG_GOLD,
+      ENDLESS_PURSE_GOLD,
+      NOMAD_BOOTS_MOBILITY,
+      TRAVELER_BOOTS_MOBILITY,
+      RABBIT_FOOT,
+      GOLDEN_HORSESHOE,
+      GAMBLER_LUCKY_COIN,
+      FOUR_LEAF_CLOVER,
+      TRUE_COMPASS_MOBILITY,
+      SAILORS_ASTROLABE_MOBILITY,
+      EVIL_EYE,
+      ENCHANTED_HOURGLASS,
+      GOLD_WATCH,
+      SKULLCAP,
+      ICE_CLOAK,
+      FIRE_CLOAK,
+      LIGHTNING_HELM,
+      EVERCOLD_ICICLE,
+      EVERHOT_LAVA_ROCK,
+      LIGHTNING_ROD,
+      SNAKE_RING,
+      ANKH,
+      BOOK_ELEMENTS,
+      ELEMENTAL_RING,
+      HOLY_PENDANT,
+      PENDANT_FREE_WILL,
+      PENDANT_LIFE,
+      SERENITY_PENDANT,
+      SEEING_EYE_PENDANT,
+      KINETIC_PENDANT,
+      PENDANT_DEATH,
+      WAND_NEGATION,
+      GOLDEN_BOW,
+      TELESCOPE,
+      STATESMAN_QUILL,
+      WIZARD_HAT,
+      POWER_RING,
+      AMMO_CART,
+      TAX_LIEN,
+      HIDEOUS_MASK,
+      ENDLESS_POUCH_SULFUR,
+      ENDLESS_VIAL_MERCURY,
+      ENDLESS_POUCH_GEMS,
+      ENDLESS_CORD_WOOD,
+      ENDLESS_CART_ORE,
+      ENDLESS_POUCH_CRYSTAL,
+      SPIKED_HELM,
+      SPIKED_SHIELD,
+      WHITE_PEARL,
+      BLACK_PEARL,
 
-	MAGIC_BOOK,
+      MAGIC_BOOK,
 
-	DUMMY1,
-	DUMMY2,
-	DUMMY3,
-	DUMMY4,
+      DUMMY1,
+      DUMMY2,
+      DUMMY3,
+      DUMMY4,
 
-	SPELL_SCROLL,
-	ARM_MARTYR,
-	BREASTPLATE_ANDURAN,
-	BROACH_SHIELDING,
-	BATTLE_GARB,
-	CRYSTAL_BALL,
-	HEART_FIRE,
-	HEART_ICE,
-	HELMET_ANDURAN,
-	HOLY_HAMMER,
-	LEGENDARY_SCEPTER,
-	MASTHEAD,
-	SPHERE_NEGATION,
-	STAFF_WIZARDRY,
-	SWORD_BREAKER,
-	SWORD_ANDURAN,
-	SPADE_NECROMANCY,
+      SPELL_SCROLL,
+      ARM_MARTYR,
+      BREASTPLATE_ANDURAN,
+      BROACH_SHIELDING,
+      BATTLE_GARB,
+      CRYSTAL_BALL,
+      HEART_FIRE,
+      HEART_ICE,
+      HELMET_ANDURAN,
+      HOLY_HAMMER,
+      LEGENDARY_SCEPTER,
+      MASTHEAD,
+      SPHERE_NEGATION,
+      STAFF_WIZARDRY,
+      SWORD_BREAKER,
+      SWORD_ANDURAN,
+      SPADE_NECROMANCY,
 
-	UNKNOWN
+      UNKNOWN
     };
 
     Artifact(u8 = UNKNOWN);
@@ -191,7 +191,7 @@ public:
     static const char* GetScenario(const Artifact &);
     static void UpdateStats(const std::string &);
 
-private:
+  private:
     friend class Game::IO;
 
     u8 id;
@@ -202,21 +202,21 @@ u16 GoldInsteadArtifact(u8);
 
 struct BagArtifacts : std::vector<Artifact>
 {
-    BagArtifacts();
+  BagArtifacts();
 
-    bool ContainSpell(const Spell &) const;
-    bool isPresentArtifact(const Artifact &) const;
-    bool PushArtifact(const Artifact &);
-    bool isFull(void) const;
-    bool MakeBattleGarb(void);
-    bool ContainUltimateArtifact(void) const;
+  bool ContainSpell(const Spell &) const;
+  bool isPresentArtifact(const Artifact &) const;
+  bool PushArtifact(const Artifact &);
+  bool isFull(void) const;
+  bool MakeBattleGarb(void);
+  bool ContainUltimateArtifact(void) const;
 
-    void  RemoveScroll(const Artifact &);
+  void  RemoveScroll(const Artifact &);
 
-    u8   CountArtifacts(void) const;
-    u8   Count(const Artifact &) const;
+  u8   CountArtifacts(void) const;
+  u8   Count(const Artifact &) const;
 
-    std::string String(void) const;
+  std::string String(void) const;
 };
 
 #endif

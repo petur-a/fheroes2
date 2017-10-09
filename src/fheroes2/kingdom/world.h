@@ -43,45 +43,45 @@ class Kingdom;
 class Recruits;
 class Radar;
 
-typedef std::list<std::string>		Rumors;
-typedef std::list<EventDate>		EventsDate;
-typedef std::list<EventMaps>		EventsMaps;
-typedef std::list<Riddle>		Riddles;
-typedef std::vector<Maps::Tiles>	MapsTiles;
+typedef std::list<std::string>      Rumors;
+typedef std::list<EventDate>        EventsDate;
+typedef std::list<EventMaps>        EventsMaps;
+typedef std::list<Riddle>       Riddles;
+typedef std::vector<Maps::Tiles>    MapsTiles;
 
 struct CapturedObject
 {
-    ObjectColor		objcol;
-    Army::Troop		guardians;
+  ObjectColor     objcol;
+  Army::Troop     guardians;
 
-    const u8 & GetObject(void) const { return objcol.first; }
-    const u8 & GetColor(void) const { return objcol.second; }
-    Army::Troop & GetTroop(void) { return guardians; }
+  const u8 & GetObject(void) const { return objcol.first; }
+  const u8 & GetColor(void) const { return objcol.second; }
+  Army::Troop & GetTroop(void) { return guardians; }
 
-    void Set(u8 obj, u8 col) { objcol = ObjectColor(obj, col); }
-    void SetColor(u8 col) { objcol.second = col; }
+  void Set(u8 obj, u8 col) { objcol = ObjectColor(obj, col); }
+  void SetColor(u8 col) { objcol.second = col; }
 
-    bool GuardiansProtected(void) const { return guardians.isValid(); }
+  bool GuardiansProtected(void) const { return guardians.isValid(); }
 };
 
 struct CapturedObjects : std::map<s32, CapturedObject>
 {
-    void Set(const s32 &, u8, u8);
-    void SetColor(const s32 &, u8);
-    void ClearFog(u8);
-    void ResetColor(u8);
+  void Set(const s32 &, u8, u8);
+  void SetColor(const s32 &, u8);
+  void ClearFog(u8);
+  void ResetColor(u8);
 
-    CapturedObject & Get(const s32 &);
-    Funds TributeCapturedObject(u8 col, u8 obj);
+  CapturedObject & Get(const s32 &);
+  Funds TributeCapturedObject(u8 col, u8 obj);
 
-    u16	 GetCount(u8, u8) const;
-    u16	 GetCountMines(u8, u8) const;
-    u8   GetColor(const s32 &) const;
+  u16  GetCount(u8, u8) const;
+  u16  GetCountMines(u8, u8) const;
+  u8   GetColor(const s32 &) const;
 };
 
 class World : protected Size
 {
-public:
+  public:
     ~World(){ Reset(); }
 
     void LoadMaps(const std::string &filename);
@@ -141,7 +141,7 @@ public:
     void NewMonth(void);
 
     const std::string & GetRumors(void);
-    
+
     s32 NextTeleport(const s32 index, bool onwater) const;
     s32 NextWhirlpool(const s32 index);
 
@@ -175,33 +175,33 @@ public:
 
     static u32 GetUniq(void){ return ++uniq0; };
 
-protected:
+  protected:
     void MonthOfMonstersAction(const Monster &);
 
-private:
+  private:
     World() : Size(0, 0), width(Size::w), height(Size::h) {};
     void Defaults(void);
     void Reset(void);
 
-private:
+  private:
     friend class Radar;
     friend class Game::IO;
 
-    MapsTiles				vec_tiles;
+    MapsTiles               vec_tiles;
     AllCastles                          vec_castles;
-    AllHeroes				vec_heroes;
-    Kingdoms				vec_kingdoms;
-    Rumors				vec_rumors;
+    AllHeroes               vec_heroes;
+    Kingdoms                vec_kingdoms;
+    Rumors              vec_rumors;
     EventsDate                          vec_eventsday;
     EventsMaps                          vec_eventsmap;
-    Riddles				vec_riddles;
+    Riddles             vec_riddles;
 
-    std::map<s32, std::string>		map_sign;
+    std::map<s32, std::string>      map_sign;
 
     // index, object, color
-    CapturedObjects			map_captureobj;
+    CapturedObjects         map_captureobj;
 
-    UltimateArtifact			ultimate_artifact;
+    UltimateArtifact            ultimate_artifact;
 
     u16 & width;
     u16 & height;

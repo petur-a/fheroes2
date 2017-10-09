@@ -31,51 +31,51 @@
 
 struct EventDate
 {
-    EventDate() : computer(false), first(0), subsequent(0), colors(0) {}
-    EventDate(const void *ptr);
+  EventDate() : computer(false), first(0), subsequent(0), colors(0) {}
+  EventDate(const void *ptr);
 
-    bool isAllow(u8 color, u16 date) const;
-    bool isDeprecated(u16 date) const;
+  bool isAllow(u8 color, u16 date) const;
+  bool isDeprecated(u16 date) const;
 
-    Funds resource;
-    bool computer;
-    u16 first;
-    u16 subsequent;
-    u8 colors;
-    std::string message;
+  Funds resource;
+  bool computer;
+  u16 first;
+  u16 subsequent;
+  u8 colors;
+  std::string message;
 };
 
 struct EventMaps : public Maps::Position
 {
-    EventMaps() : computer(false), cancel(false), colors(0) {}
-    EventMaps(s32 index, const void *ptr);
-    
-    bool isAllow(u8 color, s32 index) const;
-    void SetVisited(u8 color);
+  EventMaps() : computer(false), cancel(false), colors(0) {}
+  EventMaps(s32 index, const void *ptr);
 
-    Funds resource;
-    Artifact artifact;
-    bool computer;
-    bool cancel;
-    u8 colors;
-    std::string message;
+  bool isAllow(u8 color, s32 index) const;
+  void SetVisited(u8 color);
+
+  Funds resource;
+  Artifact artifact;
+  bool computer;
+  bool cancel;
+  u8 colors;
+  std::string message;
 };
 
 typedef std::list<std::string>    RiddleAnswers;
 
 struct Riddle : public Maps::Position
 {
-    Riddle() : valid(false) {}
-    Riddle(s32 index, const void *ptr);
+  Riddle() : valid(false) {}
+  Riddle(s32 index, const void *ptr);
 
-    bool AnswerCorrect(const std::string & answer);
-    void SetQuiet(void);
+  bool AnswerCorrect(const std::string & answer);
+  void SetQuiet(void);
 
-    Funds resource;
-    Artifact artifact;
-    RiddleAnswers answers;
-    std::string message;
-    bool valid;
+  Funds resource;
+  Artifact artifact;
+  RiddleAnswers answers;
+  std::string message;
+  bool valid;
 };
 
 #endif

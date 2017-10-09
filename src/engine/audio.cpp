@@ -25,62 +25,62 @@
 
 namespace Audio
 {
-    static Spec hardware;
+  static Spec hardware;
 }
 
 Audio::Spec::Spec()
 {
-    freq = 0;
-    format = 0;
-    channels = 0;
-    silence = 0;
-    samples = 0;
-    size = 0;
-    callback = NULL;
-    userdata = NULL;
+  freq = 0;
+  format = 0;
+  channels = 0;
+  silence = 0;
+  samples = 0;
+  size = 0;
+  callback = NULL;
+  userdata = NULL;
 }
 
 Audio::CVT::CVT()
 {
-    needed = 0;
-    src_format = 0;
-    dst_format = 0;
-    rate_incr = 0;
-    buf = NULL;
-    len = 0;
-    len_cvt = 0;
-    len_mult = 0;
-    len_ratio = 0;
-    filters[0] = NULL;
-    filters[1] = NULL;
-    filters[2] = NULL;
-    filters[3] = NULL;
-    filters[4] = NULL;
-    filters[5] = NULL;
-    filters[6] = NULL;
-    filters[7] = NULL;
-    filters[8] = NULL;
-    filters[9] = NULL;
-    filter_index = 0;
+  needed = 0;
+  src_format = 0;
+  dst_format = 0;
+  rate_incr = 0;
+  buf = NULL;
+  len = 0;
+  len_cvt = 0;
+  len_mult = 0;
+  len_ratio = 0;
+  filters[0] = NULL;
+  filters[1] = NULL;
+  filters[2] = NULL;
+  filters[3] = NULL;
+  filters[4] = NULL;
+  filters[5] = NULL;
+  filters[6] = NULL;
+  filters[7] = NULL;
+  filters[8] = NULL;
+  filters[9] = NULL;
+  filter_index = 0;
 }
 
 bool Audio::CVT::Build(const Audio::Spec & src, const Audio::Spec & dst)
 {
-    if(1 == SDL_BuildAudioCVT(this, src.format, src.channels, src.freq, dst.format, dst.channels, dst.freq)) return true;
+  if(1 == SDL_BuildAudioCVT(this, src.format, src.channels, src.freq, dst.format, dst.channels, dst.freq)) return true;
 
-    std::cerr << "Audio::CVT::Build: " << SDL_GetError() << std::endl;
-    return false;
+  std::cerr << "Audio::CVT::Build: " << SDL_GetError() << std::endl;
+  return false;
 }
 
 bool Audio::CVT::Convert(void)
 {
-    if(0 == SDL_ConvertAudio(this)) return true;
-    
-    std::cerr << "Audio::CVT::Convert: " << SDL_GetError() << std::endl;
-    return false;
+  if(0 == SDL_ConvertAudio(this)) return true;
+
+  std::cerr << "Audio::CVT::Convert: " << SDL_GetError() << std::endl;
+  return false;
 }
 
 Audio::Spec & Audio::GetHardwareSpec(void)
 {
-    return hardware;
+  return hardware;
 }

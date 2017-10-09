@@ -20,7 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <dirent.h> 
+#include <dirent.h>
 
 #include "gamedefs.h"
 #include "settings.h"
@@ -29,44 +29,44 @@
 
 void ListFiles::Append(const ListFiles & list)
 {
-    insert(end(), list.begin(), list.end());
+  insert(end(), list.begin(), list.end());
 }
 
 void ListFiles::ReadDir(const std::string &path, const std::string &filter, bool sensitive)
 {
-    // read directory
-    DIR *dp;
-    struct dirent *ep;
+  // read directory
+  DIR *dp;
+  struct dirent *ep;
 
-    dp = opendir(path.c_str());
+  dp = opendir(path.c_str());
 
-    DEBUG(DBG_ENGINE, DBG_INFO, (filter.size() ? path + " (" + filter + ")" : path));
+  DEBUG(DBG_ENGINE, DBG_INFO, (filter.size() ? path + " (" + filter + ")" : path));
 
-    if(dp)
+  if(dp)
+  {
+    while(NULL != (ep = readdir(dp)))
     {
-	while(NULL != (ep = readdir(dp)))
-	{
-	    const std::string fullname(path + SEPARATOR + ep->d_name);
+      const std::string fullname(path + SEPARATOR + ep->d_name);
 
-    	    // if not regular file
-    	    if(! IsFile(fullname)) continue;
+      // if not regular file
+      if(! IsFile(fullname)) continue;
 
-	    if(filter.size())
-	    {
-    		std::string filename(ep->d_name);
+      if(filter.size())
+      {
+        std::string filename(ep->d_name);
 
-		if(sensitive)
-		{
-		    if(std::string::npos == filename.find(filter)) continue;
-    		}
-    		else
-    		{
-		    if(std::string::npos == String::Lower(filename).find(String::Lower(filter))) continue;
-		}
-    	    }
+        if(sensitive)
+        {
+          if(std::string::npos == filename.find(filter)) continue;
+        }
+        else
+        {
+          if(std::string::npos == String::Lower(filename).find(String::Lower(filter))) continue;
+        }
+      }
 
-    	    push_back(fullname);
-	}
-	closedir(dp);
+      push_back(fullname);
     }
+    closedir(dp);
+  }
 }

@@ -29,18 +29,18 @@
 
 class BitModes
 {
-public:
+  public:
     BitModes() : modes(0) {};
 
-    u32		operator() (void) const { return modes; }
+    u32     operator() (void) const { return modes; }
     void        SetModes(u32 f) { modes |= f; }
     void        ResetModes(u32 f) { modes &= ~f; }
     void        ToggleModes(u32 f) { modes ^= f; }
 
     bool        Modes(u32 f) const { return (modes & f); }
 
-protected:
-    u32		modes;
+  protected:
+    u32     modes;
 };
 
 #endif

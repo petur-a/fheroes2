@@ -41,214 +41,214 @@ class HeroBase;
 
 namespace Battle2
 {
-    class Arena;
-    class Cell;
-    class Stats;
-    class Tower;
-    class Catapult;
-    class Bridge;
-    class Interface;
+  class Arena;
+  class Cell;
+  class Stats;
+  class Tower;
+  class Catapult;
+  class Bridge;
+  class Interface;
 
-    struct Actions : public std::list<Action>
-    {
-        void AddedAutoBattleAction(u8);
-        void AddedRetreatAction(void);
-        void AddedSurrenderAction(void);
-        void AddedCastAction(const Spell &, u16);
-        void AddedCastTeleportAction(u16, u16);
-	void AddedCastMirrorImageAction(u16 who);
-        void AddedEndAction(const Stats &);
-        void AddedSkipAction(const Stats &, bool);
-        void AddedMoveAction(const Stats &, u16);
-        void AddedAttackAction(const Stats &, const Stats &, u16, u8);
-        void AddedMoraleAction(const Stats &, u8);
-    };
+  struct Actions : public std::list<Action>
+  {
+    void AddedAutoBattleAction(u8);
+    void AddedRetreatAction(void);
+    void AddedSurrenderAction(void);
+    void AddedCastAction(const Spell &, u16);
+    void AddedCastTeleportAction(u16, u16);
+    void AddedCastMirrorImageAction(u16 who);
+    void AddedEndAction(const Stats &);
+    void AddedSkipAction(const Stats &, bool);
+    void AddedMoveAction(const Stats &, u16);
+    void AddedAttackAction(const Stats &, const Stats &, u16, u8);
+    void AddedMoraleAction(const Stats &, u8);
+  };
 
-    struct Board : public std::vector<Cell>
-    {
-	Board();
+  struct Board : public std::vector<Cell>
+  {
+    Board();
 
-	s16 GetIndexAbsPosition(const Point &) const;
-	Rect GetArea(void) const;
-	void SetEnemyQuality(const Stats &);
-	void SetPositionQuality(const Stats &);
-	void SetCobjObjects(s32);
-	void SetCobjObject(u16, u16);
-	void SetCovrObjects(u16);
+    s16 GetIndexAbsPosition(const Point &) const;
+    Rect GetArea(void) const;
+    void SetEnemyQuality(const Stats &);
+    void SetPositionQuality(const Stats &);
+    void SetCobjObjects(s32);
+    void SetCobjObject(u16, u16);
+    void SetCovrObjects(u16);
 
-	void GetAbroadPositions(u16, u8, bool, std::vector<u16> &) const;
+    void GetAbroadPositions(u16, u8, bool, std::vector<u16> &) const;
 
-	static bool NearCells(u16, u16);
-	static bool inCastle(u16);
-	static bool isMoatIndex(u16);
-	static bool isReflectDirection(u8);
-	static direction_t GetReflectDirection(u8);
-	static direction_t GetDirection(u16, u16);
-	static u16 GetDistance(u16, u16);
-	static bool isValidDirection(u16, u8);
-	static u16 GetIndexDirection(u16, u8);
-    };
+    static bool NearCells(u16, u16);
+    static bool inCastle(u16);
+    static bool isMoatIndex(u16);
+    static bool isReflectDirection(u8);
+    static direction_t GetReflectDirection(u8);
+    static direction_t GetDirection(u16, u16);
+    static u16 GetDistance(u16, u16);
+    static bool isValidDirection(u16, u8);
+    static u16 GetIndexDirection(u16, u8);
+  };
 
-    class GraveyardTroop : public std::map<u16, std::vector<u16> >
-    {
+  class GraveyardTroop : public std::map<u16, std::vector<u16> >
+  {
     public:
-	GraveyardTroop() {}
-	
-	std::vector<u16> GetClosedCells(void) const;
-	void AddTroop(const Stats &);
-	void RemoveTroop(const Stats &);
-    };
+      GraveyardTroop() {}
 
-    class Arena
-    {
+      std::vector<u16> GetClosedCells(void) const;
+      void AddTroop(const Stats &);
+      void RemoveTroop(const Stats &);
+  };
+
+  class Arena
+  {
     public:
-	Arena(Army::army_t &, Army::army_t &, s32, bool);
-	~Arena();
+      Arena(Army::army_t &, Army::army_t &, s32, bool);
+      ~Arena();
 
-	void Turns(u16, Result &);
-	void RemoteTurn(const Stats &, Actions &);
-	void HumanTurn(const Stats &, Actions &);
+      void Turns(u16, Result &);
+      void RemoteTurn(const Stats &, Actions &);
+      void HumanTurn(const Stats &, Actions &);
 
-	const Cell* GetCell(u16, direction_t = CENTER) const;
-	Cell* GetCell(u16, direction_t = CENTER);
+      const Cell* GetCell(u16, direction_t = CENTER) const;
+      Cell* GetCell(u16, direction_t = CENTER);
 
-	Stats* GetTroopBoard(u16);
-	const Stats* GetTroopBoard(u16) const;
+      Stats* GetTroopBoard(u16);
+      const Stats* GetTroopBoard(u16) const;
 
-	Stats* GetTroopID(u16);
-	const Stats* GetTroopID(u16) const;
+      Stats* GetTroopID(u16);
+      const Stats* GetTroopID(u16) const;
 
-	Stats* GetEnemyAbroadMaxQuality(u16, u8);
-	const Stats* GetEnemyAbroadMaxQuality(u16, u8) const;
+      Stats* GetEnemyAbroadMaxQuality(u16, u8);
+      const Stats* GetEnemyAbroadMaxQuality(u16, u8) const;
 
-	Stats* GetEnemyAbroadMaxQuality(const Stats &);
-	const Stats* GetEnemyAbroadMaxQuality(const Stats &) const;
+      Stats* GetEnemyAbroadMaxQuality(const Stats &);
+      const Stats* GetEnemyAbroadMaxQuality(const Stats &) const;
 
-	Stats* GetEnemyMaxQuality(u8);
-	const Stats* GetEnemyMaxQuality(u8) const;
+      Stats* GetEnemyMaxQuality(u8);
+      const Stats* GetEnemyMaxQuality(u8) const;
 
-	Stats* GetLastTroopFromGraveyard(u16);
-	const Stats* GetLastTroopFromGraveyard(u16) const;
+      Stats* GetLastTroopFromGraveyard(u16);
+      const Stats* GetLastTroopFromGraveyard(u16) const;
 
-	Army::army_t* GetArmy(u8);
-	const Army::army_t* GetArmy(u8) const;
-	
-	void GetArmyPositions(u8, std::vector<u16> &) const;
-	u16 GetMaxQualityPosition(const std::vector<u16> &) const;
-	u16 GetNearestTroops(u16, std::vector<u16> &, const std::vector<u16>* black = NULL) const;
+      Army::army_t* GetArmy(u8);
+      const Army::army_t* GetArmy(u8) const;
 
-	void DialogBattleSummary(const Result &) const;
-	u8   DialogBattleHero(const HeroBase &) const;
+      void GetArmyPositions(u8, std::vector<u16> &) const;
+      u16 GetMaxQualityPosition(const std::vector<u16> &) const;
+      u16 GetNearestTroops(u16, std::vector<u16> &, const std::vector<u16>* black = NULL) const;
 
-	void FadeArena(void) const;
+      void DialogBattleSummary(const Result &) const;
+      u8   DialogBattleHero(const HeroBase &) const;
 
-	const SpellStorage & GetUsageSpells(void) const;
+      void FadeArena(void) const;
 
-	u16  GetPath(const Stats &, u16, std::vector<u16> &);
-	std::string BoardString(void) const;
+      const SpellStorage & GetUsageSpells(void) const;
 
-	Interface* GetInterface(void);
-	Tower* GetTower(u8);
+      u16  GetPath(const Stats &, u16, std::vector<u16> &);
+      std::string BoardString(void) const;
 
-	void ApplyAction(Action &);
+      Interface* GetInterface(void);
+      Tower* GetTower(u8);
 
-	TargetsInfo GetTargetsForDamage(Stats &, Stats &, u16);
-	void TargetsApplyDamage(Stats &, Stats &, TargetsInfo &);
+      void ApplyAction(Action &);
 
-	TargetsInfo GetTargetsForSpells(const HeroBase*, const Spell &, const u16);
-	void TargetsApplySpell(const HeroBase*, const Spell &, TargetsInfo &);
+      TargetsInfo GetTargetsForDamage(Stats &, Stats &, u16);
+      void TargetsApplyDamage(Stats &, Stats &, TargetsInfo &);
 
-	void UnpackBoard(Action &);
-	void PackBoard(Action &) const;
+      TargetsInfo GetTargetsForSpells(const HeroBase*, const Spell &, const u16);
+      void TargetsApplySpell(const HeroBase*, const Spell &, TargetsInfo &);
 
-        u8 GetCastleTargetValue(u8) const;
-        void SetCastleTargetValue(u8, u8);
+      void UnpackBoard(Action &);
+      void PackBoard(Action &) const;
 
-	bool isDisableCastSpell(const Spell &, std::string *msg);
-	bool isAllowResurrectFromGraveyard(const Spell &, u16) const;
+      u8 GetCastleTargetValue(u8) const;
+      void SetCastleTargetValue(u8, u8);
 
-	u8 GetOppositeColor(u8) const;
+      bool isDisableCastSpell(const Spell &, std::string *msg);
+      bool isAllowResurrectFromGraveyard(const Spell &, u16) const;
 
-	void TowerAction(void);
-	void CatapultAction(void);
+      u8 GetOppositeColor(u8) const;
 
-	bool CanSurrenderOpponent(u8 color) const;
-	bool CanRetreatOpponent(u8 color) const;
+      void TowerAction(void);
+      void CatapultAction(void);
 
-	void ResetBoard(void);
-	void ScanPassabilityBoard(const Stats &, bool skip_speed = false);
-	static u16 GetShortDistance(u16, const std::vector<u16> &);
-	void GetPassableQualityPositions(const Stats &, std::vector<u16> &);
-	s16 GetFreePositionNearHero(u8) const;
+      bool CanSurrenderOpponent(u8 color) const;
+      bool CanRetreatOpponent(u8 color) const;
 
-	// uniq spells
-	void SpellActionSummonElemental(Action &, const Spell &);
-	void SpellActionMirrorImage(Action &);
-	void SpellActionTeleport(Action &);
-	void SpellActionEarthQuake(Action &);
-	void SpellActionDefaults(Action &, const Spell &);
+      void ResetBoard(void);
+      void ScanPassabilityBoard(const Stats &, bool skip_speed = false);
+      static u16 GetShortDistance(u16, const std::vector<u16> &);
+      void GetPassableQualityPositions(const Stats &, std::vector<u16> &);
+      s16 GetFreePositionNearHero(u8) const;
 
-	// battle_action
-	void ApplyActionRetreat(Action &);
-	void ApplyActionSurrender(Action &);
-	void ApplyActionAttack(Action &);
-	void ApplyActionMove(Action &);
-	void ApplyActionEnd(Action &);
-	void ApplyActionSkip(Action &);
-	void ApplyActionMorale(Action &);
-	void ApplyActionLuck(Action &);
-	void ApplyActionSpellCast(Action &);
-	void ApplyActionTower(Action &);
-	void ApplyActionCatapult(Action &);
-	void ApplyActionAutoBattle(Action &);
-	void BattleProcess(Stats &, Stats & b2, s16 = -1, u8 = 0);
+      // uniq spells
+      void SpellActionSummonElemental(Action &, const Spell &);
+      void SpellActionMirrorImage(Action &);
+      void SpellActionTeleport(Action &);
+      void SpellActionEarthQuake(Action &);
+      void SpellActionDefaults(Action &, const Spell &);
 
-	HeroBase* GetCurrentCommander(void);
-	const HeroBase* GetCurrentCommander(void) const;
+      // battle_action
+      void ApplyActionRetreat(Action &);
+      void ApplyActionSurrender(Action &);
+      void ApplyActionAttack(Action &);
+      void ApplyActionMove(Action &);
+      void ApplyActionEnd(Action &);
+      void ApplyActionSkip(Action &);
+      void ApplyActionMorale(Action &);
+      void ApplyActionLuck(Action &);
+      void ApplyActionSpellCast(Action &);
+      void ApplyActionTower(Action &);
+      void ApplyActionCatapult(Action &);
+      void ApplyActionAutoBattle(Action &);
+      void BattleProcess(Stats &, Stats & b2, s16 = -1, u8 = 0);
 
-	HeroBase* GetCommander(u8);
-	const HeroBase* GetCommander(u8) const;
+      HeroBase* GetCurrentCommander(void);
+      const HeroBase* GetCurrentCommander(void) const;
 
-	bool NetworkTurn(Result &);
+      HeroBase* GetCommander(u8);
+      const HeroBase* GetCommander(u8) const;
 
-	Stats* CreateElemental(const Spell &);
-	Stats* CreateMirrorImage(Stats &, u16);
+      bool NetworkTurn(Result &);
 
-	u8 GetObstaclesPenalty(const Stats &, const Stats &) const;
+      Stats* CreateElemental(const Spell &);
+      Stats* CreateMirrorImage(Stats &, u16);
+
+      u8 GetObstaclesPenalty(const Stats &, const Stats &) const;
 
     protected:
-	friend class Interface;
-	friend class Cell;
-	friend class Stats;
-	friend class Tower;
-	friend class Bridge;
-	friend class Catapult;
-	friend class ::AI;
+      friend class Interface;
+      friend class Cell;
+      friend class Stats;
+      friend class Tower;
+      friend class Bridge;
+      friend class Catapult;
+      friend class ::AI;
 
-	void TurnTroop(Stats*);
+      void TurnTroop(Stats*);
 
-	Army::army_t & army1;
-        Army::army_t & army2;
+      Army::army_t & army1;
+      Army::army_t & army2;
 
-	const Castle* castle;
-	u8 current_color;
+      const Castle* castle;
+      u8 current_color;
 
-	Tower* towers[3];
-	Catapult* catapult;
-	Bridge* bridge;
+      Tower* towers[3];
+      Catapult* catapult;
+      Bridge* bridge;
 
-	Interface* interface;
-	Result* result_game;
+      Interface* interface;
+      Result* result_game;
 
-	GraveyardTroop graveyard;
-	SpellStorage usage_spells;
+      GraveyardTroop graveyard;
+      SpellStorage usage_spells;
 
-	Board board;
-	ICN::icn_t icn_covr;
+      Board board;
+      ICN::icn_t icn_covr;
 
-	u16 current_turn;
-	u8 auto_battle;
-    };
+      u16 current_turn;
+      u8 auto_battle;
+  };
 }
 
 #endif

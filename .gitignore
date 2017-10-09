@@ -1,5 +1,5 @@
 *.d
-./fheroes2
+fheroes2
 src/tools/xmi2mid
 src/tools/til2bmp
 src/tools/82m2wav
@@ -14,3 +14,9 @@ data/extracted
 .libs
 src/tools/icn2img
 src/tools/til2img
+*.o
+data
+maps
+tags
+.ctagsignore
+*.a

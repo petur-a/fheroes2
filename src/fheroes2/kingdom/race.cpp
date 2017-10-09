@@ -25,55 +25,55 @@
 
 const char* Race::String(u8 race)
 {
-    const char* str_race[] = { _("Knight"), _("Barbarian"), _("Sorceress"),
-	_("Warlock"), _("Wizard"), _("Necromancer"), _("Multi"), "Random", "Neutral" };
+  const char* str_race[] = { _("Knight"), _("Barbarian"), _("Sorceress"),
+    _("Warlock"), _("Wizard"), _("Necromancer"), _("Multi"), "Random", "Neutral" };
 
-    switch(race)
-    {
-        case Race::KNGT: return str_race[0];
-        case Race::BARB: return str_race[1];
-        case Race::SORC: return str_race[2];
-        case Race::WRLK: return str_race[3];
-        case Race::WZRD: return str_race[4];
-        case Race::NECR: return str_race[5];
-        case Race::MULT: return str_race[6];
-        case Race::RAND: return str_race[7];
-	case Race::NONE: return str_race[8];
-        default: break;
-    }
+  switch(race)
+  {
+    case Race::KNGT: return str_race[0];
+    case Race::BARB: return str_race[1];
+    case Race::SORC: return str_race[2];
+    case Race::WRLK: return str_race[3];
+    case Race::WZRD: return str_race[4];
+    case Race::NECR: return str_race[5];
+    case Race::MULT: return str_race[6];
+    case Race::RAND: return str_race[7];
+    case Race::NONE: return str_race[8];
+    default: break;
+  }
 
-    return str_race[8];
+  return str_race[8];
 }
 
 u8 Race::Rand(void)
 {
-    switch(Rand::Get(1, 6))
-    {
-        case 1: return Race::KNGT;
-        case 2: return Race::BARB;
-        case 3: return Race::SORC;
-        case 4: return Race::WRLK;
-        case 5: return Race::WZRD;
-	default: break;
-    }
+  switch(Rand::Get(1, 6))
+  {
+    case 1: return Race::KNGT;
+    case 2: return Race::BARB;
+    case 3: return Race::SORC;
+    case 4: return Race::WRLK;
+    case 5: return Race::WZRD;
+    default: break;
+  }
 
-    return Race::NECR;
+  return Race::NECR;
 }
 
 u8 Race::Get(u8 index)
 {
-    switch(index)
-    {
-	case KNGT:	return KNGT;
-	case BARB:	return BARB;
-	case SORC:	return SORC;
-	case WRLK:	return WRLK;
-	case WZRD:	return WZRD;
-	case NECR:	return NECR;
-	case MULT:	return MULT;
-	case RAND:	return RAND;
-	default: break;
-    }
+  switch(index)
+  {
+    case KNGT:  return KNGT;
+    case BARB:  return BARB;
+    case SORC:  return SORC;
+    case WRLK:  return WRLK;
+    case WZRD:  return WZRD;
+    case NECR:  return NECR;
+    case MULT:  return MULT;
+    case RAND:  return RAND;
+    default: break;
+  }
 
-    return Race::NONE;
+  return Race::NONE;
 }

@@ -27,16 +27,16 @@
 
 namespace Interface
 {
-    class BorderWindow
-    {
+  class BorderWindow
+  {
     public:
-    	static BorderWindow & Get(void);
+      static BorderWindow & Get(void);
 
-        void Redraw(void);
+      void Redraw(void);
 
     private:
-	BorderWindow();
-    };
+      BorderWindow();
+  };
 }
 
 #endif

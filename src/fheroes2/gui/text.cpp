@@ -28,8 +28,8 @@
 
 TextInterface::TextInterface(Font::type_t ft) : font(ft)
 {
-    const Settings & conf = Settings::Get();
-    if(conf.QVGA() && !conf.Unicode()) ft == Font::YELLOW_BIG || ft == Font::YELLOW_SMALL ? font = Font::YELLOW_SMALL : font = Font::SMALL;
+  const Settings & conf = Settings::Get();
+  if(conf.QVGA() && !conf.Unicode()) ft == Font::YELLOW_BIG || ft == Font::YELLOW_SMALL ? font = Font::YELLOW_SMALL : font = Font::SMALL;
 }
 
 TextAscii::TextAscii(const std::string & msg, Font::type_t ft) : TextInterface(ft), message(msg)
@@ -38,162 +38,162 @@ TextAscii::TextAscii(const std::string & msg, Font::type_t ft) : TextInterface(f
 
 void TextAscii::SetText(const std::string & msg)
 {
-    message = msg;
+  message = msg;
 }
 
 void TextAscii::SetFont(const Font::type_t & ft)
 {
-    const Settings & conf = Settings::Get();
-    if(conf.QVGA() && !conf.Unicode()) ft == Font::YELLOW_BIG || ft == Font::YELLOW_SMALL ? font = Font::YELLOW_SMALL : font = Font::SMALL;
-    else
+  const Settings & conf = Settings::Get();
+  if(conf.QVGA() && !conf.Unicode()) ft == Font::YELLOW_BIG || ft == Font::YELLOW_SMALL ? font = Font::YELLOW_SMALL : font = Font::SMALL;
+  else
     font = ft;
 }
 
 void TextAscii::Clear(void)
 {
-    message.clear();
+  message.clear();
 }
 
 size_t TextAscii::Size(void) const
 {
-    return message.size();
+  return message.size();
 }
 
 u8 TextAscii::CharWidth(char c, Font::type_t f)
 {
-    return (c < 0x21 ? (Font::SMALL == f || Font::YELLOW_SMALL == f ? 4 : 6) : AGG::GetLetter(c, f).w());
+  return (c < 0x21 ? (Font::SMALL == f || Font::YELLOW_SMALL == f ? 4 : 6) : AGG::GetLetter(c, f).w());
 }
 
 u8 TextAscii::CharHeight(Font::type_t f)
 {
-    return CharAscent(f) + CharDescent(f) + 1;
+  return CharAscent(f) + CharDescent(f) + 1;
 }
 
 u8 TextAscii::CharAscent(Font::type_t f)
 {
-    return Font::SMALL == f || Font::YELLOW_SMALL == f ? 8 : 13;
+  return Font::SMALL == f || Font::YELLOW_SMALL == f ? 8 : 13;
 }
 
 u8 TextAscii::CharDescent(Font::type_t f)
 {
-    return Font::SMALL == f || Font::YELLOW_SMALL == f ? 2 : 3;
+  return Font::SMALL == f || Font::YELLOW_SMALL == f ? 2 : 3;
 }
 
 u16 TextAscii::w(u16 s, u16 c) const
 {
-    if(message.empty()) return 0;
+  if(message.empty()) return 0;
 
-    u16 res = 0;
+  u16 res = 0;
 
-    if(s > message.size() - 1) s = message.size() - 1;
-    if(!c || c > message.size()) c = message.size() - s;
+  if(s > message.size() - 1) s = message.size() - 1;
+  if(!c || c > message.size()) c = message.size() - s;
 
-    for(u16 ii = s; ii < s + c; ++ii)
-	res += CharWidth(message[ii], font);
+  for(u16 ii = s; ii < s + c; ++ii)
+    res += CharWidth(message[ii], font);
 
-    return res;
+  return res;
 }
 
 u16 TextAscii::w(void) const
 {
-    return w(0, message.size());
+  return w(0, message.size());
 }
 
 u16 TextAscii::h(void) const
 {
-    return h(0);
+  return h(0);
 }
 
 u16 TextAscii::h(const u16 width) const
 {
-    if(message.empty()) return 0;
-    else
+  if(message.empty()) return 0;
+  else
     if(0 == width || w() <= width) return CharHeight(font);
 
-    u16 res = 0;
-    u16 www = 0;
-    
-    std::string::const_iterator pos1 = message.begin();
-    std::string::const_iterator pos2 = message.end();
-    std::string::const_iterator space = pos2;
+  u16 res = 0;
+  u16 www = 0;
 
-    while(pos1 < pos2)
+  std::string::const_iterator pos1 = message.begin();
+  std::string::const_iterator pos2 = message.end();
+  std::string::const_iterator space = pos2;
+
+  while(pos1 < pos2)
+  {
+    if(std::isspace(*pos1)) space = pos1;
+
+    if(www + CharWidth(*pos1, font) >= width)
     {
-        if(std::isspace(*pos1)) space = pos1;
-
-	if(www + CharWidth(*pos1, font) >= width)
-	{
-	    www = 0;
-	    res += CharHeight(font);
-	    if(pos2 != space) pos1 = space + 1;
-	    space = pos2;
-	    continue;
-	}
-
-        www += CharWidth(*pos1, font);
-        ++pos1;
+      www = 0;
+      res += CharHeight(font);
+      if(pos2 != space) pos1 = space + 1;
+      space = pos2;
+      continue;
     }
 
-    return res;
+    www += CharWidth(*pos1, font);
+    ++pos1;
+  }
+
+  return res;
 }
 
 void TextAscii::Blit(u16 ax, u16 ay, const u16 maxw, Surface & dst)
 {
-    if(message.empty()) return;
+  if(message.empty()) return;
 
-    std::string::const_iterator it = message.begin();
-    std::string::const_iterator it_end = message.end();
-    s8 oy = 0;
-    const u16 sx = ax;
+  std::string::const_iterator it = message.begin();
+  std::string::const_iterator it_end = message.end();
+  s8 oy = 0;
+  const u16 sx = ax;
 
-    for(; it != it_end; ++it)
+  for(; it != it_end; ++it)
+  {
+    if(maxw && (ax - sx) >= maxw) break;
+
+    // space or unknown letter
+    if(*it < 0x21)
     {
-	if(maxw && (ax - sx) >= maxw) break;
-
-	// space or unknown letter
-	if(*it < 0x21)
-	{
-	    ax += CharWidth(*it, font);
-	    continue;
-	}
-
-	const Surface & sprite = AGG::GetLetter(*it, font);
-	if(!sprite.isValid()) return;
-
-        // valign
-	switch(*it)
-	{
-	    case '-':
-    		oy = CharAscent(font) / 2;
-    	    break;
-
-	    case '_':
-    		oy = CharAscent(font);
-    	    break;
-
-    	    // "
-    	    case 0x22:
-	    // '
-    	    case 0x27:
-        	oy = 0;
-    	    break;
-
-    	    case 'y':
-    	    case 'g':
-    	    case 'p':
-    	    case 'q':
-    	    case 'j':
-        	oy = CharAscent(font) + CharDescent(font) - sprite.h();
-    	    break;
-
-    	    default:
-        	oy = CharAscent(font) - sprite.h();
-            break;
-	}
-
-	sprite.Blit(ax, ay + 2 + oy, dst);
-	ax += sprite.w();
+      ax += CharWidth(*it, font);
+      continue;
     }
+
+    const Surface & sprite = AGG::GetLetter(*it, font);
+    if(!sprite.isValid()) return;
+
+    // valign
+    switch(*it)
+    {
+      case '-':
+        oy = CharAscent(font) / 2;
+        break;
+
+      case '_':
+        oy = CharAscent(font);
+        break;
+
+        // "
+      case 0x22:
+        // '
+      case 0x27:
+        oy = 0;
+        break;
+
+      case 'y':
+      case 'g':
+      case 'p':
+      case 'q':
+      case 'j':
+        oy = CharAscent(font) + CharDescent(font) - sprite.h();
+        break;
+
+      default:
+        oy = CharAscent(font) - sprite.h();
+        break;
+    }
+
+    sprite.Blit(ax, ay + 2 + oy, dst);
+    ax += sprite.w();
+  }
 }
 
 #ifdef WITH_TTF
@@ -207,152 +207,152 @@ TextUnicode::TextUnicode(const u16 *pt, size_t sz, Font::type_t ft) : TextInterf
 
 bool TextUnicode::isspace(u16 c)
 {
-    switch(c)
-    {
-	case 0x0009:
-	case 0x000a:
-	case 0x000b:
-	case 0x000c:
-	case 0x000d:
-	case 0x0020: return true;
+  switch(c)
+  {
+    case 0x0009:
+    case 0x000a:
+    case 0x000b:
+    case 0x000c:
+    case 0x000d:
+    case 0x0020: return true;
 
-	default: break;
-    }
+    default: break;
+  }
 
-    return false;
+  return false;
 }
 
 void TextUnicode::SetText(const std::string & msg)
 {
-    message = String::UTF8_to_UNICODE(msg);
+  message = String::UTF8_to_UNICODE(msg);
 }
 
 void TextUnicode::SetFont(const Font::type_t & ft)
 {
-    const Settings & conf = Settings::Get();
-    if(conf.QVGA() && !conf.Unicode()) ft == Font::YELLOW_BIG || ft == Font::YELLOW_SMALL ? font = Font::YELLOW_SMALL : font = Font::SMALL;
-    else
+  const Settings & conf = Settings::Get();
+  if(conf.QVGA() && !conf.Unicode()) ft == Font::YELLOW_BIG || ft == Font::YELLOW_SMALL ? font = Font::YELLOW_SMALL : font = Font::SMALL;
+  else
     font = ft;
 }
 
 void TextUnicode::Clear(void)
 {
-    message.clear();
+  message.clear();
 }
 
 size_t TextUnicode::Size(void) const
 {
-    return message.size();
+  return message.size();
 }
 
 u8 TextUnicode::CharWidth(u16 c, Font::type_t f)
 {
-    return (c < 0x0021 ? (Font::SMALL == f || Font::YELLOW_SMALL == f ? 4 : 6) : AGG::GetUnicodeLetter(c, f).w());
+  return (c < 0x0021 ? (Font::SMALL == f || Font::YELLOW_SMALL == f ? 4 : 6) : AGG::GetUnicodeLetter(c, f).w());
 }
 
 u8 TextUnicode::CharHeight(Font::type_t f)
 {
-    return Font::SMALL == f || Font::YELLOW_SMALL ?
-        (AGG::Cache::Get().GetSmallFont().Height() + 2) :
-        (AGG::Cache::Get().GetMediumFont().Height() + 8);
+  return Font::SMALL == f || Font::YELLOW_SMALL ?
+    (AGG::Cache::Get().GetSmallFont().Height() + 2) :
+    (AGG::Cache::Get().GetMediumFont().Height() + 8);
 }
 
 u8 TextUnicode::CharAscent(Font::type_t f)
 {
-    return 0;
+  return 0;
 }
 
 u8 TextUnicode::CharDescent(Font::type_t f)
 {
-    return 0;
+  return 0;
 }
 
 u16 TextUnicode::w(u16 s, u16 c) const
 {
-    if(message.empty()) return 0;
+  if(message.empty()) return 0;
 
-    u16 res = 0;
+  u16 res = 0;
 
-    if(s > message.size() - 1) s = message.size() - 1;
-    if(!c || c > message.size()) c = message.size() - s;
+  if(s > message.size() - 1) s = message.size() - 1;
+  if(!c || c > message.size()) c = message.size() - s;
 
-    for(u16 ii = s; ii < s + c; ++ii)
-	res += CharWidth(message[ii], font);
+  for(u16 ii = s; ii < s + c; ++ii)
+    res += CharWidth(message[ii], font);
 
-    return res;
+  return res;
 }
 
 u16 TextUnicode::w(void) const
 {
-    return w(0, message.size());
+  return w(0, message.size());
 }
 
 u16 TextUnicode::h(void) const
 {
-    return h(0);
+  return h(0);
 }
 
 u16 TextUnicode::h(const u16 width) const
 {
-    if(message.empty()) return 0;
-    else
+  if(message.empty()) return 0;
+  else
     if(0 == width || w() <= width) return CharHeight(font);
 
-    u16 res = 0;
-    u16 www = 0;
-    
-    std::vector<u16>::const_iterator pos1 = message.begin();
-    std::vector<u16>::const_iterator pos2 = message.end();
-    std::vector<u16>::const_iterator space = pos2;
+  u16 res = 0;
+  u16 www = 0;
 
-    while(pos1 < pos2)
+  std::vector<u16>::const_iterator pos1 = message.begin();
+  std::vector<u16>::const_iterator pos2 = message.end();
+  std::vector<u16>::const_iterator space = pos2;
+
+  while(pos1 < pos2)
+  {
+    if(isspace(*pos1)) space = pos1;
+
+    if(www + CharWidth(*pos1, font) >= width)
     {
-        if(isspace(*pos1)) space = pos1;
-
-	if(www + CharWidth(*pos1, font) >= width)
-	{
-	    www = 0;
-	    res += CharHeight(font);
-	    if(pos2 != space) pos1 = space + 1;
-	    space = pos2;
-	    continue;
-	}
-
-        www += CharWidth(*pos1, font);
-        ++pos1;
+      www = 0;
+      res += CharHeight(font);
+      if(pos2 != space) pos1 = space + 1;
+      space = pos2;
+      continue;
     }
 
-    return res;
+    www += CharWidth(*pos1, font);
+    ++pos1;
+  }
+
+  return res;
 }
 
 void TextUnicode::Blit(u16 ax, u16 ay, const u16 maxw, Surface & dst)
 {
-    if(message.empty()) return;
+  if(message.empty()) return;
 
-    std::vector<u16>::const_iterator it = message.begin();
-    std::vector<u16>::const_iterator it_end = message.end();
-    const u16 sx = ax;
+  std::vector<u16>::const_iterator it = message.begin();
+  std::vector<u16>::const_iterator it_end = message.end();
+  const u16 sx = ax;
 
-    for(; it != it_end; ++it)
+  for(; it != it_end; ++it)
+  {
+    if(maxw && (ax - sx) >= maxw) break;
+
+    // end string
+    if(0 == *it) continue;
+
+    // space or unknown letter
+    if(*it < 0x0021)
     {
-	if(maxw && (ax - sx) >= maxw) break;
-
-	// end string
-	if(0 == *it) continue;
-
-	// space or unknown letter
-	if(*it < 0x0021)
-	{
-	    ax += CharWidth(*it, font);
-	    continue;
-	}
-
-	const Surface & sprite = AGG::GetUnicodeLetter(*it, font);
-	if(!sprite.isValid()) return;
-
-	sprite.Blit(ax, ay, dst);
-	ax += sprite.w();
+      ax += CharWidth(*it, font);
+      continue;
     }
+
+    const Surface & sprite = AGG::GetUnicodeLetter(*it, font);
+    if(!sprite.isValid()) return;
+
+    sprite.Blit(ax, ay, dst);
+    ax += sprite.w();
+  }
 }
 
 #endif
@@ -361,158 +361,158 @@ void TextUnicode::Blit(u16 ax, u16 ay, const u16 maxw, Surface & dst)
 Text::Text() : message(NULL), gw(0), gh(0)
 {
 #ifdef WITH_TTF
-    if(Settings::Get().Unicode())
-	message = static_cast<TextInterface *>(new TextUnicode());
-    else
+  if(Settings::Get().Unicode())
+    message = static_cast<TextInterface *>(new TextUnicode());
+  else
 #endif
-	message = static_cast<TextInterface *>(new TextAscii());
+    message = static_cast<TextInterface *>(new TextAscii());
 }
 
 Text::Text(const std::string & msg, Font::type_t ft) : message(NULL), gw(0), gh(0)
 {
 #ifdef WITH_TTF
-    if(Settings::Get().Unicode())
-	message = static_cast<TextInterface *>(new TextUnicode(msg, ft));
-    else
+  if(Settings::Get().Unicode())
+    message = static_cast<TextInterface *>(new TextUnicode(msg, ft));
+  else
 #endif
-	message = static_cast<TextInterface *>(new TextAscii(msg, ft));
+    message = static_cast<TextInterface *>(new TextAscii(msg, ft));
 
-    gw = message->w();
-    gh = message->h();
+  gw = message->w();
+  gh = message->h();
 }
 
 #ifdef WITH_TTF
 Text::Text(const u16 *pt, size_t sz, Font::type_t ft) : message(NULL), gw(0), gh(0)
 {
-    if(Settings::Get().Unicode() && pt)
-    {
-    	message = static_cast<TextInterface *>(new TextUnicode(pt, sz, ft));
+  if(Settings::Get().Unicode() && pt)
+  {
+    message = static_cast<TextInterface *>(new TextUnicode(pt, sz, ft));
 
-	gw = message->w();
-	gh = message->h();
-    }
+    gw = message->w();
+    gh = message->h();
+  }
 }
 #endif
 
 Text::~Text()
 {
-    delete message;
+  delete message;
 }
 
 Text::Text(const Text & t)
 {
 #ifdef WITH_TTF
-    if(Settings::Get().Unicode())
-	message = static_cast<TextInterface *>(new TextUnicode(static_cast<TextUnicode &>(*t.message)));
-    else
+  if(Settings::Get().Unicode())
+    message = static_cast<TextInterface *>(new TextUnicode(static_cast<TextUnicode &>(*t.message)));
+  else
 #endif
-	message = static_cast<TextInterface *>(new TextAscii(static_cast<TextAscii &>(*t.message)));
+    message = static_cast<TextInterface *>(new TextAscii(static_cast<TextAscii &>(*t.message)));
 
-    gw = t.gw;
-    gh = t.gh;
+  gw = t.gw;
+  gh = t.gh;
 }
 
 Text & Text::operator= (const Text & t)
 {
-    delete message;
+  delete message;
 #ifdef WITH_TTF
-    if(Settings::Get().Unicode())
-	message = static_cast<TextInterface *>(new TextUnicode(static_cast<TextUnicode &>(*t.message)));
-    else
+  if(Settings::Get().Unicode())
+    message = static_cast<TextInterface *>(new TextUnicode(static_cast<TextUnicode &>(*t.message)));
+  else
 #endif
-	message = static_cast<TextInterface *>(new TextAscii(static_cast<TextAscii &>(*t.message)));
+    message = static_cast<TextInterface *>(new TextAscii(static_cast<TextAscii &>(*t.message)));
 
-    gw = t.gw;
-    gh = t.gh;
+  gw = t.gw;
+  gh = t.gh;
 
-    return *this;
+  return *this;
 }
 
 void Text::Set(const std::string & msg, Font::type_t ft)
 {
-    message->SetText(msg);
-    message->SetFont(ft);
-    gw = message->w();
-    gh = message->h();
+  message->SetText(msg);
+  message->SetFont(ft);
+  gw = message->w();
+  gh = message->h();
 }
 
 void Text::Set(const std::string & msg)
 {
-    message->SetText(msg);
-    gw = message->w();
-    gh = message->h();
+  message->SetText(msg);
+  gw = message->w();
+  gh = message->h();
 }
 
 void Text::Set(Font::type_t ft)
 {
-    message->SetFont(ft);
-    gw = message->w();
-    gh = message->h();
+  message->SetFont(ft);
+  gw = message->w();
+  gh = message->h();
 }
 
 void Text::Clear(void)
 {
-    message->Clear();
-    gw = 0;
-    gh = 0;
+  message->Clear();
+  gw = 0;
+  gh = 0;
 }
 
 size_t Text::Size(void) const
 {
-    return message->Size();
+  return message->Size();
 }
 
 void Text::Blit(const Point & dst_pt, Surface & dst) const
 {
-    return message->Blit(dst_pt.x, dst_pt.y, 0, dst);
+  return message->Blit(dst_pt.x, dst_pt.y, 0, dst);
 }
 
 void Text::Blit(u16 ax, u16 ay, Surface & dst) const
 {
-    return message->Blit(ax, ay, 0, dst);
+  return message->Blit(ax, ay, 0, dst);
 }
 
 void Text::Blit(u16 ax, u16 ay, u16 maxw, Surface & dst) const
 {
-    return message->Blit(ax, ay, maxw, dst);
+  return message->Blit(ax, ay, maxw, dst);
 }
 
 u16 Text::width(const std::string &str, Font::type_t ft, u16 start, u16 count)
 {
 #ifdef WITH_TTF
-    if(Settings::Get().Unicode())
-    {
-	TextUnicode text(str, ft);
-	return text.w(start, count);
-    }
-    else
+  if(Settings::Get().Unicode())
+  {
+    TextUnicode text(str, ft);
+    return text.w(start, count);
+  }
+  else
 #endif
-    {
-	TextAscii text(str, ft);
-	return text.w(start, count);
-    }
+  {
+    TextAscii text(str, ft);
+    return text.w(start, count);
+  }
 
-    return 0;
+  return 0;
 }
 
 u16 Text::height(const std::string &str, Font::type_t ft, u16 width)
 {
-    if(str.empty()) return 0;
+  if(str.empty()) return 0;
 
 #ifdef WITH_TTF
-    if(Settings::Get().Unicode())
-    {
-	TextUnicode text(str, ft);
-	return text.h(width);
-    }
+  if(Settings::Get().Unicode())
+  {
+    TextUnicode text(str, ft);
+    return text.h(width);
+  }
 #endif
-    else
-    {
-	TextAscii text(str, ft);
-	return text.h(width);
-    }
+  else
+  {
+    TextAscii text(str, ft);
+    return text.h(width);
+  }
 
-    return 0;
+  return 0;
 }
 
 TextBox::TextBox() : align(ALIGN_CENTER)
@@ -521,196 +521,196 @@ TextBox::TextBox() : align(ALIGN_CENTER)
 
 TextBox::TextBox(const std::string & msg, Font::type_t ft, u16 width) : align(ALIGN_CENTER)
 {
-    Set(msg, ft, width);
+  Set(msg, ft, width);
 }
 
 TextBox::TextBox(const std::string & msg, Font::type_t ft, const Rect & rt) : align(ALIGN_CENTER)
 {
-    Set(msg, ft, rt.w);
-    Blit(rt.x, rt.y);
+  Set(msg, ft, rt.w);
+  Blit(rt.x, rt.y);
 }
 
 void TextBox::Set(const std::string & msg, Font::type_t ft, u16 width)
 {
-    if(messages.size()) messages.clear();
-    if(msg.empty()) return;
+  if(messages.size()) messages.clear();
+  if(msg.empty()) return;
 
 #ifdef WITH_TTF
-    if(Settings::Get().Unicode())
-    {
-	std::vector<u16> unicode = String::UTF8_to_UNICODE(msg);
+  if(Settings::Get().Unicode())
+  {
+    std::vector<u16> unicode = String::UTF8_to_UNICODE(msg);
 
-        const u16 sep = '\n';
-        std::vector<u16> substr;
-        substr.reserve(msg.size());
-        std::vector<u16>::iterator pos1 = unicode.begin();
-        std::vector<u16>::iterator pos2;
-        while(unicode.end() != (pos2 = std::find(pos1, unicode.end(), sep)))
-        {
-    	    substr.assign(pos1, pos2);
-	    Append(substr, ft, width);
-            pos1 = pos2 + 1;
-        }
-        if(pos1 < unicode.end())
-        {
-    	    substr.assign(pos1, unicode.end());
-	    Append(substr, ft, width);
-	}
-    }
-    else
-#endif
+    const u16 sep = '\n';
+    std::vector<u16> substr;
+    substr.reserve(msg.size());
+    std::vector<u16>::iterator pos1 = unicode.begin();
+    std::vector<u16>::iterator pos2;
+    while(unicode.end() != (pos2 = std::find(pos1, unicode.end(), sep)))
     {
-        const char sep = '\n';
-        std::string substr;
-        substr.reserve(msg.size());
-        std::string::const_iterator pos1 = msg.begin();
-        std::string::const_iterator pos2;
-        while(msg.end() != (pos2 = std::find(pos1, msg.end(), sep)))
-        {
-    	    substr.assign(pos1, pos2);
-	    Append(substr, ft, width);
-            pos1 = pos2 + 1;
-        }
-        if(pos1 < msg.end())
-        {
-    	    substr.assign(pos1, msg.end());
-	    Append(substr, ft, width);
-	}
+      substr.assign(pos1, pos2);
+      Append(substr, ft, width);
+      pos1 = pos2 + 1;
     }
+    if(pos1 < unicode.end())
+    {
+      substr.assign(pos1, unicode.end());
+      Append(substr, ft, width);
+    }
+  }
+  else
+#endif
+  {
+    const char sep = '\n';
+    std::string substr;
+    substr.reserve(msg.size());
+    std::string::const_iterator pos1 = msg.begin();
+    std::string::const_iterator pos2;
+    while(msg.end() != (pos2 = std::find(pos1, msg.end(), sep)))
+    {
+      substr.assign(pos1, pos2);
+      Append(substr, ft, width);
+      pos1 = pos2 + 1;
+    }
+    if(pos1 < msg.end())
+    {
+      substr.assign(pos1, msg.end());
+      Append(substr, ft, width);
+    }
+  }
 }
 
 void TextBox::SetAlign(u8 f)
 {
-    align = f;
+  align = f;
 }
 
 void TextBox::Append(const std::string & msg, Font::type_t ft, u16 width)
 {
-    if(msg.empty()) return;
-    const Settings & conf = Settings::Get();
-    if(conf.QVGA() && !conf.Unicode()) ft == Font::YELLOW_BIG || ft == Font::YELLOW_SMALL ? ft = Font::YELLOW_SMALL : ft = Font::SMALL;
+  if(msg.empty()) return;
+  const Settings & conf = Settings::Get();
+  if(conf.QVGA() && !conf.Unicode()) ft == Font::YELLOW_BIG || ft == Font::YELLOW_SMALL ? ft = Font::YELLOW_SMALL : ft = Font::SMALL;
 
-    u16 www = 0;
-    Rect::w = width;
-    
-    std::string::const_iterator pos1 = msg.begin();
-    std::string::const_iterator pos2 = pos1;
-    std::string::const_iterator pos3 = msg.end();
-    std::string::const_iterator space = pos2;
+  u16 www = 0;
+  Rect::w = width;
 
-    while(pos2 < pos3)
+  std::string::const_iterator pos1 = msg.begin();
+  std::string::const_iterator pos2 = pos1;
+  std::string::const_iterator pos3 = msg.end();
+  std::string::const_iterator space = pos2;
+
+  while(pos2 < pos3)
+  {
+    if(std::isspace(*pos2)) space = pos2;
+    u8 char_w = TextAscii::CharWidth(*pos2, ft);
+
+    if(www + char_w >= width)
     {
-        if(std::isspace(*pos2)) space = pos2;
-	u8 char_w = TextAscii::CharWidth(*pos2, ft);
+      www = 0;
+      Rect::h += TextAscii::CharHeight(ft);
+      if(pos3 != space) pos2 = space + 1;
 
-	if(www + char_w >= width)
-	{
-	    www = 0;
-	    Rect::h += TextAscii::CharHeight(ft);
-	    if(pos3 != space) pos2 = space + 1;
+      if(pos3 != space)
+        messages.push_back(Text(msg.substr(pos1 - msg.begin(), pos2 - pos1 - 1), ft));
+      else
+        messages.push_back(Text(msg.substr(pos1 - msg.begin(), pos2 - pos1), ft));
 
-	    if(pos3 != space)
-	        messages.push_back(Text(msg.substr(pos1 - msg.begin(), pos2 - pos1 - 1), ft));
-	    else
-	        messages.push_back(Text(msg.substr(pos1 - msg.begin(), pos2 - pos1), ft));
-
-	    pos1 = pos2;
-	    space = pos3;
-	    continue;
-	}
-
-        www += char_w;
-        ++pos2;
+      pos1 = pos2;
+      space = pos3;
+      continue;
     }
 
-    if(pos1 != pos2)
-    {
-        Rect::h += TextAscii::CharHeight(ft);
-	messages.push_back(Text(msg.substr(pos1 - msg.begin(), pos2 - pos1), ft));
-    }
+    www += char_w;
+    ++pos2;
+  }
+
+  if(pos1 != pos2)
+  {
+    Rect::h += TextAscii::CharHeight(ft);
+    messages.push_back(Text(msg.substr(pos1 - msg.begin(), pos2 - pos1), ft));
+  }
 }
 
 #ifdef WITH_TTF
 void TextBox::Append(const std::vector<u16> & msg, Font::type_t ft, u16 width)
 {
-    if(msg.empty()) return;
-    const Settings & conf = Settings::Get();
-    if(conf.QVGA() && !conf.Unicode()) ft == Font::YELLOW_BIG || ft == Font::YELLOW_SMALL ? ft = Font::YELLOW_SMALL : ft = Font::SMALL;
+  if(msg.empty()) return;
+  const Settings & conf = Settings::Get();
+  if(conf.QVGA() && !conf.Unicode()) ft == Font::YELLOW_BIG || ft == Font::YELLOW_SMALL ? ft = Font::YELLOW_SMALL : ft = Font::SMALL;
 
-    u16 www = 0;
-    Rect::w = width;
-    
-    std::vector<u16>::const_iterator pos1 = msg.begin();
-    std::vector<u16>::const_iterator pos2 = pos1;
-    std::vector<u16>::const_iterator pos3 = msg.end();
-    std::vector<u16>::const_iterator space = pos2;
+  u16 www = 0;
+  Rect::w = width;
 
-    while(pos2 < pos3)
+  std::vector<u16>::const_iterator pos1 = msg.begin();
+  std::vector<u16>::const_iterator pos2 = pos1;
+  std::vector<u16>::const_iterator pos3 = msg.end();
+  std::vector<u16>::const_iterator space = pos2;
+
+  while(pos2 < pos3)
+  {
+    if(TextUnicode::isspace(*pos2)) space = pos2;
+    u8 char_w = TextUnicode::CharWidth(*pos2, ft);
+
+    if(www + char_w >= width)
     {
-        if(TextUnicode::isspace(*pos2)) space = pos2;
-	u8 char_w = TextUnicode::CharWidth(*pos2, ft);
+      www = 0;
+      Rect::h += TextUnicode::CharHeight(ft);
+      if(pos3 != space) pos2 = space + 1;
 
-	if(www + char_w >= width)
-	{
-	    www = 0;
-	    Rect::h += TextUnicode::CharHeight(ft);
-	    if(pos3 != space) pos2 = space + 1;
+      if(pos3 != space)
+        messages.push_back(Text(&msg.at(pos1 - msg.begin()), pos2 - pos1 - 1, ft));
+      else
+        messages.push_back(Text(&msg.at(pos1 - msg.begin()), pos2 - pos1, ft));
 
-	    if(pos3 != space)
-		messages.push_back(Text(&msg.at(pos1 - msg.begin()), pos2 - pos1 - 1, ft));
-	    else
-		messages.push_back(Text(&msg.at(pos1 - msg.begin()), pos2 - pos1, ft));
-
-	    pos1 = pos2;
-	    space = pos3;
-	    continue;
-	}
-
-        www += char_w;
-        ++pos2;
+      pos1 = pos2;
+      space = pos3;
+      continue;
     }
 
-    if(pos1 != pos2)
-    {
-        Rect::h += TextUnicode::CharHeight(ft);
-	messages.push_back(Text(&msg.at(pos1 - msg.begin()), pos2 - pos1, ft));
-    }
+    www += char_w;
+    ++pos2;
+  }
+
+  if(pos1 != pos2)
+  {
+    Rect::h += TextUnicode::CharHeight(ft);
+    messages.push_back(Text(&msg.at(pos1 - msg.begin()), pos2 - pos1, ft));
+  }
 }
 #endif
 
 void TextBox::Blit(u16 ax, u16 ay, Surface & sf)
 {
-    Rect::x = ax;
-    Rect::y = ay;
-    
-    std::list<Text>::const_iterator it1 = messages.begin();
-    std::list<Text>::const_iterator it2 = messages.end();
-    
-    for(; it1 != it2; ++it1)
+  Rect::x = ax;
+  Rect::y = ay;
+
+  std::list<Text>::const_iterator it1 = messages.begin();
+  std::list<Text>::const_iterator it2 = messages.end();
+
+  for(; it1 != it2; ++it1)
+  {
+    switch(align)
     {
-	switch(align)
-	{
-	    case ALIGN_LEFT:
-		(*it1).Blit(ax, ay);
-		break;
+      case ALIGN_LEFT:
+        (*it1).Blit(ax, ay);
+        break;
 
-	    case ALIGN_RIGHT:
-		(*it1).Blit(ax + Rect::w - (*it1).w(), ay);
-		break;
-	
-	    // center
-	    default:
-		(*it1).Blit(ax + (Rect::w - (*it1).w()) / 2, ay);
-		break;
-	}
+      case ALIGN_RIGHT:
+        (*it1).Blit(ax + Rect::w - (*it1).w(), ay);
+        break;
 
-	ay += (*it1).h();
+        // center
+      default:
+        (*it1).Blit(ax + (Rect::w - (*it1).w()) / 2, ay);
+        break;
     }
+
+    ay += (*it1).h();
+  }
 }
 
 void TextBox::Blit(const Point & pt, Surface & sf)
 {
-    Blit(pt.x, pt.y, sf);
+  Blit(pt.x, pt.y, sf);
 }
 
 TextSprite::TextSprite() : hide(true)
@@ -719,66 +719,66 @@ TextSprite::TextSprite() : hide(true)
 
 TextSprite::TextSprite(const std::string & msg, Font::type_t ft, const Point & pt) : Text(msg, ft), hide(true)
 {
-    back.Save(Rect(pt, gw, gh + 5));
+  back.Save(Rect(pt, gw, gh + 5));
 }
 
 TextSprite::TextSprite(const std::string & msg, Font::type_t ft, u16 ax, u16 ay) : Text(msg, ft), hide(true)
 {
-    back.Save(Rect(ax, ay, gw, gh + 5));
+  back.Save(Rect(ax, ay, gw, gh + 5));
 }
 
 void TextSprite::Show(void)
 {
-    Blit(back.GetRect().x, back.GetRect().y);
-    hide = false;
+  Blit(back.GetRect().x, back.GetRect().y);
+  hide = false;
 }
 
 void TextSprite::Hide(void)
 {
-    if(!hide) back.Restore();
-    hide = true;
+  if(!hide) back.Restore();
+  hide = true;
 }
 
 void TextSprite::SetText(const std::string & msg)
 {
-    Hide();
-    Set(msg);
-    back.Save(back.GetPos().x, back.GetPos().y, gw, gh + 5);
+  Hide();
+  Set(msg);
+  back.Save(back.GetPos().x, back.GetPos().y, gw, gh + 5);
 }
 
 void TextSprite::SetFont(Font::type_t ft)
 {
-    Hide();
-    Set(ft);
-    back.Save(back.GetPos().x, back.GetPos().y, gw, gh + 5);
+  Hide();
+  Set(ft);
+  back.Save(back.GetPos().x, back.GetPos().y, gw, gh + 5);
 }
 
 void TextSprite::SetPos(u16 ax, u16 ay)
 {
-    back.Save(ax, ay, gw, gh + 5);
+  back.Save(ax, ay, gw, gh + 5);
 }
 
 u16 TextSprite::w(void)
 {
-    return back.GetSize().w;
+  return back.GetSize().w;
 }
 
 u16 TextSprite::h(void)
 {
-    return back.GetSize().h;
+  return back.GetSize().h;
 }
 
 bool TextSprite::isHide(void) const
 {
-    return hide;
+  return hide;
 }
 
 bool TextSprite::isShow(void) const
 {
-    return !hide;
+  return !hide;
 }
 
 const Rect & TextSprite::GetRect(void) const
 {
-    return back.GetRect();
+  return back.GetRect();
 }

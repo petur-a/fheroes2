@@ -27,18 +27,18 @@
 
 namespace ObjGras
 {
-    bool        isShadow(const u8 & index);
-    bool        isAction(const u8 & index);
-    u16         GetPassable(const u8 & index);
-    u8          GetActionObject(const u8 & index);
+  bool        isShadow(const u8 & index);
+  bool        isAction(const u8 & index);
+  u16         GetPassable(const u8 & index);
+  u8          GetActionObject(const u8 & index);
 }
 
 namespace ObjGra2
 {
-    bool        isShadow(const u8 & index);
-    bool        isAction(const u8 & index);
-    u16         GetPassable(const u8 & index);
-    u8          GetActionObject(const u8 & index);
+  bool        isShadow(const u8 & index);
+  bool        isAction(const u8 & index);
+  u16         GetPassable(const u8 & index);
+  u8          GetActionObject(const u8 & index);
 }
 
 #endif

@@ -26,133 +26,133 @@
 
 const char* Color::String(u8 color)
 {
-    const char* str_color[] = { "None", _("Blue"), _("Green"), _("Red"), _("Yellow"), _("Orange"), _("Purple"), "uknown" };
+  const char* str_color[] = { "None", _("Blue"), _("Green"), _("Red"), _("Yellow"), _("Orange"), _("Purple"), "uknown" };
 
-    switch(color)
-    {
-        case Color::BLUE: 	return str_color[1];
-        case Color::GREEN: 	return str_color[2];
-        case Color::RED:	return str_color[3];
-        case Color::YELLOW:	return str_color[4];
-	case Color::ORANGE: 	return str_color[5];
-	case Color::PURPLE: 	return str_color[6];
-	case Color::UNUSED: 	return str_color[7];
-    }
+  switch(color)
+  {
+    case Color::BLUE:   return str_color[1];
+    case Color::GREEN:  return str_color[2];
+    case Color::RED:    return str_color[3];
+    case Color::YELLOW: return str_color[4];
+    case Color::ORANGE:     return str_color[5];
+    case Color::PURPLE:     return str_color[6];
+    case Color::UNUSED:     return str_color[7];
+  }
 
-    return str_color[0];
+  return str_color[0];
 }
 
 u8 Color::GetIndex(u8 color)
 {
-    switch(color)
-    {
-        case BLUE: 	return 0;
-        case GREEN: 	return 1;
-        case RED:	return 2;
-        case YELLOW:	return 3;
-	case ORANGE: 	return 4;
-	case PURPLE: 	return 5;
-	default: break;
-    }
+  switch(color)
+  {
+    case BLUE:  return 0;
+    case GREEN:     return 1;
+    case RED:   return 2;
+    case YELLOW:    return 3;
+    case ORANGE:    return 4;
+    case PURPLE:    return 5;
+    default: break;
+  }
 
-    // NONE
-    return 6;
+  // NONE
+  return 6;
 }
 
 u8 Color::Count(u8 colors)
 {
-    const std::bitset<8> bset(colors);
-    return bset.count();
+  const std::bitset<8> bset(colors);
+  return bset.count();
 }
 
 Color::color_t Color::Get(u8 index)
 {
-    switch(index)
-    {
-        case BLUE:	return BLUE;
-        case GREEN:	return GREEN;
-        case RED:	return RED;
-        case YELLOW:	return YELLOW;
-	case ORANGE:	return ORANGE;
-	case PURPLE:	return PURPLE;
-	default: break;
-    }
+  switch(index)
+  {
+    case BLUE:  return BLUE;
+    case GREEN: return GREEN;
+    case RED:   return RED;
+    case YELLOW:    return YELLOW;
+    case ORANGE:    return ORANGE;
+    case PURPLE:    return PURPLE;
+    default: break;
+  }
 
-    return NONE;
+  return NONE;
 }
 
 Color::color_t Color::GetFirst(u8 colors)
 {
-    if(colors & BLUE) return BLUE;
-    else
+  if(colors & BLUE) return BLUE;
+  else
     if(colors & GREEN) return GREEN;
     else
-    if(colors & RED) return RED;
-    else
-    if(colors & YELLOW) return YELLOW;
-    else
-    if(colors & ORANGE) return ORANGE;
-    else
-    if(colors & PURPLE) return PURPLE;
+      if(colors & RED) return RED;
+      else
+        if(colors & YELLOW) return YELLOW;
+        else
+          if(colors & ORANGE) return ORANGE;
+          else
+            if(colors & PURPLE) return PURPLE;
 
-    return NONE;
+  return NONE;
 }
 
 const char* BarrierColor::String(u8 val)
 {
-    switch(val)
-    {
-        case 0x01:	return _("Aqua");
-        case 0x02:	return _("Blue");
-        case 0x04:	return _("Brown");
-        case 0x08:	return _("Gold");
-        case 0x10:	return _("Green");
-        case 0x20:	return _("Orange");
-        case 0x40:	return _("Purple");
-        case 0x80:	return _("Red");
-        default: break;
-    }
+  switch(val)
+  {
+    case 0x01:  return _("Aqua");
+    case 0x02:  return _("Blue");
+    case 0x04:  return _("Brown");
+    case 0x08:  return _("Gold");
+    case 0x10:  return _("Green");
+    case 0x20:  return _("Orange");
+    case 0x40:  return _("Purple");
+    case 0x80:  return _("Red");
+    default: break;
+  }
 
-    return "None";
+  return "None";
 }
 
 u8 BarrierColor::FromMP2(u8 val)
 {
-    switch(val)
-    {
-        case 0:	return AQUA;
-        case 8:	return BLUE;
-        case 16:return BROWN;
-        case 24:return GOLD;
-        case 32:return GREEN;
-        case 40:return ORANGE;
-        case 48:return PURPLE;
-        case 56:return RED;
-        default: break;
-    }
+  switch(val)
+  {
+    case 0: return AQUA;
+    case 8: return BLUE;
+    case 16:return BROWN;
+    case 24:return GOLD;
+    case 32:return GREEN;
+    case 40:return ORANGE;
+    case 48:return PURPLE;
+    case 56:return RED;
+    default: break;
+  }
 
-    return NONE;
+  return NONE;
 }
 
 Colors::Colors(u8 colors)
 {
-    reserve(6);
+  reserve(6);
 
-    if(colors & Color::BLUE)	push_back(Color::BLUE);
-    if(colors & Color::GREEN)	push_back(Color::GREEN);
-    if(colors & Color::RED)	push_back(Color::RED);
-    if(colors & Color::YELLOW)	push_back(Color::YELLOW);
-    if(colors & Color::ORANGE)	push_back(Color::ORANGE);
-    if(colors & Color::PURPLE)	push_back(Color::PURPLE);
+  if(colors & Color::BLUE)    push_back(Color::BLUE);
+  if(colors & Color::GREEN)   push_back(Color::GREEN);
+  if(colors & Color::RED) push_back(Color::RED);
+  if(colors & Color::YELLOW)  push_back(Color::YELLOW);
+  if(colors & Color::ORANGE)  push_back(Color::ORANGE);
+  if(colors & Color::PURPLE)  push_back(Color::PURPLE);
 }
 
 std::string Colors::String(void) const
 {
-    std::ostringstream os;
+  std::ostringstream os;
 
-    for(const_iterator
-	it = begin(); it != end(); ++it)
-	    os << Color::String(*it) << ", ";
+  for(const_iterator
+      it = begin(); it != end(); ++it)
+    os << Color::String(*it) << ", ";
 
-    return os.str();
+  return os.str();
 }

@@ -33,54 +33,54 @@
 
 class EditorInterface
 {
-public:
-    	static EditorInterface & Get(void);
+  public:
+    static EditorInterface & Get(void);
 
-	static void	DrawTopNumberCell(void);
-	static void	DrawLeftNumberCell(void);
+    static void DrawTopNumberCell(void);
+    static void DrawLeftNumberCell(void);
 
-	void	Build(void);
-	void	Draw(void);
-	void	Scroll(const u8 scroll);
+    void    Build(void);
+    void    Draw(void);
+    void    Scroll(const u8 scroll);
 
-	Button btnLeftTopScroll;
-        Button btnRightTopScroll;
-        Button btnTopScroll;
-        Button btnLeftBottomScroll;
-        Button btnLeftScroll;
-        Button btnRightScroll;
-        Button btnRightBottomScroll;
-        Button btnBottomScroll;
-        Button btnSelectGround;
-        Button btnSelectObject;
-        Button btnSelectInfo;
-        Button btnSelectRiver;
-        Button btnSelectRoad;
-        Button btnSelectClear;
-        Button btnSizeSmall;
-        Button btnSizeMedium;
-        Button btnSizeLarge;
-        Button btnSizeManual;
-        Button btnZoom;
-        Button btnUndo;
-        Button btnNew;
-        Button btnSpec;
-        Button btnFile;
-        Button btnSystem;
+    Button btnLeftTopScroll;
+    Button btnRightTopScroll;
+    Button btnTopScroll;
+    Button btnLeftBottomScroll;
+    Button btnLeftScroll;
+    Button btnRightScroll;
+    Button btnRightBottomScroll;
+    Button btnBottomScroll;
+    Button btnSelectGround;
+    Button btnSelectObject;
+    Button btnSelectInfo;
+    Button btnSelectRiver;
+    Button btnSelectRoad;
+    Button btnSelectClear;
+    Button btnSizeSmall;
+    Button btnSizeMedium;
+    Button btnSizeLarge;
+    Button btnSizeManual;
+    Button btnZoom;
+    Button btnUndo;
+    Button btnNew;
+    Button btnSpec;
+    Button btnFile;
+    Button btnSystem;
 
-	Rect scrollTop;
-	Rect scrollBottom;
-	Rect scrollLeft;
-	Rect scrollRight;
+    Rect scrollTop;
+    Rect scrollBottom;
+    Rect scrollLeft;
+    Rect scrollRight;
 
-	Splitter split_h;
-	Splitter split_v;
+    Splitter split_h;
+    Splitter split_v;
 
-	Interface::GameArea & gameArea;
-	Interface::Radar & radar;
+    Interface::GameArea & gameArea;
+    Interface::Radar & radar;
 
-private:
-	EditorInterface();
+  private:
+    EditorInterface();
 };
 #endif
 #endif

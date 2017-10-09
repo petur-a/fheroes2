@@ -30,7 +30,7 @@ class StatusBar;
 
 class BuildingInfo
 {
-public:
+  public:
     BuildingInfo(const Castle &, building_t);
 
     u32 operator() (void) const;
@@ -44,7 +44,7 @@ public:
 
     bool IsDwelling(void) const;
     bool IsDisable(void) const;
-    
+
     void Redraw(void);
     bool QueueEventProcessing(void);
     bool DialogBuyBuilding(bool buttons) const;
@@ -52,7 +52,7 @@ public:
     static void UpdateCosts(const std::string &);
     static payment_t GetCost(u32, u8);
 
-private:
+  private:
     void RedrawCaptain(void);
 
     const Castle & castle;

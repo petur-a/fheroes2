@@ -35,47 +35,47 @@ enum info_t { STATUS_UNKNOWN, STATUS_DAY, STATUS_FUNDS, STATUS_ARMY, STATUS_RESO
 
 namespace Interface
 {
-    class StatusWindow : protected Rect
-    {
+  class StatusWindow : protected Rect
+  {
     public:
-	static StatusWindow & Get(void);
+      static StatusWindow & Get(void);
 
-	void SetPos(s16, s16);
-	const Rect & GetArea(void) const;
-	void Reset(void);
-	    
-	void Redraw(void);
-	void NextState(void);
-	info_t GetState(void) const;
-	void SetState(info_t info);
-	void SetResource(u8, u16);
-	void RedrawTurnProgress(u8);
-	void QueueEventProcessing(void);
+      void SetPos(s16, s16);
+      const Rect & GetArea(void) const;
+      void Reset(void);
 
-	static void ResetTimer(void);
+      void Redraw(void);
+      void NextState(void);
+      info_t GetState(void) const;
+      void SetState(info_t info);
+      void SetResource(u8, u16);
+      void RedrawTurnProgress(u8);
+      void QueueEventProcessing(void);
+
+      static void ResetTimer(void);
 
     private:
-	StatusWindow();
+      StatusWindow();
 
-	void DrawKingdomInfo(const u8 oh = 0) const;
-	void DrawDayInfo(const u8 oh = 0) const;
-	void DrawArmyInfo(const u8 oh = 0) const;
-	void DrawResourceInfo(const u8 oh = 0) const;
-	void DrawBackground(void) const;
-	void DrawAITurns(void) const;
-	static u32 ResetResourceStatus(u32, void *);
-	static u32 RedrawAIStatus(u32, void *);
+      void DrawKingdomInfo(const u8 oh = 0) const;
+      void DrawDayInfo(const u8 oh = 0) const;
+      void DrawArmyInfo(const u8 oh = 0) const;
+      void DrawResourceInfo(const u8 oh = 0) const;
+      void DrawBackground(void) const;
+      void DrawAITurns(void) const;
+      static u32 ResetResourceStatus(u32, void *);
+      static u32 RedrawAIStatus(u32, void *);
 
-	info_t               state;
-	info_t               oldState;
-	u8                   lastResource;
-	u16                  countLastResource;
-	SDL::Timer           timerShowLastResource;
-	SDL::Timer           timerRedrawAIStatus;
-	Dialog::FrameBorder border;
+      info_t               state;
+      info_t               oldState;
+      u8                   lastResource;
+      u16                  countLastResource;
+      SDL::Timer           timerShowLastResource;
+      SDL::Timer           timerRedrawAIStatus;
+      Dialog::FrameBorder border;
 
-	u8 turn_progress;
-    };
+      u8 turn_progress;
+  };
 }
 
 #endif

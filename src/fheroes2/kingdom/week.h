@@ -28,45 +28,45 @@
 
 struct Week : std::pair<u8, u8>
 {
-    enum type_t
-    {
-	UNNAMED,
-	PLAGUE,
-	ANT,
-	GRASSHOPPER,
-	DRAGONFLY,
-	SPIDER,
-	BUTTERFLY,
-	BUMBLEBEE,
-	LOCUST,
-	EARTHWORM,
-	HORNET,
-	BEETLE,
-	SQUIRREL,
-	RABBIT,
-	GOPHER,
-	BADGER,
-	EAGLE,
-	WEASEL,
-	RAVEN,
-	MONGOOSE,
-	AARDVARK,
-	LIZARD,
-	TORTOISE,
-	HEDGEHOG,
-	CONDOR,
-	
-	MONSTERS	// week of monsters game
-    };
+  enum type_t
+  {
+    UNNAMED,
+    PLAGUE,
+    ANT,
+    GRASSHOPPER,
+    DRAGONFLY,
+    SPIDER,
+    BUTTERFLY,
+    BUMBLEBEE,
+    LOCUST,
+    EARTHWORM,
+    HORNET,
+    BEETLE,
+    SQUIRREL,
+    RABBIT,
+    GOPHER,
+    BADGER,
+    EAGLE,
+    WEASEL,
+    RAVEN,
+    MONGOOSE,
+    AARDVARK,
+    LIZARD,
+    TORTOISE,
+    HEDGEHOG,
+    CONDOR,
 
-    Week(u8 type = UNNAMED, u8 mons = Monster::UNKNOWN) : std::pair<u8, u8>(type, mons){}
+    MONSTERS    // week of monsters game
+  };
 
-    u8 GetType(void) const { return first; }
-    u8 GetMonster(void) const { return second; }
-    const char* GetName(void) const;
+  Week(u8 type = UNNAMED, u8 mons = Monster::UNKNOWN) : std::pair<u8, u8>(type, mons){}
 
-    static type_t WeekRand(void);
-    static type_t MonthRand(void);
+  u8 GetType(void) const { return first; }
+  u8 GetMonster(void) const { return second; }
+  const char* GetName(void) const;
+
+  static type_t WeekRand(void);
+  static type_t MonthRand(void);
 };
 
 #endif

@@ -26,34 +26,34 @@
 
 SizeCursor::SizeCursor(u8 sw, u8 sh) : SpriteCursor(), cursor()
 {
-    ModifyCursor(sw, sh);
+  ModifyCursor(sw, sh);
 }
 
 u8 SizeCursor::w(void)
 {
-    return cursor.w() / TILEWIDTH;
+  return cursor.w() / TILEWIDTH;
 }
 
 u8 SizeCursor::h(void)
 {
-    return cursor.h() / TILEWIDTH;
+  return cursor.h() / TILEWIDTH;
 }
 
 void SizeCursor::ModifySize(const Size & sz)
 {
-    ModifySize(sz.w, sz.h);
+  ModifySize(sz.w, sz.h);
 }
 
 void SizeCursor::ModifySize(const u8 w, const u8 h)
 {
-    ModifyCursor(w, h);
+  ModifyCursor(w, h);
 }
 
 void SizeCursor::ModifyCursor(const u8 w, const u8 h)
 {
-    if(cursor.w() == w && cursor.h() == h) return;
+  if(cursor.w() == w && cursor.h() == h) return;
 
-    cursor = Surface(w * TILEWIDTH, h * TILEWIDTH);
-    Cursor::DrawCursor(cursor, 0x40);
-    SetSprite(cursor);
+  cursor = Surface(w * TILEWIDTH, h * TILEWIDTH);
+  Cursor::DrawCursor(cursor, 0x40);
+  SetSprite(cursor);
 }

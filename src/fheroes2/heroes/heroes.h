@@ -1,23 +1,23 @@
-/*************************************************************************** 
+/***************************************************************************
  *   Copyright (C) 2009 by Andrey Afletdinov <fheroes2@gmail.com>          *
  *                                                                         *
  *   Part of the Free Heroes2 Engine:                                      *
  *   http://sourceforge.net/projects/fheroes2                              *
- *                                                                         * 
- *   This program is free software; you can redistribute it and/or modify  * 
- *   it under the terms of the GNU General Public License as published by  * 
- *   the Free Software Foundation; either version 2 of the License, or     * 
- *   (at your option) any later version.                                   * 
- *                                                                         * 
- *   This program is distributed in the hope that it will be useful,       * 
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         * 
- *   GNU General Public License for more details.                          * 
- *                                                                         * 
- *   You should have received a copy of the GNU General Public License     * 
- *   along with this program; if not, write to the                         * 
- *   Free Software Foundation, Inc.,                                       * 
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             * 
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
 #ifndef H2HEROES_H
@@ -43,49 +43,49 @@ class MageGuild;
 
 class Heroes : public HeroBase
 {
-public:
+  public:
     enum heroes_t
     {
-	// knight
-	LORDKILBURN, SIRGALLANTH, ECTOR, GVENNETH, TYRO, AMBROSE, RUBY, MAXIMUS, DIMITRY,
-	// barbarian
-	THUNDAX, FINEOUS, JOJOSH, CRAGHACK, JEZEBEL, JACLYN, ERGON, TSABU, ATLAS,
-	// sorceress
-	ASTRA, NATASHA, TROYAN, VATAWNA, REBECCA, GEM, ARIEL, CARLAWN, LUNA,
-	// warlock
-	ARIE, ALAMAR, VESPER, CRODO, BAROK, KASTORE, AGAR, FALAGAR, WRATHMONT,
-	// wizard
-	MYRA, FLINT, DAWN, HALON, MYRINI, WILFREY, SARAKIN, KALINDRA, MANDIGAL,
-	// necromancer
-	ZOM, DARLANA, ZAM, RANLOO, CHARITY, RIALDO, ROXANA, SANDRO, CELIA,
-	// from campain
-	ROLAND, CORLAGON, ELIZA, ARCHIBALD, HALTON, BAX,
-	// from extended
-	SOLMYR, DAINWIN, MOG, UNCLEIVAN, JOSEPH, GALLAVANT, ELDERIAN, CEALLACH, DRAKONIA, MARTINE, JARKONAS,
-	// debugger
-	SANDYSANDY, UNKNOWN
+      // knight
+      LORDKILBURN, SIRGALLANTH, ECTOR, GVENNETH, TYRO, AMBROSE, RUBY, MAXIMUS, DIMITRY,
+      // barbarian
+      THUNDAX, FINEOUS, JOJOSH, CRAGHACK, JEZEBEL, JACLYN, ERGON, TSABU, ATLAS,
+      // sorceress
+      ASTRA, NATASHA, TROYAN, VATAWNA, REBECCA, GEM, ARIEL, CARLAWN, LUNA,
+      // warlock
+      ARIE, ALAMAR, VESPER, CRODO, BAROK, KASTORE, AGAR, FALAGAR, WRATHMONT,
+      // wizard
+      MYRA, FLINT, DAWN, HALON, MYRINI, WILFREY, SARAKIN, KALINDRA, MANDIGAL,
+      // necromancer
+      ZOM, DARLANA, ZAM, RANLOO, CHARITY, RIALDO, ROXANA, SANDRO, CELIA,
+      // from campain
+      ROLAND, CORLAGON, ELIZA, ARCHIBALD, HALTON, BAX,
+      // from extended
+      SOLMYR, DAINWIN, MOG, UNCLEIVAN, JOSEPH, GALLAVANT, ELDERIAN, CEALLACH, DRAKONIA, MARTINE, JARKONAS,
+      // debugger
+      SANDYSANDY, UNKNOWN
     };
 
     static heroes_t ConvertID(u8);
 
     enum flags_t
     {
-	SHIPMASTER	= 0x0001,
-	AIWAITING	= 0x0002,
-	SPELLCASTED	= 0x0004,
-	ENABLEMOVE	= 0x0008,
-	HUNTER		= 0x0010,
-	SCOUTER		= 0x0020,
-	STUPID		= 0x0040,
-	JAIL		= 0x0080,
-	ACTION		= 0x0100,
-	SAVEPOINTS	= 0x0200,
-	SLEEPER		= 0x0400,
-	GUARDIAN	= 0x0800,
-	NOTDEFAULTS	= 0x1000,
-	NOTDISMISS	= 0x2000,
-	VISIONS		= 0x4000,
-	PATROL		= 0x8000
+      SHIPMASTER  = 0x0001,
+      AIWAITING   = 0x0002,
+      SPELLCASTED = 0x0004,
+      ENABLEMOVE  = 0x0008,
+      HUNTER      = 0x0010,
+      SCOUTER     = 0x0020,
+      STUPID      = 0x0040,
+      JAIL        = 0x0080,
+      ACTION      = 0x0100,
+      SAVEPOINTS  = 0x0200,
+      SLEEPER     = 0x0400,
+      GUARDIAN    = 0x0800,
+      NOTDEFAULTS = 0x1000,
+      NOTDISMISS  = 0x2000,
+      VISIONS     = 0x4000,
+      PATROL      = 0x8000
     };
 
     Heroes();
@@ -239,7 +239,7 @@ public:
 
     static void ScholarAction(Heroes &, Heroes &);
 
-private:
+  private:
     friend class Recruits;
     friend class Game::IO;
 #ifdef BUILD_BATTLEONLY
@@ -253,55 +253,55 @@ private:
     bool MoveStep(bool fast = false);
     static void MoveStep(Heroes &, s32 from, s32 to, bool newpos);
 
-    std::string		name;
-    Color::color_t	color;
-    Color::color_t	killer_color;
-    u32			experience;
-    s32			move_point_scale;
+    std::string     name;
+    Color::color_t  color;
+    Color::color_t  killer_color;
+    u32         experience;
+    s32         move_point_scale;
 
-    Skill::SecSkills	secondary_skills;
+    Skill::SecSkills    secondary_skills;
 
     Army::army_t        army;
 
-    heroes_t		hid;
-    heroes_t		portrait;
-    u8			race;
+    heroes_t        hid;
+    heroes_t        portrait;
+    u8          race;
 
-    u8			save_maps_object;
+    u8          save_maps_object;
 
-    Route::Path		path;
+    Route::Path     path;
 
-    u16			direction;
-    u8			sprite_index;
+    u16         direction;
+    u8          sprite_index;
 
-    Point		patrol_center;
-    u8			patrol_square;
+    Point       patrol_center;
+    u8          patrol_square;
 
     std::list<IndexObject> visit_object;
 };
 
 struct VecHeroes : public std::vector<Heroes *>
 {
-    Heroes* Get(Heroes::heroes_t) const;
-    Heroes* Get(s32) const;
+  Heroes* Get(Heroes::heroes_t) const;
+  Heroes* Get(s32) const;
 };
 
 struct AllHeroes : public VecHeroes
 {
-    AllHeroes();
-    ~AllHeroes();
+  AllHeroes();
+  ~AllHeroes();
 
-    void Init(void);
-    void clear(void);
+  void Init(void);
+  void clear(void);
 
-    void Scoute(u8) const;
+  void Scoute(u8) const;
 
-    Heroes* GetGuest(const Castle &) const;
-    Heroes* GetGuard(const Castle &) const;
-    Heroes* GetFreeman(u8) const;
-    Heroes* FromJail(s32) const;
+  Heroes* GetGuest(const Castle &) const;
+  Heroes* GetGuard(const Castle &) const;
+  Heroes* GetFreeman(u8) const;
+  Heroes* FromJail(s32) const;
 
-    bool HaveTwoFreemans(void) const;
+  bool HaveTwoFreemans(void) const;
 };
 
 #endif

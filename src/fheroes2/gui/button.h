@@ -29,7 +29,7 @@ class Sprite;
 
 class Button : public Rect
 {
-public:
+  public:
     Button();
     Button(const Point &pt, const ICN::icn_t icn, u16 index1, u16 index2);
     Button(u16 ox, u16 oy, const ICN::icn_t icn, u16 index1, u16 index2);
@@ -51,7 +51,7 @@ public:
     void PressDraw(void);
     void ReleaseDraw(void);
 
-private:
+  private:
     ICN::icn_t icn;
     u16 index1;
     u16 index2;
@@ -61,17 +61,17 @@ private:
 
 class ButtonGroups
 {
-public:
+  public:
     ButtonGroups(const Rect &, u16);
     ~ButtonGroups();
-    
+
     void Draw(void);
     u16 QueueEventProcessing(void);
 
     void DisableButton1(bool);
     void DisableButton2(bool);
 
-private:
+  private:
     Button *button1;
     Button *button2;
     u16 result1;

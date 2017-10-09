@@ -32,50 +32,50 @@ FH2Client::FH2Client()
 
 bool FH2Client::IsConnected(void) const
 {
-    return Modes(ST_CONNECT) && sd;
+  return Modes(ST_CONNECT) && sd;
 }
 
 bool FH2Client::Wait(QueueMessage & packet, u16 id)
 {
-    while(LocalEvent::Get().HandleEvents())
+  while(LocalEvent::Get().HandleEvents())
+  {
+    if(Ready())
     {
-        if(Ready())
-        {
-            if(!Network::RecvMessage(*this, packet))
-            {
-                //Close();
-		DEBUG(DBG_NETWORK, DBG_TRACE, "error");
-                return false;
-            }
-            if(id == packet.GetID()) break;
-        }
-	DELAY(50);
+      if(!Network::RecvMessage(*this, packet))
+      {
+        //Close();
+        DEBUG(DBG_NETWORK, DBG_TRACE, "error");
+        return false;
+      }
+      if(id == packet.GetID()) break;
     }
-    return true;
+    DELAY(50);
+  }
+  return true;
 }
 
 bool FH2Client::Send(QueueMessage & packet)
 {
-    if(!Network::SendMessage(*this, packet))
-    {
-	packet.Dump();
-        //Close();
-	DEBUG(DBG_NETWORK, DBG_TRACE, "error");
-        return false;
-    }
-    return true;
+  if(!Network::SendMessage(*this, packet))
+  {
+    packet.Dump();
+    //Close();
+    DEBUG(DBG_NETWORK, DBG_TRACE, "error");
+    return false;
+  }
+  return true;
 }
 
 bool FH2Client::Recv(QueueMessage & packet)
 {
-    if(!Network::RecvMessage(*this, packet))
-    {
-	packet.Dump();
-        //Close();
-	DEBUG(DBG_NETWORK, DBG_TRACE, "error");
-        return false;
-    }
-    return true;
+  if(!Network::RecvMessage(*this, packet))
+  {
+    packet.Dump();
+    //Close();
+    DEBUG(DBG_NETWORK, DBG_TRACE, "error");
+    return false;
+  }
+  return true;
 }
 
 #endif

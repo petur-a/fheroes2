@@ -27,109 +27,109 @@
 
 namespace Cdrom
 {
-    void Open(void);
-    void Close(void);
-    
-    static SDL_CD *cd		  = NULL;
-    static int currentTrack       = -1;
-    static unsigned int startTime = 0;
-    static unsigned int tickLength;
-    static SDL_Thread *loopThread;
-    static SDL_mutex *cdLock;
-    
-    int LoopCheck(void *data);
+  void Open(void);
+  void Close(void);
+
+  static SDL_CD *cd         = NULL;
+  static int currentTrack       = -1;
+  static unsigned int startTime = 0;
+  static unsigned int tickLength;
+  static SDL_Thread *loopThread;
+  static SDL_mutex *cdLock;
+
+  int LoopCheck(void *data);
 }
 
 void Cdrom::Open(void)
 {
-    for(int i = 0; i < SDL_CDNumDrives(); i++)
-    {
-        SDL_CD *drive = SDL_CDOpen(i);
+  for(int i = 0; i < SDL_CDNumDrives(); i++)
+  {
+    SDL_CD *drive = SDL_CDOpen(i);
 
-        if(drive)
+    if(drive)
+    {
+      if(!CD_INDRIVE(SDL_CDStatus(drive)))
+      {
+        SDL_CDClose(drive);
+        continue;
+      }
+      else
+        if(drive->numtracks > 1 && drive->track[0].type == SDL_DATA_TRACK)
         {
-            if(!CD_INDRIVE(SDL_CDStatus(drive)))
-            {
-                SDL_CDClose(drive);
-                continue;
-            }
-            else
-	    if(drive->numtracks > 1 && drive->track[0].type == SDL_DATA_TRACK)
-            {
-                cd = drive;
-                break;
-            }
+          cd = drive;
+          break;
         }
     }
-    
-    if(cd)
-    {
-        loopThread = SDL_CreateThread(&LoopCheck, NULL);
-        cdLock = SDL_CreateMutex();
-    }
+  }
 
-    std::cerr << "Cdrom::Open: "  << (cd ? "found CD audio device." : "no CDROM devices available.") << std::endl;
+  if(cd)
+  {
+    loopThread = SDL_CreateThread(&LoopCheck, NULL);
+    cdLock = SDL_CreateMutex();
+  }
+
+  std::cerr << "Cdrom::Open: "  << (cd ? "found CD audio device." : "no CDROM devices available.") << std::endl;
 }
 
 void Cdrom::Close(void)
 {
-    if(cd)
-    {
-        SDL_CDStop(cd);
-        SDL_KillThread(loopThread);
-        SDL_DestroyMutex(cdLock);
-	SDL_CDClose(cd);
-	cd = NULL;
-    }
+  if(cd)
+  {
+    SDL_CDStop(cd);
+    SDL_KillThread(loopThread);
+    SDL_DestroyMutex(cdLock);
+    SDL_CDClose(cd);
+    cd = NULL;
+  }
 }
 
 bool Cdrom::isValid(void)
 {
-    return cd;
+  return cd;
 }
 
 int Cdrom::LoopCheck(void *data)
 {
-    while(1)
-    {
-        SDL_Delay(5000);
-        SDL_LockMutex(cdLock);
-        if(startTime && SDL_GetTicks() - startTime > tickLength)
-            Play(currentTrack, true, true);
-        SDL_UnlockMutex(cdLock);
-    }
-    return 0;
+  while(1)
+  {
+    SDL_Delay(5000);
+    SDL_LockMutex(cdLock);
+    if(startTime && SDL_GetTicks() - startTime > tickLength)
+      Play(currentTrack, true, true);
+    SDL_UnlockMutex(cdLock);
+  }
+  return 0;
 }
 
 void Cdrom::Play(const u8 track, bool loop, bool force)
 {
-    if(Mixer::isValid() && cd)
-    {
-        SDL_LockMutex(cdLock);
-        
-        if(currentTrack != track || force)
-        {
-            if(SDL_CDPlayTracks(cd, track, 0, 1, 0) < 0)
-                std::cerr << "Cdrom::Play: Couldn't play track " << static_cast<int>(track) << std::endl;
-            
-            currentTrack = track;
-            if(loop)
-            {
-              tickLength = (unsigned int)((cd->track[track].length / CD_FPS) * 0.01f);
-              startTime = SDL_GetTicks();
-            }
-            else startTime = 0;
+  if(Mixer::isValid() && cd)
+  {
+    SDL_LockMutex(cdLock);
 
-            if(SDL_CDStatus(cd) != CD_PLAYING)
-                std::cerr << "Cdrom::Play: CD is not playing" << SDL_GetError() << std::endl;
-        }
-        
-        SDL_UnlockMutex(cdLock);
+    if(currentTrack != track || force)
+    {
+      if(SDL_CDPlayTracks(cd, track, 0, 1, 0) < 0)
+        std::cerr << "Cdrom::Play: Couldn't play track " << static_cast<int>(track) << std::endl;
+
+      currentTrack = track;
+      if(loop)
+      {
+        tickLength = (unsigned int)((cd->track[track].length / CD_FPS) * 0.01f);
+        startTime = SDL_GetTicks();
+      }
+      else startTime = 0;
+
+      if(SDL_CDStatus(cd) != CD_PLAYING)
+        std::cerr << "Cdrom::Play: CD is not playing" << SDL_GetError() << std::endl;
     }
+
+    SDL_UnlockMutex(cdLock);
+  }
 }
 
 void Cdrom::Pause(void)
 {
-    if(cd) SDL_CDPause(cd);
+  if(cd) SDL_CDPause(cd);
 }
 #endif

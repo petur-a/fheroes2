@@ -29,8 +29,8 @@
 
 namespace Maps
 {
-    struct FileInfo
-    {
+  struct FileInfo
+  {
     FileInfo();
 
     bool ReadMP2(const std::string &);
@@ -92,7 +92,7 @@ namespace Maps
     time_t localtime;
 
     bool with_heroes;
-    };
+  };
 }
 
 typedef std::vector<Maps::FileInfo> MapsFileInfoList;

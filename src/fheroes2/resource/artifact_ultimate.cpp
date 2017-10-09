@@ -30,46 +30,46 @@ UltimateArtifact::UltimateArtifact() : index(-1), isfound(false)
 
 void UltimateArtifact::Set(s32 pos, const Artifact & a)
 {
-    Artifact & art = *this;
-    art = a.isValid() ? a : Artifact::Rand(Artifact::ART_ULTIMATE);
-    index = pos;
-    isfound = false;
+  Artifact & art = *this;
+  art = a.isValid() ? a : Artifact::Rand(Artifact::ART_ULTIMATE);
+  index = pos;
+  isfound = false;
 
-    if(Maps::isValidAbsIndex(index))
-	Interface::GameArea::GenerateUltimateArtifactAreaSurface(index, puzzlemap);
-    else
-	Surface::FreeSurface(puzzlemap);
+  if(Maps::isValidAbsIndex(index))
+    Interface::GameArea::GenerateUltimateArtifactAreaSurface(index, puzzlemap);
+  else
+    Surface::FreeSurface(puzzlemap);
 }
 
 const Surface & UltimateArtifact::GetPuzzleMapSurface(void) const
 {
-    return puzzlemap;
+  return puzzlemap;
 }
 
 const Artifact & UltimateArtifact::GetArtifact(void) const
 {
-    return *this;
+  return *this;
 }
 
 bool UltimateArtifact::isFound(void) const
 {
-    return isfound;
+  return isfound;
 }
 
 void UltimateArtifact::SetFound(bool f)
 {
-    isfound = f;
+  isfound = f;
 }
 
 bool UltimateArtifact::isPosition(s32 pos) const
 {
-    return 0 <= index && pos == index;
+  return 0 <= index && pos == index;
 }
 
 void UltimateArtifact::Reset(void)
 {
-    Artifact::Reset();
-    Surface::FreeSurface(puzzlemap);
-    index = -1;
-    isfound = false;
+  Artifact::Reset();
+  Surface::FreeSurface(puzzlemap);
+  index = -1;
+  isfound = false;
 }

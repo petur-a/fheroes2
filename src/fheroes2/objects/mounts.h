@@ -27,18 +27,18 @@
 
 namespace ObjMnts1
 {
-	bool	isAction(const u8 & index);
-	bool	isShadow(const u8 & index);
-	u16	GetPassable(const u16 & icn, const u8 & index);
-	u8	GetActionObject(const u8 & index);
+  bool    isAction(const u8 & index);
+  bool    isShadow(const u8 & index);
+  u16 GetPassable(const u16 & icn, const u8 & index);
+  u8  GetActionObject(const u8 & index);
 }
 
 namespace ObjMnts2
 {
-	bool	isAction(const u8 & index);
-	bool	isShadow(const u8 & index);
-	u16	GetPassable(const u16 & icn, const u8 & index);
-	u8	GetActionObject(const u8 & index);
+  bool    isAction(const u8 & index);
+  bool    isShadow(const u8 & index);
+  u16 GetPassable(const u16 & icn, const u8 & index);
+  u8  GetActionObject(const u8 & index);
 }
 
 #endif

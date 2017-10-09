@@ -31,7 +31,7 @@ Thread::Thread() : thread(NULL)
 
 Thread::~Thread()
 {
-    Kill();
+  Kill();
 }
 
 Thread::Thread(const Thread &) : thread(NULL)
@@ -40,36 +40,36 @@ Thread::Thread(const Thread &) : thread(NULL)
 
 Thread & Thread::operator= (const Thread &)
 {
-    return *this;
+  return *this;
 }
 
 void Thread::Create(int (*fn)(void *), void *param)
 {
-    thread = SDL_CreateThread(fn, param);
+  thread = SDL_CreateThread(fn, param);
 }
 
 int Thread::Wait(void)
 {
-    int status = 0;
-    if(thread) SDL_WaitThread(thread, &status);
-    thread = NULL;
-    return status;
+  int status = 0;
+  if(thread) SDL_WaitThread(thread, &status);
+  thread = NULL;
+  return status;
 }
 
 void Thread::Kill(void)
 {
-    if(thread) SDL_KillThread(thread);
-    thread = NULL;
+  if(thread) SDL_KillThread(thread);
+  thread = NULL;
 }
 
 bool Thread::IsRun(void) const
 {
-    return GetID();
+  return GetID();
 }
 
 u32 Thread::GetID(void) const
 {
-    return thread ? SDL_GetThreadID(thread) : 0;
+  return thread ? SDL_GetThreadID(thread) : 0;
 }
 
 Mutex::Mutex(bool init) : mutex(init ? SDL_CreateMutex() : NULL)
@@ -82,28 +82,28 @@ Mutex::Mutex(const Mutex &) : mutex(NULL)
 
 Mutex::~Mutex()
 {
-    if(mutex) SDL_DestroyMutex(mutex);
+  if(mutex) SDL_DestroyMutex(mutex);
 }
 
 Mutex & Mutex::operator= (const Mutex &)
 {
-    return *this;
+  return *this;
 }
 
 void Mutex::Create(void)
 {
-    if(mutex) SDL_DestroyMutex(mutex);
-    mutex = SDL_CreateMutex();
+  if(mutex) SDL_DestroyMutex(mutex);
+  mutex = SDL_CreateMutex();
 }
 
 bool Mutex::Lock(void) const
 {
-    return mutex ? 0 == SDL_mutexP(mutex) : false;
+  return mutex ? 0 == SDL_mutexP(mutex) : false;
 }
 
 bool Mutex::Unlock(void) const
 {
-    return mutex ? 0 == SDL_mutexV(mutex) : false;
+  return mutex ? 0 == SDL_mutexV(mutex) : false;
 }
 
 Timer::Timer() : id(0)
@@ -112,23 +112,23 @@ Timer::Timer() : id(0)
 
 void Timer::Run(Timer & timer, u32 interval, u32 (*fn)(u32, void *), void *param)
 {
-    if(timer.id) Remove(timer);
+  if(timer.id) Remove(timer);
 
-    timer.id = SDL_AddTimer(interval, fn, param);
+  timer.id = SDL_AddTimer(interval, fn, param);
 }
 
 void Timer::Remove(Timer & timer)
 {
-    if(timer.id)
-    {
-	SDL_RemoveTimer(timer.id);
-	timer.id = 0;
-    }
+  if(timer.id)
+  {
+    SDL_RemoveTimer(timer.id);
+    timer.id = 0;
+  }
 }
 
 bool Timer::IsValid(void) const
 {
-    return id;
+  return id;
 }
 
 Time::Time()
@@ -137,20 +137,20 @@ Time::Time()
 
 void Time::Start(void)
 {
-    tick2 = tick1 = SDL_GetTicks();
+  tick2 = tick1 = SDL_GetTicks();
 }
 
 void Time::Stop(void)
 {
-    tick2 = SDL_GetTicks();
+  tick2 = SDL_GetTicks();
 }
 
 u32 Time::Get(void) const
 {
-    return tick2 > tick1 ? tick2 - tick1 : 0;
+  return tick2 > tick1 ? tick2 - tick1 : 0;
 }
 
 void Time::Print(const char* header) const
 {
-    std::cerr << (header ? header : "time: ") << Get() << " ms" << std::endl;
+  std::cerr << (header ? header : "time: ") << Get() << " ms" << std::endl;
 }

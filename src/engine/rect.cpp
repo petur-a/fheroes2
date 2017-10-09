@@ -30,38 +30,38 @@ Point::Point(s16 px, s16 py) : x(px), y(py)
 
 bool Point::operator== (const Point & pt) const
 {
-    return (x == pt.x && y == pt.y);
+  return (x == pt.x && y == pt.y);
 }
-          
+
 bool Point::operator!= (const Point & pt) const
 {
-    return !(*this == pt);
+  return !(*this == pt);
 }
 
 Point & Point::operator+=(const Point & pt)
 {
-    x += pt.x;
-    y += pt.y;
+  x += pt.x;
+  y += pt.y;
 
-    return *this;
+  return *this;
 }
 
 Point & Point::operator-=(const Point & pt)
 {
-    x -= pt.x;
-    y -= pt.y;
+  x -= pt.x;
+  y -= pt.y;
 
-    return *this;
+  return *this;
 }
 
 Point operator+(const Point& pt1, const Point& pt2)
 {
-    return Point(pt1.x + pt2.x, pt1.y + pt2.y);
+  return Point(pt1.x + pt2.x, pt1.y + pt2.y);
 }
 
 Point operator-(const Point& pt1, const Point& pt2)
 {
-    return Point(pt1.x - pt2.x, pt1.y - pt2.y);
+  return Point(pt1.x - pt2.x, pt1.y - pt2.y);
 }
 
 Size::Size(u16 sw, u16 sh) : w(sw), h(sh)
@@ -70,17 +70,17 @@ Size::Size(u16 sw, u16 sh) : w(sw), h(sh)
 
 bool Size::operator== (const Size & sz) const
 {
-    return (w == sz.w && h == sz.h);
+  return (w == sz.w && h == sz.h);
 }
 
 bool Size::operator!= (const Size & sz) const
 {
-    return !(*this == sz);
+  return !(*this == sz);
 }
 
 bool Size::isEmpty(void) const
 {
-    return 0 == w && 0 == h;
+  return 0 == w && 0 == h;
 }
 
 Rect::Rect(s16 rx, s16 ry, u16 rw, u16 rh) : Point(rx, ry), Size(rw, rh)
@@ -101,81 +101,81 @@ Rect::Rect(const Point & pt, const Size & sz) : Point(pt), Size(sz)
 
 Rect Rect::Get(const Rect & rt1, const Rect & rt2, bool intersect)
 {
-    Rect rt3;
+  Rect rt3;
 
-    if(intersect)
+  if(intersect)
+  {
+    if(rt1 & rt2)
     {
-	if(rt1 & rt2)
-	{
-    	    rt3.x = std::max(rt1.x, rt2.x);
-    	    rt3.y = std::max(rt1.y, rt2.y);
-    	    rt3.w = std::min(rt1.x + rt1.w, rt2.x + rt2.w) - rt3.x;
-    	    rt3.h = std::min(rt1.y + rt1.h, rt2.y + rt2.h) - rt3.y;
-	}
+      rt3.x = std::max(rt1.x, rt2.x);
+      rt3.y = std::max(rt1.y, rt2.y);
+      rt3.w = std::min(rt1.x + rt1.w, rt2.x + rt2.w) - rt3.x;
+      rt3.h = std::min(rt1.y + rt1.h, rt2.y + rt2.h) - rt3.y;
     }
-    else
+  }
+  else
     // max
-    {
-	rt3.x = rt1.x < rt2.x ? rt1.x : rt2.x;
-	rt3.y = rt1.y < rt2.y ? rt1.y : rt2.y;
-	rt3.w = rt1.x + rt1.w > rt2.x + rt2.w ? rt1.x + rt1.w - rt3.x : rt2.x + rt2.w - rt3.x;
-	rt3.h = rt1.y + rt1.h > rt2.y + rt2.h ? rt1.y + rt1.h - rt3.y : rt2.y + rt2.h - rt3.y;
-    }
+  {
+    rt3.x = rt1.x < rt2.x ? rt1.x : rt2.x;
+    rt3.y = rt1.y < rt2.y ? rt1.y : rt2.y;
+    rt3.w = rt1.x + rt1.w > rt2.x + rt2.w ? rt1.x + rt1.w - rt3.x : rt2.x + rt2.w - rt3.x;
+    rt3.h = rt1.y + rt1.h > rt2.y + rt2.h ? rt1.y + rt1.h - rt3.y : rt2.y + rt2.h - rt3.y;
+  }
 
-    return rt3;
+  return rt3;
 }
 
 Rect & Rect::operator= (const Point & pt)
 {
-    x = pt.x;
-    y = pt.y;
+  x = pt.x;
+  y = pt.y;
 
-    return *this;
+  return *this;
 }
 
 bool Rect::operator== (const Rect & rt) const
 {
-    return (x == rt.x && y == rt.y && w == rt.w && h == rt.h);
+  return (x == rt.x && y == rt.y && w == rt.w && h == rt.h);
 }
 
 bool Rect::operator!= (const Rect & rt) const
 {
-    return !(*this == rt);
+  return !(*this == rt);
 }
 
 bool Rect::operator& (const Point & pt) const
 {
-    return !(pt.x < x || pt.y < y || pt.x >= (x + w) || pt.y >= (y + h));
+  return !(pt.x < x || pt.y < y || pt.x >= (x + w) || pt.y >= (y + h));
 }
 
 bool Rect::operator& (const Rect & rt) const
 {
-    return ! (x > rt.x + rt.w || x + w < rt.x || y > rt.y + rt.h || y + h < rt.y);
+  return ! (x > rt.x + rt.w || x + w < rt.x || y > rt.y + rt.h || y + h < rt.y);
 }
 
 Rect Rects::GetRect(void) const
 {
-    s32 x1 = 32766;
-    s32 y1 = 32766;
-    s32 x2 = -32766;
-    s32 y2 = -32766;
+  s32 x1 = 32766;
+  s32 y1 = 32766;
+  s32 x2 = -32766;
+  s32 y2 = -32766;
 
-    for(const_iterator
-	it = begin(); it != end(); ++it)
-    {
-	if((*it).x < x1) x1 = (*it).x;
-	if((*it).y < y1) y1 = (*it).y;
-	if((*it).x + (*it).w > x2) x2 = (*it).x + (*it).w;
-	if((*it).y + (*it).h > y2) y2 = (*it).y + (*it).h;
-    }
+  for(const_iterator
+      it = begin(); it != end(); ++it)
+  {
+    if((*it).x < x1) x1 = (*it).x;
+    if((*it).y < y1) y1 = (*it).y;
+    if((*it).x + (*it).w > x2) x2 = (*it).x + (*it).w;
+    if((*it).y + (*it).h > y2) y2 = (*it).y + (*it).h;
+  }
 
-    return Rect(x1, y1, x2 - x1, y2 - y1);
+  return Rect(x1, y1, x2 - x1, y2 - y1);
 }
 
 s32 Rects::GetIndex(const Point & pt) const
 {
-    for(const_iterator
-	it = begin(); it != end(); ++it)
-	if(*it & pt) return std::distance(begin(), it);
-    return -1;
+  for(const_iterator
+      it = begin(); it != end(); ++it)
+    if(*it & pt) return std::distance(begin(), it);
+  return -1;
 }

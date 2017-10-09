@@ -24,61 +24,61 @@
 
 const char* Speed::String(u8 speed)
 {
-    const char* str_speed[] = { _("speed|Standing"), _("speed|Crawling"), _("speed|Very Slow"), _("speed|Slow"), _("speed|Average"), _("speed|Fast"),
-	_("speed|Very Fast"), _("speed|Ultra Fast"), _("speed|Blazing"), _("speed|Instant"), "Unknown" };
+  const char* str_speed[] = { _("speed|Standing"), _("speed|Crawling"), _("speed|Very Slow"), _("speed|Slow"), _("speed|Average"), _("speed|Fast"),
+    _("speed|Very Fast"), _("speed|Ultra Fast"), _("speed|Blazing"), _("speed|Instant"), "Unknown" };
 
-    switch(speed)
-    {
-	case STANDING:	return str_speed[0];
-	case CRAWLING:	return str_speed[1];
-        case VERYSLOW:	return str_speed[2];
-        case SLOW:	return str_speed[3];
-        case AVERAGE:	return str_speed[4];
-        case FAST:	return str_speed[5];
-        case VERYFAST:	return str_speed[6];
-        case ULTRAFAST:	return str_speed[7];
-        case BLAZING:	return str_speed[8];
-        case INSTANT:	return str_speed[9];
-	default: break;
-    }
-    
-    return str_speed[10];
+  switch(speed)
+  {
+    case STANDING:  return str_speed[0];
+    case CRAWLING:  return str_speed[1];
+    case VERYSLOW:  return str_speed[2];
+    case SLOW:  return str_speed[3];
+    case AVERAGE:   return str_speed[4];
+    case FAST:  return str_speed[5];
+    case VERYFAST:  return str_speed[6];
+    case ULTRAFAST: return str_speed[7];
+    case BLAZING:   return str_speed[8];
+    case INSTANT:   return str_speed[9];
+    default: break;
+  }
+
+  return str_speed[10];
 }
 
 Speed::speed_t Speed::GetOriginalSlow(u8 speed)
 {
-    switch(speed)
-    {
-	case CRAWLING:
-	case VERYSLOW:	return CRAWLING;
-	case SLOW:
-	case AVERAGE:	return VERYSLOW;
-	case FAST:
-	case VERYFAST:	return SLOW;
-	case ULTRAFAST:
-	case BLAZING:	return AVERAGE;
-	case INSTANT:	return FAST;
-	default: break;
-    }
+  switch(speed)
+  {
+    case CRAWLING:
+    case VERYSLOW:  return CRAWLING;
+    case SLOW:
+    case AVERAGE:   return VERYSLOW;
+    case FAST:
+    case VERYFAST:  return SLOW;
+    case ULTRAFAST:
+    case BLAZING:   return AVERAGE;
+    case INSTANT:   return FAST;
+    default: break;
+  }
 
-    return STANDING;
+  return STANDING;
 }
 
 Speed::speed_t Speed::GetOriginalFast(u8 speed)
 {
-    switch(speed)
-    {
-	case CRAWLING:	return SLOW;
-	case VERYSLOW:	return AVERAGE;
-	case SLOW:	return FAST;
-	case AVERAGE:	return VERYFAST;
-	case FAST:	return ULTRAFAST;
-	case VERYFAST:	return BLAZING;
-	case ULTRAFAST:
-	case BLAZING:
-	case INSTANT:	return INSTANT;
-	default: break;
-    }
+  switch(speed)
+  {
+    case CRAWLING:  return SLOW;
+    case VERYSLOW:  return AVERAGE;
+    case SLOW:  return FAST;
+    case AVERAGE:   return VERYFAST;
+    case FAST:  return ULTRAFAST;
+    case VERYFAST:  return BLAZING;
+    case ULTRAFAST:
+    case BLAZING:
+    case INSTANT:   return INSTANT;
+    default: break;
+  }
 
-    return STANDING;
+  return STANDING;
 }

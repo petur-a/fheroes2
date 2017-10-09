@@ -46,7 +46,7 @@ struct CapturedObjects;
 
 struct LastLoseHero : std::pair<Heroes::heroes_t, u16> /* Heroes, date */
 {
-    LastLoseHero() : std::pair<Heroes::heroes_t, u16>(Heroes::UNKNOWN, 0) {}
+  LastLoseHero() : std::pair<Heroes::heroes_t, u16>(Heroes::UNKNOWN, 0) {}
 };
 
 struct KingdomCastles : public VecCastles
@@ -59,12 +59,12 @@ struct KingdomHeroes : public VecHeroes
 
 class Kingdom : public BitModes
 {
-public:
+  public:
     enum
     {
-	//UNDEF	     = 0x0001,
-	IDENTIFYHERO = 0x0002,
-	DISABLEHIRES = 0x0004
+      //UNDEF      = 0x0001,
+      IDENTIFYHERO = 0x0002,
+      DISABLEHIRES = 0x0004
     };
 
     Kingdom();
@@ -129,7 +129,7 @@ public:
 
     void AddCastle(const Castle *castle);
     void RemoveCastle(const Castle *castle);
-    
+
     void ActionBeforeTurn(void);
     void ActionNewDay(void);
     void ActionNewWeek(void);
@@ -154,7 +154,7 @@ public:
 
     static u8 GetMaxHeroes(void);
 
-private:
+  private:
     friend class Game::IO;
 
     u8 color;
@@ -178,7 +178,7 @@ private:
 
 class Kingdoms
 {
-public:
+  public:
     Kingdoms();
 
     void Init(void);
@@ -205,7 +205,7 @@ public:
 
     u8 size(void) const;
 
-private:
+  private:
     friend class Game::IO;
 
     Kingdom kingdoms[KINGDOMMAX + 1];

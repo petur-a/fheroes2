@@ -27,7 +27,7 @@
 
 class StatusBar : public TextSprite
 {
-public:
+  public:
     StatusBar();
 
     void SetCenter(const Point & pt);
@@ -38,7 +38,7 @@ public:
 
     const std::string & GetMessage(void) const;
 
-private:
+  private:
     Point center;
     std::string prev;
 };

@@ -31,23 +31,23 @@ class Castle;
 
 namespace Battle2
 {
-    class Tower : public Army::Troop
-    {
+  class Tower : public Army::Troop
+  {
     public:
-	Tower(const Castle &, u8, Arena &);
+      Tower(const Castle &, u8, Arena &);
 
-	bool isValid(void) const;
-	u8   GetColor(void) const;
+      bool isValid(void) const;
+      u8   GetColor(void) const;
 
-	void SetDestroy(void);
-	void Action(void);
-	Point GetPortPosition(void) const;
+      void SetDestroy(void);
+      void Action(void);
+      Point GetPortPosition(void) const;
 
     private:
-	Arena & arena;
-	const u8 type;
-	bool valid;
-    };
+      Arena & arena;
+      const u8 type;
+      bool valid;
+  };
 }
 
 #endif

@@ -34,25 +34,25 @@
 
 enum status_t
 {
-    ST_CONNECT          = 0x0001,
-    ST_INGAME           = 0x0002,
-    ST_ADMIN            = 0x0008,
-    ST_SHUTDOWN         = 0x0010,
-    ST_ALLOWPLAYERS     = 0x0020,
-    ST_TURN		= 0x0080
+  ST_CONNECT          = 0x0001,
+  ST_INGAME           = 0x0002,
+  ST_ADMIN            = 0x0008,
+  ST_SHUTDOWN         = 0x0010,
+  ST_ALLOWPLAYERS     = 0x0020,
+  ST_TURN     = 0x0080
 };
 
 struct FH2Client : public Network::Socket, public BitModes, public Player
 {
-    FH2Client();
+  FH2Client();
 
-    virtual ~FH2Client(){};
+  virtual ~FH2Client(){};
 
-    bool IsConnected(void) const;
+  bool IsConnected(void) const;
 
-    bool Wait(QueueMessage &, u16);
-    bool Send(QueueMessage &);
-    bool Recv(QueueMessage &);
+  bool Wait(QueueMessage &, u16);
+  bool Send(QueueMessage &);
+  bool Recv(QueueMessage &);
 };
 
 #endif

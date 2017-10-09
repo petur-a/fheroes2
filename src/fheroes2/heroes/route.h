@@ -31,56 +31,56 @@ class Heroes;
 
 namespace Route
 {
-    struct Step
-    {
-	Step() : from(-1), direction(Direction::CENTER), penalty(0) {}
-	Step(s32 index, u16 dir, u16 cost) : from(index), direction(dir), penalty(cost) {}
+  struct Step
+  {
+    Step() : from(-1), direction(Direction::CENTER), penalty(0) {}
+    Step(s32 index, u16 dir, u16 cost) : from(index), direction(dir), penalty(cost) {}
 
-	s32	GetIndex(void) const;
-	bool	isBad(void) const;
+    s32 GetIndex(void) const;
+    bool    isBad(void) const;
 
-	s32	from;
-	u16	direction;
-	u16	penalty;
-    };
+    s32 from;
+    u16 direction;
+    u16 penalty;
+  };
 
-    class Path : public std::list<Step>
-    {
-	public:
-	    Path(const Heroes & h);
+  class Path : public std::list<Step>
+  {
+    public:
+      Path(const Heroes & h);
 
-	    s32		GetDestinationIndex(void) const;
-	    s32		GetLastIndex(void) const;
-	    s32		GetDestinedIndex(void) const;
-	    u16		GetFrontDirection(void) const;
-	    u16		GetFrontPenalty(void) const;
-	    bool	Calculate(const s32 dst_index, const u16 limit = MAXU16);
+      s32     GetDestinationIndex(void) const;
+      s32     GetLastIndex(void) const;
+      s32     GetDestinedIndex(void) const;
+      u16     GetFrontDirection(void) const;
+      u16     GetFrontPenalty(void) const;
+      bool    Calculate(const s32 dst_index, const u16 limit = MAXU16);
 
-	    void	Show(void){ hide = false; }
-	    void	Hide(void){ hide = true; }
-	    void	Reset(void);
-	    void	PopFront(void);
-	    void	PopBack(void);
-	    void	RescanObstacle(void);
-	    void	RescanPassable(void);
+      void    Show(void){ hide = false; }
+      void    Hide(void){ hide = true; }
+      void    Reset(void);
+      void    PopFront(void);
+      void    PopBack(void);
+      void    RescanObstacle(void);
+      void    RescanPassable(void);
 
-	    bool	isValid(void) const;
-	    bool	isShow(void) const { return !hide; }
-	    bool	hasObstacle(void) const;
+      bool    isValid(void) const;
+      bool    isShow(void) const { return !hide; }
+      bool    hasObstacle(void) const;
 
-	    std::string	String(void) const;
+      std::string String(void) const;
 
-	    u16		GetAllowStep(void) const;
-	    u32		TotalPenalty(void) const;
+      u16     GetAllowStep(void) const;
+      u32     TotalPenalty(void) const;
 
-    	    static u16	GetIndexSprite(u16 from, u16 to, u8 mod);
+      static u16  GetIndexSprite(u16 from, u16 to, u8 mod);
 
-	private:
-	    friend class Game::IO;
-	    const Heroes & hero;
-	    s32		dst;
-	    bool	hide;
-    };
+    private:
+      friend class Game::IO;
+      const Heroes & hero;
+      s32     dst;
+      bool    hide;
+  };
 }
 
 #endif

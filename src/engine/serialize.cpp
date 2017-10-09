@@ -26,197 +26,197 @@
 
 Serialize & Serialize::put16(const u16 & v)
 {
-    put((v >> 8) & 0x00FF);
-    put(v & 0x00FF);
-    return *this;
+  put((v >> 8) & 0x00FF);
+  put(v & 0x00FF);
+  return *this;
 }
 
 Serialize & Serialize::put32(const u32 & v)
 {
-    put((v >> 24) & 0x000000FF);
-    put((v >> 16) & 0x000000FF);
-    put((v >> 8) & 0x000000FF);
-    put(v & 0x000000FF);
-    return *this;
+  put((v >> 24) & 0x000000FF);
+  put((v >> 16) & 0x000000FF);
+  put((v >> 8) & 0x000000FF);
+  put(v & 0x000000FF);
+  return *this;
 }
 
 Serialize & Serialize::get16(u16 & v)
 {
-    char ch;
+  char ch;
 
-    get(ch);
-    v = ch;
-    v <<= 8;
+  get(ch);
+  v = ch;
+  v <<= 8;
 
-    get(ch);
-    v |= 0x00FF & ch;
+  get(ch);
+  v |= 0x00FF & ch;
 
-    return *this;
+  return *this;
 }
 
 Serialize & Serialize::get32(u32 & v)
 {
-    char ch;
+  char ch;
 
-    get(ch);
-    v = ch;
-    v <<= 8;
+  get(ch);
+  v = ch;
+  v <<= 8;
 
-    get(ch);
-    v |= 0x000000FF & ch;
-    v <<= 8;
+  get(ch);
+  v |= 0x000000FF & ch;
+  v <<= 8;
 
-    get(ch);
-    v |= 0x000000FF & ch;
-    v <<= 8;
+  get(ch);
+  v |= 0x000000FF & ch;
+  v <<= 8;
 
-    get(ch);
-    v |= 0x000000FF & ch;
+  get(ch);
+  v |= 0x000000FF & ch;
 
-    return *this;
+  return *this;
 }
 
 Serialize & Serialize::operator<< (const bool & v)
 {
-    put(v);
-    return *this;
+  put(v);
+  return *this;
 }
 
 Serialize & Serialize::operator<< (const u8 & v)
 {
-    put(v);
-    return *this;
+  put(v);
+  return *this;
 }
 
 Serialize & Serialize::operator<< (const s8 & v)
 {
-    put(v);
-    return *this;
+  put(v);
+  return *this;
 }
 
 Serialize & Serialize::operator<< (const u16 & v)
 {
-    return put16(v);
+  return put16(v);
 }
 Serialize & Serialize::operator<< (const s16 & v)
 {
-    return put16(v);
+  return put16(v);
 }
 
 Serialize & Serialize::operator<< (const s32 & v)
 {
-    return put32(v);
+  return put32(v);
 }
 
 Serialize & Serialize::operator<< (const u32 & v)
 {
-    return put32(v);
+  return put32(v);
 }
 
 Serialize & Serialize::operator<< (const std::string & v)
 {
-    put32(v.size());
+  put32(v.size());
 
-    for(std::string::const_iterator
-        it = v.begin(); it != v.end(); ++it) put(*it);
+  for(std::string::const_iterator
+      it = v.begin(); it != v.end(); ++it) put(*it);
 
-    return *this;
+  return *this;
 }
 
 Serialize & Serialize::operator<< (const Point & v)
 {
-    return *this << v.x << v.y;
+  return *this << v.x << v.y;
 }
 
 Serialize & Serialize::operator<< (const Rect & v)
 {
-    const Point & p = v;
-    const Size  & s = v;
+  const Point & p = v;
+  const Size  & s = v;
 
-    return *this << p << s;
+  return *this << p << s;
 }
 
 Serialize & Serialize::operator<< (const Size & v)
 {
-    return *this << v.w << v.h;
+  return *this << v.w << v.h;
 }
 
 Serialize & Serialize::operator>> (bool & v)
 {
-    char ch;
-    get(ch);
-    v = ch;
-    return *this;
+  char ch;
+  get(ch);
+  v = ch;
+  return *this;
 }
 
 Serialize & Serialize::operator>> (u8 & v)
 {
-    char ch;
-    get(ch);
-    v = ch;
-    return *this;
+  char ch;
+  get(ch);
+  v = ch;
+  return *this;
 }
 
 Serialize & Serialize::operator>> (s8 & v)
 {
-    char ch;
-    get(ch);
-    v = ch;
-    return *this;
+  char ch;
+  get(ch);
+  v = ch;
+  return *this;
 }
 
 Serialize & Serialize::operator>> (u16 & v)
 {
-    return get16(v);
+  return get16(v);
 }
 
 Serialize & Serialize::operator>> (s16 & v)
 {
-    u16 rs;
-    get16(rs);
-    v = rs;
-    return *this;
+  u16 rs;
+  get16(rs);
+  v = rs;
+  return *this;
 }
 
 Serialize & Serialize::operator>> (u32 & v)
 {
-    return get32(v);
+  return get32(v);
 }
 
 Serialize & Serialize::operator>> (s32 & v)
 {
-    u32 rs;
-    get32(rs);
-    v = rs;
-    return *this;
+  u32 rs;
+  get32(rs);
+  v = rs;
+  return *this;
 }
 
 Serialize & Serialize::operator>> (std::string & v)
 {
-    u32 size;
-    get32(size);
-    v.resize(size);
+  u32 size;
+  get32(size);
+  v.resize(size);
 
-    for(std::string::iterator
-        it = v.begin(); it != v.end(); ++it) get(*it);
+  for(std::string::iterator
+      it = v.begin(); it != v.end(); ++it) get(*it);
 
-    return *this;
+  return *this;
 }
 
 Serialize & Serialize::operator>> (Rect & v)
 {
-    Point & p = v;
-    Size  & s = v;
+  Point & p = v;
+  Size  & s = v;
 
-    return *this >> p >> s;
+  return *this >> p >> s;
 }
 
 Serialize & Serialize::operator>> (Point& v)
 {
-    return *this >> v.x >> v.y;
+  return *this >> v.x >> v.y;
 }
 
 Serialize & Serialize::operator>> (Size & v)
 {
-    return *this >> v.w >> v.h;
+  return *this >> v.w >> v.h;
 }

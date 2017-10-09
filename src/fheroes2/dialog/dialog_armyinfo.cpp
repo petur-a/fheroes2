@@ -41,376 +41,376 @@ void DrawBattleStats(const Point &, const Battle2::Stats &);
 
 Dialog::answer_t Dialog::ArmyInfo(const Army::Troop & troop, u16 flags)
 {
-    if(Settings::Get().QVGA()) return PocketPC::DialogArmyInfo(troop, flags);
-    Display & display = Display::Get();
+  if(Settings::Get().QVGA()) return PocketPC::DialogArmyInfo(troop, flags);
+  Display & display = Display::Get();
 
-    const ICN::icn_t viewarmy = Settings::Get().ExtGameEvilInterface() ? ICN::VIEWARME : ICN::VIEWARMY;
-    const Surface & sprite_dialog = AGG::GetICN(viewarmy, 0);
-    const Monster & mons = static_cast<Monster>(troop);
-    const Battle2::Stats* battle = troop.GetBattleStats();
-    Rect pos_rt;
+  const ICN::icn_t viewarmy = Settings::Get().ExtGameEvilInterface() ? ICN::VIEWARME : ICN::VIEWARMY;
+  const Surface & sprite_dialog = AGG::GetICN(viewarmy, 0);
+  const Monster & mons = static_cast<Monster>(troop);
+  const Battle2::Stats* battle = troop.GetBattleStats();
+  Rect pos_rt;
 
-    pos_rt.x = (display.w() - sprite_dialog.w()) / 2;
-    pos_rt.y = (display.h() - sprite_dialog.h()) / 2;
-    pos_rt.w = sprite_dialog.w();
-    pos_rt.h = sprite_dialog.h();
+  pos_rt.x = (display.w() - sprite_dialog.w()) / 2;
+  pos_rt.y = (display.h() - sprite_dialog.h()) / 2;
+  pos_rt.w = sprite_dialog.w();
+  pos_rt.h = sprite_dialog.h();
 
-    Cursor & cursor = Cursor::Get();
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  Cursor & cursor = Cursor::Get();
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    Background back(pos_rt);
-    back.Save();
-    sprite_dialog.Blit(pos_rt.x, pos_rt.y, display);
+  Background back(pos_rt);
+  back.Save();
+  sprite_dialog.Blit(pos_rt.x, pos_rt.y, display);
 
-    Point dst_pt;
-    Text text;
+  Point dst_pt;
+  Text text;
 
+  dst_pt.x = pos_rt.x + 400;
+  dst_pt.y = pos_rt.y + 40;
+
+  DrawMonsterStats(dst_pt, troop);
+
+  if(battle)
+  {
     dst_pt.x = pos_rt.x + 400;
-    dst_pt.y = pos_rt.y + 40;
+    dst_pt.y = pos_rt.y + 210;
 
-    DrawMonsterStats(dst_pt, troop);
+    DrawBattleStats(dst_pt, *battle);
+  }
 
-    if(battle)
+  // name
+  text.Set(troop.GetName(), Font::BIG);
+  dst_pt.x = pos_rt.x + 140 - text.w() / 2;
+  dst_pt.y = pos_rt.y + 40;
+  text.Blit(dst_pt);
+
+  // count
+  text.Set(GetString(battle ? battle->GetCount() : troop.GetCount()));
+  dst_pt.x = pos_rt.x + 140 - text.w() / 2;
+  dst_pt.y = pos_rt.y + 225;
+  text.Blit(dst_pt);
+
+  const Sprite & frame = AGG::GetICN(troop.ICNMonh(), 0);
+  frame.Blit(pos_rt.x + (pos_rt.w / 2 - frame.w()) / 2, pos_rt.y + 180 - frame.h());
+
+  // button upgrade
+  dst_pt.x = pos_rt.x + 284;
+  dst_pt.y = pos_rt.y + 190;
+  Button buttonUpgrade(dst_pt, viewarmy, 5, 6);
+
+  // button dismiss
+  dst_pt.x = pos_rt.x + 284;
+  dst_pt.y = pos_rt.y + 222;
+  Button buttonDismiss(dst_pt, viewarmy, 1, 2);
+
+  // button exit
+  dst_pt.x = pos_rt.x + 410;
+  dst_pt.y = pos_rt.y + 222;
+  Button buttonExit(dst_pt, viewarmy, 3, 4);
+
+  if(READONLY & flags)
+  {
+    buttonDismiss.Press();
+    buttonDismiss.SetDisable(true);
+  }
+
+  if(!battle && mons.isAllowUpgrade())
+  {
+    if(UPGRADE & flags)
     {
-	dst_pt.x = pos_rt.x + 400;
-	dst_pt.y = pos_rt.y + 210;
-
-	DrawBattleStats(dst_pt, *battle);
-    }
-
-    // name
-    text.Set(troop.GetName(), Font::BIG);
-    dst_pt.x = pos_rt.x + 140 - text.w() / 2;
-    dst_pt.y = pos_rt.y + 40;
-    text.Blit(dst_pt);
-    
-    // count
-    text.Set(GetString(battle ? battle->GetCount() : troop.GetCount()));
-    dst_pt.x = pos_rt.x + 140 - text.w() / 2;
-    dst_pt.y = pos_rt.y + 225;
-    text.Blit(dst_pt);
-
-    const Sprite & frame = AGG::GetICN(troop.ICNMonh(), 0);
-    frame.Blit(pos_rt.x + (pos_rt.w / 2 - frame.w()) / 2, pos_rt.y + 180 - frame.h());
-
-    // button upgrade
-    dst_pt.x = pos_rt.x + 284;
-    dst_pt.y = pos_rt.y + 190;
-    Button buttonUpgrade(dst_pt, viewarmy, 5, 6);
-
-    // button dismiss
-    dst_pt.x = pos_rt.x + 284;
-    dst_pt.y = pos_rt.y + 222;
-    Button buttonDismiss(dst_pt, viewarmy, 1, 2);
-
-    // button exit
-    dst_pt.x = pos_rt.x + 410;
-    dst_pt.y = pos_rt.y + 222;
-    Button buttonExit(dst_pt, viewarmy, 3, 4);
-
-    if(READONLY & flags)
-    {
-        buttonDismiss.Press();
-        buttonDismiss.SetDisable(true);
-    }
-
-    if(!battle && mons.isAllowUpgrade())
-    {
-        if(UPGRADE & flags)
-        {
-    	    if(UPGRADE_DISABLE & flags)
-    	    {
-        	buttonUpgrade.Press();
-        	buttonUpgrade.SetDisable(true);
-            }
-	    else
-        	buttonUpgrade.SetDisable(false);
-	    buttonUpgrade.Draw();
-        }
-        else buttonUpgrade.SetDisable(true);
+      if(UPGRADE_DISABLE & flags)
+      {
+        buttonUpgrade.Press();
+        buttonUpgrade.SetDisable(true);
+      }
+      else
+        buttonUpgrade.SetDisable(false);
+      buttonUpgrade.Draw();
     }
     else buttonUpgrade.SetDisable(true);
+  }
+  else buttonUpgrade.SetDisable(true);
 
-    if(BUTTONS & flags)
+  if(BUTTONS & flags)
+  {
+    if(!battle) buttonDismiss.Draw();
+    buttonExit.Draw();
+  }
+
+  LocalEvent & le = LocalEvent::Get();
+  Dialog::answer_t result = Dialog::ZERO;
+
+  cursor.Show();
+  display.Flip();
+
+  // dialog menu loop
+  while(le.HandleEvents())
+  {
+    if(flags & BUTTONS)
     {
-        if(!battle) buttonDismiss.Draw();
-        buttonExit.Draw();
-    }
+      if(buttonUpgrade.isEnable()) le.MousePressLeft(buttonUpgrade) ? (buttonUpgrade).PressDraw() : (buttonUpgrade).ReleaseDraw();
+      if(buttonDismiss.isEnable()) le.MousePressLeft(buttonDismiss) ? (buttonDismiss).PressDraw() : (buttonDismiss).ReleaseDraw();
+      le.MousePressLeft(buttonExit) ? (buttonExit).PressDraw() : (buttonExit).ReleaseDraw();
 
-    LocalEvent & le = LocalEvent::Get();
-    Dialog::answer_t result = Dialog::ZERO;
-
-    cursor.Show();
-    display.Flip();
-    
-    // dialog menu loop
-    while(le.HandleEvents())
-    {
-        if(flags & BUTTONS)
+      // upgrade
+      if(buttonUpgrade.isEnable() && le.MouseClickLeft(buttonUpgrade))
+      {
+        std::string msg = 1.0f != Monster::GetUpgradeRatio() ?
+          _("Your troops can be upgraded, but it will cost you %{ratio} times the difference in cost for each troop, rounded up to next highest number. Do you wish to upgrade them?") :
+          _("Your troops can be upgraded, but it will cost you dearly. Do you wish to upgrade them?");
+        String::Replace(msg, "%{ratio}", String::Double(Monster::GetUpgradeRatio(), 2));
+        if(Dialog::YES == Dialog::ResourceInfo("", msg, troop.GetUpgradeCost(), Dialog::YES|Dialog::NO))
         {
-            if(buttonUpgrade.isEnable()) le.MousePressLeft(buttonUpgrade) ? (buttonUpgrade).PressDraw() : (buttonUpgrade).ReleaseDraw();
-    	    if(buttonDismiss.isEnable()) le.MousePressLeft(buttonDismiss) ? (buttonDismiss).PressDraw() : (buttonDismiss).ReleaseDraw();
-    	    le.MousePressLeft(buttonExit) ? (buttonExit).PressDraw() : (buttonExit).ReleaseDraw();
-            
-            // upgrade
-            if(buttonUpgrade.isEnable() && le.MouseClickLeft(buttonUpgrade))
-            {
-		std::string msg = 1.0f != Monster::GetUpgradeRatio() ?
-		    _("Your troops can be upgraded, but it will cost you %{ratio} times the difference in cost for each troop, rounded up to next highest number. Do you wish to upgrade them?") :
-		    _("Your troops can be upgraded, but it will cost you dearly. Do you wish to upgrade them?");
-		String::Replace(msg, "%{ratio}", String::Double(Monster::GetUpgradeRatio(), 2));
-        	if(Dialog::YES == Dialog::ResourceInfo("", msg,	troop.GetUpgradeCost(), Dialog::YES|Dialog::NO))
-		{
-		    result = Dialog::UPGRADE;
-        	    break;
-        	}
-    	    }
-    	    else
-	    // dismiss
-            if(buttonDismiss.isEnable() && le.MouseClickLeft(buttonDismiss) &&
-        	Dialog::YES == Dialog::Message("", _("Are you sure you want to dismiss this army?"), Font::BIG, Dialog::YES | Dialog::NO))
-            {
-        	result = Dialog::DISMISS;
-        	break;
-    	    }
-    	    else
-	    // exit
-    	    if(le.MouseClickLeft(buttonExit) || Game::HotKeyPress(Game::EVENT_DEFAULT_EXIT)){ result = Dialog::CANCEL; break; }
+          result = Dialog::UPGRADE;
+          break;
+        }
+      }
+      else
+        // dismiss
+        if(buttonDismiss.isEnable() && le.MouseClickLeft(buttonDismiss) &&
+            Dialog::YES == Dialog::Message("", _("Are you sure you want to dismiss this army?"), Font::BIG, Dialog::YES | Dialog::NO))
+        {
+          result = Dialog::DISMISS;
+          break;
         }
         else
-        {
-            if(!le.MousePressRight()) break;
-        }
+          // exit
+          if(le.MouseClickLeft(buttonExit) || Game::HotKeyPress(Game::EVENT_DEFAULT_EXIT)){ result = Dialog::CANCEL; break; }
     }
+    else
+    {
+      if(!le.MousePressRight()) break;
+    }
+  }
 
-    cursor.Hide();
-    back.Restore();
+  cursor.Hide();
+  back.Restore();
 
-    return result;
+  return result;
 }
 
 void DrawMonsterStats(const Point & dst, const Army::Troop & troop)
 {
-    Point dst_pt;
-    std::string message;
-    Text text;
-    const Monster & mons = static_cast<Monster>(troop);
-    const Battle2::Stats* battle = troop.GetBattleStats();
-    bool commander = troop.GetArmy() && troop.GetArmy()->GetCommander();
-    bool pda = Settings::Get().QVGA();
+  Point dst_pt;
+  std::string message;
+  Text text;
+  const Monster & mons = static_cast<Monster>(troop);
+  const Battle2::Stats* battle = troop.GetBattleStats();
+  bool commander = troop.GetArmy() && troop.GetArmy()->GetCommander();
+  bool pda = Settings::Get().QVGA();
 
-    // attack
-    text.Set(std::string(_("Attack")) + ":");
-    dst_pt.x = dst.x - text.w();
-    dst_pt.y = dst.y;
-    text.Blit(dst_pt);
+  // attack
+  text.Set(std::string(_("Attack")) + ":");
+  dst_pt.x = dst.x - text.w();
+  dst_pt.y = dst.y;
+  text.Blit(dst_pt);
 
-    message = GetString(mons.GetAttack());
+  message = GetString(mons.GetAttack());
 
-    if(commander && mons.GetAttack() != troop.GetAttack())
-    {
-	message.append(" ");
-	message.append("(");
-	message.append(GetString(troop.GetAttack()));
-	message.append(")");
-    }
-    else
+  if(commander && mons.GetAttack() != troop.GetAttack())
+  {
+    message.append(" ");
+    message.append("(");
+    message.append(GetString(troop.GetAttack()));
+    message.append(")");
+  }
+  else
     // added ext. battle info
     if(battle && mons.GetAttack() != battle->GetAttack())
     {
-	message.append(" ");
-	message.append("(");
-	message.append(GetString(battle->GetAttack()));
-	message.append(")");
+      message.append(" ");
+      message.append("(");
+      message.append(GetString(battle->GetAttack()));
+      message.append(")");
     }
 
-    const u8 ox = 15;
+  const u8 ox = 15;
 
-    text.Set(message);
-    dst_pt.x = dst.x + ox;
-    text.Blit(dst_pt);
+  text.Set(message);
+  dst_pt.x = dst.x + ox;
+  text.Blit(dst_pt);
 
-    // defense
-    text.Set(std::string(_("Defense")) + ":");
-    dst_pt.x = dst.x - text.w();
-    dst_pt.y += (pda ? 14 : 18);
-    text.Blit(dst_pt);
+  // defense
+  text.Set(std::string(_("Defense")) + ":");
+  dst_pt.x = dst.x - text.w();
+  dst_pt.y += (pda ? 14 : 18);
+  text.Blit(dst_pt);
 
-    message = GetString(mons.GetDefense());
+  message = GetString(mons.GetDefense());
 
-    if(commander && mons.GetDefense() != troop.GetDefense())
-    {
-	message.append(" ");
-	message.append("(");
-	message.append(GetString(troop.GetDefense()));
-	message.append(")");
-    }
-    else
+  if(commander && mons.GetDefense() != troop.GetDefense())
+  {
+    message.append(" ");
+    message.append("(");
+    message.append(GetString(troop.GetDefense()));
+    message.append(")");
+  }
+  else
     // added ext. battle info
     if(battle && mons.GetDefense() != battle->GetDefense())
     {
-	message.append(" ");
-	message.append("(");
-	message.append(GetString(battle->GetDefense()));
-	message.append(")");
+      message.append(" ");
+      message.append("(");
+      message.append(GetString(battle->GetDefense()));
+      message.append(")");
     }
 
+  text.Set(message);
+  dst_pt.x = dst.x + ox;
+  text.Blit(dst_pt);
+
+  // shot
+  if(mons.isArchers())
+  {
+    message = battle ? _("Shots Left") : _("Shots");
+    message.append(":");
     text.Set(message);
-    dst_pt.x = dst.x + ox;
-    text.Blit(dst_pt);
-
-    // shot
-    if(mons.isArchers())
-    {
-	message = battle ? _("Shots Left") : _("Shots");
-	message.append(":");
-	text.Set(message);
-	dst_pt.x = dst.x - text.w();
-	dst_pt.y += (pda ? 14 : 18);
-	text.Blit(dst_pt);
-
-	text.Set(GetString(battle ? battle->GetShots() : mons.GetShots()));
-	dst_pt.x = dst.x + ox;
-	text.Blit(dst_pt);
-    }
-
-    // damage
-    text.Set(std::string(_("Damage")) + ":");
     dst_pt.x = dst.x - text.w();
     dst_pt.y += (pda ? 14 : 18);
     text.Blit(dst_pt);
 
-    text.Set(GetString(mons.GetDamageMin()) + " - " + GetString(mons.GetDamageMax()));
+    text.Set(GetString(battle ? battle->GetShots() : mons.GetShots()));
     dst_pt.x = dst.x + ox;
     text.Blit(dst_pt);
+  }
 
-    // hp
-    text.Set(std::string(_("Hit Points")) + ":");
+  // damage
+  text.Set(std::string(_("Damage")) + ":");
+  dst_pt.x = dst.x - text.w();
+  dst_pt.y += (pda ? 14 : 18);
+  text.Blit(dst_pt);
+
+  text.Set(GetString(mons.GetDamageMin()) + " - " + GetString(mons.GetDamageMax()));
+  dst_pt.x = dst.x + ox;
+  text.Blit(dst_pt);
+
+  // hp
+  text.Set(std::string(_("Hit Points")) + ":");
+  dst_pt.x = dst.x - text.w();
+  dst_pt.y += (pda ? 14 : 18);
+  text.Blit(dst_pt);
+
+  text.Set(GetString(mons.GetHitPoints()));
+  dst_pt.x = dst.x + ox;
+  text.Blit(dst_pt);
+
+  if(battle && battle->isValid())
+  {
+    text.Set(std::string(_("Hit Points Left")) + ":");
     dst_pt.x = dst.x - text.w();
     dst_pt.y += (pda ? 14 : 18);
     text.Blit(dst_pt);
 
-    text.Set(GetString(mons.GetHitPoints()));
+    text.Set(GetString(battle->GetHitPoints() - (battle->GetCount() - 1) * mons.GetHitPoints()));
     dst_pt.x = dst.x + ox;
     text.Blit(dst_pt);
+  }
 
-    if(battle && battle->isValid())
-    {
-	text.Set(std::string(_("Hit Points Left")) + ":");
-	dst_pt.x = dst.x - text.w();
-	dst_pt.y += (pda ? 14 : 18);
-	text.Blit(dst_pt);
-	
-	text.Set(GetString(battle->GetHitPoints() - (battle->GetCount() - 1) * mons.GetHitPoints()));
-	dst_pt.x = dst.x + ox;
-	text.Blit(dst_pt);
-    }
+  // speed
+  text.Set(std::string(_("Speed")) + ":");
+  dst_pt.x = dst.x - text.w();
+  dst_pt.y += (pda ? 14 : 18);
+  text.Blit(dst_pt);
 
-    // speed
-    text.Set(std::string(_("Speed")) + ":");
-    dst_pt.x = dst.x - text.w();
-    dst_pt.y += (pda ? 14 : 18);
-    text.Blit(dst_pt);
+  message = Speed::String(battle ? battle->GetSpeed(true) : mons.GetSpeed());
+  message.append(" ");
+  message.append("(");
+  message.append(GetString(battle ? battle->GetSpeed(true) : mons.GetSpeed()));
+  message.append(")");
+  text.Set(message);
+  dst_pt.x = dst.x + ox;
+  text.Blit(dst_pt);
 
-    message = Speed::String(battle ? battle->GetSpeed(true) : mons.GetSpeed());
-    message.append(" ");
-    message.append("(");
-    message.append(GetString(battle ? battle->GetSpeed(true) : mons.GetSpeed()));
-    message.append(")");
-    text.Set(message);
-    dst_pt.x = dst.x + ox;
-    text.Blit(dst_pt);
+  // morale
+  text.Set(std::string(_("Morale")) + ":");
+  dst_pt.x = dst.x - text.w();
+  dst_pt.y += (pda ? 14 : 18);
+  text.Blit(dst_pt);
 
-    // morale
-    text.Set(std::string(_("Morale")) + ":");
-    dst_pt.x = dst.x - text.w();
-    dst_pt.y += (pda ? 14 : 18);
-    text.Blit(dst_pt);
+  text.Set(Morale::String(troop.GetMorale()));
+  dst_pt.x = dst.x + ox;
+  text.Blit(dst_pt);
 
-    text.Set(Morale::String(troop.GetMorale()));
-    dst_pt.x = dst.x + ox;
-    text.Blit(dst_pt);
+  // luck
+  text.Set(std::string(_("Luck")) + ":");
+  dst_pt.x = dst.x - text.w();
+  dst_pt.y += (pda ? 14 : 18);
+  text.Blit(dst_pt);
 
-    // luck
-    text.Set(std::string(_("Luck")) + ":");
-    dst_pt.x = dst.x - text.w();
-    dst_pt.y += (pda ? 14 : 18);
-    text.Blit(dst_pt);
-
-    text.Set(Luck::String(troop.GetLuck()));
-    dst_pt.x = dst.x + ox;
-    text.Blit(dst_pt);
+  text.Set(Luck::String(troop.GetLuck()));
+  dst_pt.x = dst.x + ox;
+  text.Blit(dst_pt);
 }
 
 const Sprite* GetModesSprite(u32 mod)
 {
-    switch(mod)
-    {
-	case Battle2::SP_BLOODLUST:	return &AGG::GetICN(ICN::SPELLINF, 9);
-	case Battle2::SP_BLESS:		return &AGG::GetICN(ICN::SPELLINF, 3);
-	case Battle2::SP_HASTE:		return &AGG::GetICN(ICN::SPELLINF, 0);
-	case Battle2::SP_SHIELD:	return &AGG::GetICN(ICN::SPELLINF, 10);
-	case Battle2::SP_STONESKIN:	return &AGG::GetICN(ICN::SPELLINF, 13);
-	case Battle2::SP_DRAGONSLAYER:	return &AGG::GetICN(ICN::SPELLINF, 8);
-	case Battle2::SP_STEELSKIN:	return &AGG::GetICN(ICN::SPELLINF, 14);
-	case Battle2::SP_ANTIMAGIC:	return &AGG::GetICN(ICN::SPELLINF, 12);
-	case Battle2::SP_CURSE:		return &AGG::GetICN(ICN::SPELLINF, 4);
-	case Battle2::SP_SLOW:		return &AGG::GetICN(ICN::SPELLINF, 1);
-	case Battle2::SP_BERSERKER:	return &AGG::GetICN(ICN::SPELLINF, 5);
-	case Battle2::SP_HYPNOTIZE:	return &AGG::GetICN(ICN::SPELLINF, 7);
-	case Battle2::SP_BLIND:		return &AGG::GetICN(ICN::SPELLINF, 2);
-	case Battle2::SP_PARALYZE:	return &AGG::GetICN(ICN::SPELLINF, 6);
-	case Battle2::SP_STONE:		return &AGG::GetICN(ICN::SPELLINF, 11);
-	default: break;
-    }
-    return NULL;
+  switch(mod)
+  {
+    case Battle2::SP_BLOODLUST: return &AGG::GetICN(ICN::SPELLINF, 9);
+    case Battle2::SP_BLESS:     return &AGG::GetICN(ICN::SPELLINF, 3);
+    case Battle2::SP_HASTE:     return &AGG::GetICN(ICN::SPELLINF, 0);
+    case Battle2::SP_SHIELD:    return &AGG::GetICN(ICN::SPELLINF, 10);
+    case Battle2::SP_STONESKIN: return &AGG::GetICN(ICN::SPELLINF, 13);
+    case Battle2::SP_DRAGONSLAYER:  return &AGG::GetICN(ICN::SPELLINF, 8);
+    case Battle2::SP_STEELSKIN: return &AGG::GetICN(ICN::SPELLINF, 14);
+    case Battle2::SP_ANTIMAGIC: return &AGG::GetICN(ICN::SPELLINF, 12);
+    case Battle2::SP_CURSE:     return &AGG::GetICN(ICN::SPELLINF, 4);
+    case Battle2::SP_SLOW:      return &AGG::GetICN(ICN::SPELLINF, 1);
+    case Battle2::SP_BERSERKER: return &AGG::GetICN(ICN::SPELLINF, 5);
+    case Battle2::SP_HYPNOTIZE: return &AGG::GetICN(ICN::SPELLINF, 7);
+    case Battle2::SP_BLIND:     return &AGG::GetICN(ICN::SPELLINF, 2);
+    case Battle2::SP_PARALYZE:  return &AGG::GetICN(ICN::SPELLINF, 6);
+    case Battle2::SP_STONE:     return &AGG::GetICN(ICN::SPELLINF, 11);
+    default: break;
+  }
+  return NULL;
 }
 
 
 void DrawBattleStats(const Point & dst, const Battle2::Stats & b)
 {
-    const u32 modes[] = {
-	Battle2::SP_BLOODLUST, Battle2::SP_BLESS, Battle2::SP_HASTE, Battle2::SP_SHIELD, Battle2::SP_STONESKIN,
-	Battle2::SP_DRAGONSLAYER, Battle2::SP_STEELSKIN, Battle2::SP_ANTIMAGIC, Battle2::SP_CURSE, Battle2::SP_SLOW,
-	Battle2::SP_BERSERKER, Battle2::SP_HYPNOTIZE, Battle2::SP_BLIND, Battle2::SP_PARALYZE, Battle2::SP_STONE
-    };
+  const u32 modes[] = {
+    Battle2::SP_BLOODLUST, Battle2::SP_BLESS, Battle2::SP_HASTE, Battle2::SP_SHIELD, Battle2::SP_STONESKIN,
+    Battle2::SP_DRAGONSLAYER, Battle2::SP_STEELSKIN, Battle2::SP_ANTIMAGIC, Battle2::SP_CURSE, Battle2::SP_SLOW,
+    Battle2::SP_BERSERKER, Battle2::SP_HYPNOTIZE, Battle2::SP_BLIND, Battle2::SP_PARALYZE, Battle2::SP_STONE
+  };
 
-    // accumulate width
-    u16 ow = 0;
+  // accumulate width
+  u16 ow = 0;
 
-    for(u8 ii = 0; ii < ARRAY_COUNT(modes); ++ii)
-	if(b.Modes(modes[ii]))
-	{
-	    const Sprite* sprite = GetModesSprite(modes[ii]);
-	    if(sprite)
-		ow += sprite->w() + 4;
-	}
+  for(u8 ii = 0; ii < ARRAY_COUNT(modes); ++ii)
+    if(b.Modes(modes[ii]))
+    {
+      const Sprite* sprite = GetModesSprite(modes[ii]);
+      if(sprite)
+        ow += sprite->w() + 4;
+    }
 
-    ow -= 4;
-    ow = dst.x - ow / 2;
+  ow -= 4;
+  ow = dst.x - ow / 2;
 
-    Text text;
+  Text text;
 
-    // blit centered
-    for(u8 ii = 0; ii < ARRAY_COUNT(modes); ++ii)
-	if(b.Modes(modes[ii]))
-	{
-	    const Sprite* sprite = GetModesSprite(modes[ii]);
-	    if(sprite)
-	    {
-		sprite->Blit(ow, dst.y);
+  // blit centered
+  for(u8 ii = 0; ii < ARRAY_COUNT(modes); ++ii)
+    if(b.Modes(modes[ii]))
+    {
+      const Sprite* sprite = GetModesSprite(modes[ii]);
+      if(sprite)
+      {
+        sprite->Blit(ow, dst.y);
 
-		const u16 duration = b.affected.GetMode(modes[ii]);
-		if(duration)
-		{
-		    std::ostringstream os;
-		    os << duration;
-		    text.Set(os.str(), Font::SMALL);
-		    text.Blit(ow + (sprite->w() - text.w()) / 2, dst.y + sprite->h() + 1);
-		}
+        const u16 duration = b.affected.GetMode(modes[ii]);
+        if(duration)
+        {
+          std::ostringstream os;
+          os << duration;
+          text.Set(os.str(), Font::SMALL);
+          text.Blit(ow + (sprite->w() - text.w()) / 2, dst.y + sprite->h() + 1);
+        }
 
-		ow += sprite->w() + 4;
-	    }
-	}
+        ow += sprite->w() + 4;
+      }
+    }
 }

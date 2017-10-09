@@ -31,101 +31,101 @@
 
 int main(int argc, char **argv)
 {
-    if(argc != 3)
-    {
-	std::cout << argv[0] << " [-d] infile.til extract_to_dir" << std::endl;
-
-	return EXIT_SUCCESS;
-    }
-
-    std::fstream fd_data(argv[1], std::ios::in | std::ios::binary);
-
-    if(fd_data.fail())
-    {
-	std::cout << "error open file: " << argv[1] << std::endl;
-
-	return EXIT_SUCCESS;
-    }
-
-    std::string prefix(argv[2]);
-    std::string shortname(argv[1]);
-    
-    if(shortname == "-d")
-    {
-    }
-
-    shortname.replace(shortname.find("."), 4, "");
-    
-    prefix += SEPARATOR + shortname;
-
-    if(0 != MKDIR(prefix.c_str()))
-    {
-	std::cout << "error mkdir: " << prefix << std::endl;
-
-	return EXIT_SUCCESS;
-    }
-
-    fd_data.seekg(0, std::ios_base::end);
-    u32 size = fd_data.tellg();
-    fd_data.seekg(0, std::ios_base::beg);
-
-    u16 count, width, height;
-    
-    fd_data.read(reinterpret_cast<char *>(&count), sizeof(u16));
-    SwapLE16(count);
-
-    fd_data.read(reinterpret_cast<char *>(&width), sizeof(u16));
-    SwapLE16(width);
-
-    fd_data.read(reinterpret_cast<char *>(&height), sizeof(u16));
-    SwapLE16(height);
-
-    char *body = new char[size];
-
-    fd_data.read(body, size);
-
-    SDL::Init();
-
-    for(u16 cur = 0; cur < count; ++cur)
-    {
-	Surface sf(&body[width * height * cur], width, height, 1, false);
-	std::string dstfile(prefix);
-
-	dstfile += SEPARATOR;
-
-	std::ostringstream stream;
-        stream << cur;
-
-        switch(stream.str().size())
-        {
-    	    case 1:
-    		dstfile += "00" + stream.str();
-    		break;
-
-    	    case 2:
-    		dstfile += "0" + stream.str();
-    		break;
-
-    	    default:
-    		dstfile += stream.str();
-    		break;
-        }
-
-#ifndef WITH_IMAGE
-        dstfile += ".bmp";
-#else
-        dstfile += ".png";
-#endif
-        sf.Save(dstfile.c_str());
-    }
-
-    delete [] body;
-
-    fd_data.close();
-
-    std::cout << "expand to: " << prefix << std::endl;
-
-    SDL::Quit();
+  if(argc != 3)
+  {
+    std::cout << argv[0] << " [-d] infile.til extract_to_dir" << std::endl;
 
     return EXIT_SUCCESS;
+  }
+
+  std::fstream fd_data(argv[1], std::ios::in | std::ios::binary);
+
+  if(fd_data.fail())
+  {
+    std::cout << "error open file: " << argv[1] << std::endl;
+
+    return EXIT_SUCCESS;
+  }
+
+  std::string prefix(argv[2]);
+  std::string shortname(argv[1]);
+
+  if(shortname == "-d")
+  {
+  }
+
+  shortname.replace(shortname.find("."), 4, "");
+
+  prefix += SEPARATOR + shortname;
+
+  if(0 != MKDIR(prefix.c_str()))
+  {
+    std::cout << "error mkdir: " << prefix << std::endl;
+
+    return EXIT_SUCCESS;
+  }
+
+  fd_data.seekg(0, std::ios_base::end);
+  u32 size = fd_data.tellg();
+  fd_data.seekg(0, std::ios_base::beg);
+
+  u16 count, width, height;
+
+  fd_data.read(reinterpret_cast<char *>(&count), sizeof(u16));
+  SwapLE16(count);
+
+  fd_data.read(reinterpret_cast<char *>(&width), sizeof(u16));
+  SwapLE16(width);
+
+  fd_data.read(reinterpret_cast<char *>(&height), sizeof(u16));
+  SwapLE16(height);
+
+  char *body = new char[size];
+
+  fd_data.read(body, size);
+
+  SDL::Init();
+
+  for(u16 cur = 0; cur < count; ++cur)
+  {
+    Surface sf(&body[width * height * cur], width, height, 1, false);
+    std::string dstfile(prefix);
+
+    dstfile += SEPARATOR;
+
+    std::ostringstream stream;
+    stream << cur;
+
+    switch(stream.str().size())
+    {
+      case 1:
+        dstfile += "00" + stream.str();
+        break;
+
+      case 2:
+        dstfile += "0" + stream.str();
+        break;
+
+      default:
+        dstfile += stream.str();
+        break;
+    }
+
+#ifndef WITH_IMAGE
+    dstfile += ".bmp";
+#else
+    dstfile += ".png";
+#endif
+    sf.Save(dstfile.c_str());
+  }
+
+  delete [] body;
+
+  fd_data.close();
+
+  std::cout << "expand to: " << prefix << std::endl;
+
+  SDL::Quit();
+
+  return EXIT_SUCCESS;
 }

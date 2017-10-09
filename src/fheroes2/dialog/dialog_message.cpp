@@ -28,48 +28,48 @@
 
 u16 Dialog::Message(const std::string &header, const std::string &message, Font::type_t ft, u16 buttons)
 {
-    Display & display = Display::Get();
-    const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
+  Display & display = Display::Get();
+  const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
 
-    // preload
-    AGG::PreloadObject(system);
+  // preload
+  AGG::PreloadObject(system);
 
-    // cursor
-    Cursor & cursor = Cursor::Get();
-    Cursor::themes_t oldthemes = cursor.Themes();
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  // cursor
+  Cursor & cursor = Cursor::Get();
+  Cursor::themes_t oldthemes = cursor.Themes();
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    TextBox textbox1(header, Font::YELLOW_BIG, BOXAREA_WIDTH);
-    TextBox textbox2(message, ft, BOXAREA_WIDTH);
+  TextBox textbox1(header, Font::YELLOW_BIG, BOXAREA_WIDTH);
+  TextBox textbox2(message, ft, BOXAREA_WIDTH);
 
-    Box box(10 + (header.size() ? textbox1.h() + 10 : 0) + textbox2.h(), buttons);
-    const Rect & pos = box.GetArea();
+  Box box(10 + (header.size() ? textbox1.h() + 10 : 0) + textbox2.h(), buttons);
+  const Rect & pos = box.GetArea();
 
-    if(header.size()) textbox1.Blit(pos.x, pos.y + 10);
-    if(message.size()) textbox2.Blit(pos.x, pos.y + 10 + (header.size() ? textbox1.h() : 0) + 10);
+  if(header.size()) textbox1.Blit(pos.x, pos.y + 10);
+  if(message.size()) textbox2.Blit(pos.x, pos.y + 10 + (header.size() ? textbox1.h() : 0) + 10);
 
-    LocalEvent & le = LocalEvent::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    ButtonGroups btnGroups(box.GetArea(), buttons);
-    btnGroups.Draw();
-    
-    cursor.Show();
-    display.Flip();
+  ButtonGroups btnGroups(box.GetArea(), buttons);
+  btnGroups.Draw();
 
-    // message loop
-    u16 result = Dialog::ZERO;
+  cursor.Show();
+  display.Flip();
 
-    while(result == Dialog::ZERO && le.HandleEvents())
-    {
-        if(!buttons && !le.MousePressRight()) break;
+  // message loop
+  u16 result = Dialog::ZERO;
 
-	result = btnGroups.QueueEventProcessing();
-    }
+  while(result == Dialog::ZERO && le.HandleEvents())
+  {
+    if(!buttons && !le.MousePressRight()) break;
 
-    cursor.Hide();
-    cursor.SetThemes(oldthemes);
-    cursor.Show();
+    result = btnGroups.QueueEventProcessing();
+  }
 
-    return result;
+  cursor.Hide();
+  cursor.SetThemes(oldthemes);
+  cursor.Show();
+
+  return result;
 }

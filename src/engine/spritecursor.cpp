@@ -39,86 +39,86 @@ SpriteCursor::SpriteCursor(const Surface &cursor, s16 x, s16 y) : Background(x, 
 
 u16  SpriteCursor::w(void) const
 {
-    return sprite ? sprite->w() : 0;
+  return sprite ? sprite->w() : 0;
 }
 
 u16  SpriteCursor::h(void) const
 {
-    return sprite ? sprite->h() : 0;
+  return sprite ? sprite->h() : 0;
 }
 
 void SpriteCursor::SetSprite(const Surface & sf)
 {
-    if(visible) Restore();
+  if(visible) Restore();
 
-    Save(Background::x, Background::y, sf.w(), sf.h());
+  Save(Background::x, Background::y, sf.w(), sf.h());
 
-    sprite = &sf;
+  sprite = &sf;
 }
 
 const Surface* SpriteCursor::Sprite(void)
 {
-    return sprite && sprite->isValid() ? sprite : NULL;
+  return sprite && sprite->isValid() ? sprite : NULL;
 }
 
 void SpriteCursor::Move(const Point &pt)
 {
-    Move(pt.x, pt.y);
+  Move(pt.x, pt.y);
 }
 
 void SpriteCursor::Move(s16 ax, s16 ay)
 {
-    if(Background::x == ax && Background::y == ay)
-    {
-	if(!visible) Show();
-    }
-    else
-    {
-	if(visible) Hide();
-	Show(ax, ay);
-    }
+  if(Background::x == ax && Background::y == ay)
+  {
+    if(!visible) Show();
+  }
+  else
+  {
+    if(visible) Hide();
+    Show(ax, ay);
+  }
 }
 
 void SpriteCursor::Hide(void)
 {
-    if(!visible) return;
+  if(!visible) return;
 
-    Restore();
+  Restore();
 
-    visible = false;
+  visible = false;
 }
 
 void SpriteCursor::Redraw(void)
 {
-    if(visible)
-    {
-	Hide();
-	Show();
-    }
+  if(visible)
+  {
+    Hide();
+    Show();
+  }
 }
 
 void SpriteCursor::Show(void)
 {
-    Show(GetPos());
+  Show(GetPos());
 }
 
 void SpriteCursor::Show(const Point &pt)
 {
-    Show(pt.x, pt.y);
+  Show(pt.x, pt.y);
 }
 
 void SpriteCursor::Show(s16 ax, s16 ay)
 {
-    if(! visible)
-    {
-	Display & display = Display::Get();
-	Save(ax, ay);
-	if(sprite) sprite->Blit(ax, ay, display);
-	visible = true;
-    }
+  if(! visible)
+  {
+    Display & display = Display::Get();
+    Save(ax, ay);
+    if(sprite) sprite->Blit(ax, ay, display);
+    visible = true;
+  }
 }
 
 bool SpriteCursor::isVisible(void) const
 {
-    return visible;
+  return visible;
 }

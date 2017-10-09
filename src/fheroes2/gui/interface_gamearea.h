@@ -30,80 +30,80 @@ class Sprite;
 
 enum scroll_t
 {
-    SCROLL_NONE	  = 0x00,
-    SCROLL_LEFT	  = 0x01,
-    SCROLL_RIGHT  = 0x02,
-    SCROLL_TOP	  = 0x04,
-    SCROLL_BOTTOM = 0x08
+  SCROLL_NONE   = 0x00,
+  SCROLL_LEFT   = 0x01,
+  SCROLL_RIGHT  = 0x02,
+  SCROLL_TOP    = 0x04,
+  SCROLL_BOTTOM = 0x08
 };
 
 enum level_t
 {
-    LEVEL_BOTTOM  = 0x01,
-    LEVEL_TOP     = 0x02,
-    LEVEL_HEROES  = 0x04,
-    LEVEL_OBJECTS = 0x08,
-    LEVEL_FOG     = 0x20,
+  LEVEL_BOTTOM  = 0x01,
+  LEVEL_TOP     = 0x02,
+  LEVEL_HEROES  = 0x04,
+  LEVEL_OBJECTS = 0x08,
+  LEVEL_FOG     = 0x20,
 
-    LEVEL_ALL     = 0xFF
+  LEVEL_ALL     = 0xFF
 };
 
 namespace Maps { class Tiles; }
 
 namespace Interface
 {
-    class GameArea
-    {
+  class GameArea
+  {
     public:
 
-	static GameArea & Get(void);
-	void Build(void);
+      static GameArea & Get(void);
+      void Build(void);
 
-	const Rect & GetArea(void) const;
-	const Point& GetMapsPos(void) const;
-	const Rect & GetRectMaps(void) const;
+      const Rect & GetArea(void) const;
+      const Point& GetMapsPos(void) const;
+      const Rect & GetRectMaps(void) const;
 
-	Cursor::themes_t GetScrollCursor(void) const;
-	bool NeedScroll(void) const;
-	void Scroll(void);
-	void SetScroll(scroll_t);
+      Cursor::themes_t GetScrollCursor(void) const;
+      bool NeedScroll(void) const;
+      void Scroll(void);
+      void SetScroll(scroll_t);
 
-	void SetCenter(s16, s16);
-	void SetCenter(const Point &);
+      void SetCenter(s16, s16);
+      void SetCenter(const Point &);
 
-	void Redraw(Surface & dst, u8) const;
-	void Redraw(Surface & dst, u8, const Rect &) const;
+      void Redraw(Surface & dst, u8) const;
+      void Redraw(Surface & dst, u8, const Rect &) const;
 
-	void BlitOnTile(Surface &, const Surface &, const s16, const s16, const Point &) const;
-	void BlitOnTile(Surface &, const Sprite &, const Point &) const;
+      void BlitOnTile(Surface &, const Surface &, const s16, const s16, const Point &) const;
+      void BlitOnTile(Surface &, const Sprite &, const Point &) const;
 
-	void SetUpdateCursor(void);
-        void QueueEventProcessing(void);
-        
-	s32 GetIndexFromMousePoint(const Point & pt) const;
+      void SetUpdateCursor(void);
+      void QueueEventProcessing(void);
 
-	static void GenerateUltimateArtifactAreaSurface(const s32, Surface &);
-	static void SrcRectFixed(Rect & src, Point & dst, const u16 rw, const u16 rh);
-	static void SrcRectFixed(Rect & src, s16 & dstx, s16 & dsty, const u16 rw, const u16 rh);
+      s32 GetIndexFromMousePoint(const Point & pt) const;
+
+      static void GenerateUltimateArtifactAreaSurface(const s32, Surface &);
+      static void SrcRectFixed(Rect & src, Point & dst, const u16 rw, const u16 rh);
+      static void SrcRectFixed(Rect & src, s16 & dstx, s16 & dsty, const u16 rw, const u16 rh);
 
     private:
-	void SetAreaPosition(s16, s16, u16, u16);
-	GameArea();
+      void SetAreaPosition(s16, s16, u16, u16);
+      GameArea();
 
-	Rect	areaPosition;
-	Rect	rectMaps;
-	Point	rectMapsPosition;
-	Point	scrollOffset;
-	u16	oldIndexPos;
-	u8	scrollDirection;
-	u8	scrollStepX;
-	u8	scrollStepY;
-	u8	tailX;
-	u8	tailY;
-	bool    updateCursor;
+      Rect    areaPosition;
+      Rect    rectMaps;
+      Point   rectMapsPosition;
+      Point   scrollOffset;
+      u16 oldIndexPos;
+      u8  scrollDirection;
+      u8  scrollStepX;
+      u8  scrollStepY;
+      u8  tailX;
+      u8  tailY;
+      bool    updateCursor;
 
-	SDL::Time scrollTime;
-    };
+      SDL::Time scrollTime;
+  };
 }
 
 #endif

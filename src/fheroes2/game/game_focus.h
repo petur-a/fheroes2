@@ -28,16 +28,16 @@
 
 namespace GameFocus
 {
-    enum { UNSEL = FOCUS_UNSEL, HEROES = FOCUS_HEROES, CASTLE = FOCUS_CASTLE, FIRSTHERO };
+  enum { UNSEL = FOCUS_UNSEL, HEROES = FOCUS_HEROES, CASTLE = FOCUS_CASTLE, FIRSTHERO };
 
-    void	Set(Heroes*);
-    void	Set(Castle*);
-    void	Reset(u8);
-    u8		Type(void);
-    Castle*	GetCastle(void);
-    Heroes*	GetHeroes(void);
-    Point	GetCenter(void);
-    void	SetRedraw(void);
+  void    Set(Heroes*);
+  void    Set(Castle*);
+  void    Reset(u8);
+  u8      Type(void);
+  Castle* GetCastle(void);
+  Heroes* GetHeroes(void);
+  Point   GetCenter(void);
+  void    SetRedraw(void);
 }
 
 #endif

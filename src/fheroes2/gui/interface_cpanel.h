@@ -28,35 +28,35 @@
 
 namespace Interface
 {
-    class ControlPanel : protected Rect
-    {
+  class ControlPanel : protected Rect
+  {
     public:
-    	static ControlPanel & Get(void);
+      static ControlPanel & Get(void);
 
-	void SetPos(s16, s16);
-	void Redraw(void);
-	void ResetTheme(void);
-	void QueueEventProcessing(Game::menu_t &);
+      void SetPos(s16, s16);
+      void Redraw(void);
+      void ResetTheme(void);
+      void QueueEventProcessing(Game::menu_t &);
 
-	const Rect & GetArea(void);
+      const Rect & GetArea(void);
 
     private:
-	ControlPanel();
+      ControlPanel();
 
-	Surface btn_radr;
-	Surface btn_icon;
-	Surface btn_bttn;
-	Surface btn_stat;
-	Surface btn_quit;
+      Surface btn_radr;
+      Surface btn_icon;
+      Surface btn_bttn;
+      Surface btn_stat;
+      Surface btn_quit;
 
-	Rect rt_radr;
-	Rect rt_icon;
-	Rect rt_bttn;
-	Rect rt_stat;
-	Rect rt_quit;
+      Rect rt_radr;
+      Rect rt_icon;
+      Rect rt_bttn;
+      Rect rt_stat;
+      Rect rt_quit;
 
-	const u8 alpha;
-    };
+      const u8 alpha;
+  };
 }
 
 #endif

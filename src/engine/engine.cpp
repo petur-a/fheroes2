@@ -27,85 +27,85 @@
 
 namespace Mixer
 {
-    void Init(void);
-    void Quit(void);
+  void Init(void);
+  void Quit(void);
 }
 
 #ifdef WITH_AUDIOCD
 namespace Cdrom
 {
-    void Open(void);
-    void Close(void);
+  void Open(void);
+  void Close(void);
 }
 #endif
 
 #ifdef _WIN32_WCE
 namespace WINCE
 {
-    bool isRunning(void);
-    int  CreateTrayIcon(void);
-    void DeleteTrayIcon(void);
+  bool isRunning(void);
+  int  CreateTrayIcon(void);
+  void DeleteTrayIcon(void);
 }
 #endif
 
 bool SDL::Init(const u32 system)
 {
 #ifdef _WIN32_WCE
-    SDL_putenv("DEBUG_VIDEO=1");
-    SDL_putenv("DEBUG_VIDEO_GAPI=1");
+  SDL_putenv("DEBUG_VIDEO=1");
+  SDL_putenv("DEBUG_VIDEO_GAPI=1");
 
-    if(WINCE::isRunning()) return false;
+  if(WINCE::isRunning()) return false;
 #endif
 
-    if(0 > SDL_Init(system))
-    {
-	std::cerr << "SDL::Init: error: " << SDL_GetError() << std::endl;
-	return false;
-    }
+  if(0 > SDL_Init(system))
+  {
+    std::cerr << "SDL::Init: error: " << SDL_GetError() << std::endl;
+    return false;
+  }
 
-    if(SDL_INIT_AUDIO & system) Mixer::Init();
+  if(SDL_INIT_AUDIO & system) Mixer::Init();
 #ifdef WITH_AUDIOCD
-    if(SDL_INIT_CDROM & system) Cdrom::Open();
+  if(SDL_INIT_CDROM & system) Cdrom::Open();
 #endif
 #ifdef WITH_TTF
-    SDL::Font::Init();
+  SDL::Font::Init();
 #endif
 #ifdef WITH_NET
-    Network::Init();
+  Network::Init();
 #endif
 
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+  SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
 #ifdef _WIN32_WCE
-    WINCE::CreateTrayIcon();
+  WINCE::CreateTrayIcon();
 #endif
 
-    return true;
+  return true;
 }
 
 void SDL::Quit(void)
 {
 #ifdef _WIN32_WCE
-    WINCE::DeleteTrayIcon();
+  WINCE::DeleteTrayIcon();
 #endif
 
 #ifdef WITH_NET
-    Network::Quit();
+  Network::Quit();
 #endif
 #ifdef WITH_TTF
-    SDL::Font::Quit();
+  SDL::Font::Quit();
 #endif
 #ifdef WITH_AUDIOCD
-    if(SubSystem(SDL_INIT_CDROM)) Cdrom::Close();
+  if(SubSystem(SDL_INIT_CDROM)) Cdrom::Close();
 #endif
-    if(SubSystem(SDL_INIT_AUDIO)) Mixer::Quit();
+  if(SubSystem(SDL_INIT_AUDIO)) Mixer::Quit();
 
-    SDL_Quit();
+  SDL_Quit();
 }
 
 bool SDL::SubSystem(const u32 system)
 {
-    return system & SDL_WasInit(system);
+  return system & SDL_WasInit(system);
 }
 
 #ifdef _WIN32_WCE
@@ -115,7 +115,7 @@ bool SDL::SubSystem(const u32 system)
 #ifdef __MINGW32CE__
 #undef Shell_NotifyIcon
 extern "C" {
-BOOL WINAPI Shell_NotifyIcon(DWORD, PNOTIFYICONDATAW);
+  BOOL WINAPI Shell_NotifyIcon(DWORD, PNOTIFYICONDATAW);
 }
 #endif
 
@@ -126,40 +126,40 @@ extern HWND SDL_Window;
 
 bool WINCE::isRunning(void)
 {
-    HWND hwnd = FindWindow(NULL, L"SDL_app");
+  HWND hwnd = FindWindow(NULL, L"SDL_app");
 
-    if(hwnd)
-    {
-        ShowWindow(hwnd, SW_SHOW);
-        SetForegroundWindow(hwnd);
-    }
+  if(hwnd)
+  {
+    ShowWindow(hwnd, SW_SHOW);
+    SetForegroundWindow(hwnd);
+  }
 
-    return hwnd;
+  return hwnd;
 }
 
 int WINCE::CreateTrayIcon(void)
 {
 #ifdef ID_ICON
-    NOTIFYICONDATA nid = {0};
-    nid.cbSize =  sizeof(nid);
-    nid.uID = ID_ICON;
-    nid.uFlags = NIF_ICON | NIF_MESSAGE;
-    nid.hWnd = SDL_Window;
-    nid.uCallbackMessage = WM_USER;
-    nid.hIcon = ::LoadIcon(SDL_Instance, MAKEINTRESOURCE(ID_ICON));
-    return Shell_NotifyIcon(NIM_ADD, &nid);
+  NOTIFYICONDATA nid = {0};
+  nid.cbSize =  sizeof(nid);
+  nid.uID = ID_ICON;
+  nid.uFlags = NIF_ICON | NIF_MESSAGE;
+  nid.hWnd = SDL_Window;
+  nid.uCallbackMessage = WM_USER;
+  nid.hIcon = ::LoadIcon(SDL_Instance, MAKEINTRESOURCE(ID_ICON));
+  return Shell_NotifyIcon(NIM_ADD, &nid);
 #endif
-    return 0;
+  return 0;
 }
 
 void WINCE::DeleteTrayIcon(void)
 {
 #ifdef ID_ICON
-    NOTIFYICONDATA nid = {0};
-    nid.cbSize =  sizeof(nid);
-    nid.uID = ID_ICON;
-    nid.hWnd = SDL_Window;
-    Shell_NotifyIcon(NIM_DELETE, &nid);
+  NOTIFYICONDATA nid = {0};
+  nid.cbSize =  sizeof(nid);
+  nid.uID = ID_ICON;
+  nid.hWnd = SDL_Window;
+  Shell_NotifyIcon(NIM_DELETE, &nid);
 #endif
 }
 #endif

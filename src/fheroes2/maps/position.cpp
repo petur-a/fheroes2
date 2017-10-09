@@ -30,31 +30,31 @@ Maps::Position::Position(const Point & pt) : center(pt)
 
 bool Maps::Position::operator== (s32 index) const
 {
-    return index == GetIndex();
+  return index == GetIndex();
 }
 
 const Point & Maps::Position::GetCenter(void) const
 {
-    return center;
+  return center;
 }
 
 s32 Maps::Position::GetIndex(void) const
 {
-    return center.x < 0 && center.y < 0 ? -1 : Maps::GetIndexFromAbsPoint(center);
+  return center.x < 0 && center.y < 0 ? -1 : Maps::GetIndexFromAbsPoint(center);
 }
 
 void Maps::Position::SetCenter(const Point & pt)
 {
-    center = pt;
+  center = pt;
 }
 
 void Maps::Position::SetIndex(s32 index)
 {
-    center = Maps::isValidAbsIndex(index) ?
-		Point(index % world.w(), index / world.w()) : Point(-1, -1);
+  center = Maps::isValidAbsIndex(index) ?
+    Point(index % world.w(), index / world.w()) : Point(-1, -1);
 }
 
 bool Maps::Position::isPosition(s32 index) const
 {
-    return index == GetIndex();
+  return index == GetIndex();
 }

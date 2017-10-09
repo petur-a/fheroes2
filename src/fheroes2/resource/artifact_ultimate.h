@@ -30,7 +30,7 @@ class Artifact;
 
 class UltimateArtifact : public Artifact
 {
-public:
+  public:
     UltimateArtifact();
 
     bool isPosition(s32) const;
@@ -42,7 +42,7 @@ public:
     const Surface & GetPuzzleMapSurface(void) const;
     const Artifact & GetArtifact(void) const;
 
-private:
+  private:
     friend class Game::IO;
 
     s32 index;

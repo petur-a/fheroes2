@@ -31,11 +31,11 @@
 void Error::Except(const char* func, const char* message)
 {
 #ifndef ANDROID
-    std::cerr << "exception: " << func << ": " << message << std::endl;
-    throw Exception();
+  std::cerr << "exception: " << func << ": " << message << std::endl;
+  throw Exception();
 #else
- __android_log_print(ANDROID_LOG_FATAL, "fheroes2", "======");
- __android_log_print(ANDROID_LOG_FATAL, "fheroes2", "Error: %s: %s", func, message);
- __android_log_print(ANDROID_LOG_FATAL, "fheroes2", "======");
+  __android_log_print(ANDROID_LOG_FATAL, "fheroes2", "======");
+  __android_log_print(ANDROID_LOG_FATAL, "fheroes2", "Error: %s: %s", func, message);
+  __android_log_print(ANDROID_LOG_FATAL, "fheroes2", "======");
 #endif
 }

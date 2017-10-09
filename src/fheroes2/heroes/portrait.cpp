@@ -29,57 +29,57 @@
 
 const Surface & Portrait::Get(const HeroBase &hero, const Portrait::size_t sz)
 {
-    if(hero.GetType() == Skill::Primary::CAPTAIN)
-        return Captain(hero.GetRace(), sz);
-    else return Hero(reinterpret_cast<const Heroes &>(hero), sz);
+  if(hero.GetType() == Skill::Primary::CAPTAIN)
+    return Captain(hero.GetRace(), sz);
+  else return Hero(reinterpret_cast<const Heroes &>(hero), sz);
 }
 
 const Surface & Portrait::Captain(const u8 rc, const Portrait::size_t sz)
 {
-    switch(sz)
-    {
-	case BIG:
-	    switch(rc)
-	    {
-    		case Race::KNGT:        return AGG::GetICN(ICN::PORT0090, 0);
-    		case Race::BARB:        return AGG::GetICN(ICN::PORT0091, 0);
-    		case Race::SORC:        return AGG::GetICN(ICN::PORT0092, 0);
-    		case Race::WRLK:        return AGG::GetICN(ICN::PORT0093, 0);
-    		case Race::WZRD:        return AGG::GetICN(ICN::PORT0094, 0);
-    		case Race::NECR:        return AGG::GetICN(ICN::PORT0095, 0);
-    		default: break;
-	    }
-	    break;
+  switch(sz)
+  {
+    case BIG:
+      switch(rc)
+      {
+        case Race::KNGT:        return AGG::GetICN(ICN::PORT0090, 0);
+        case Race::BARB:        return AGG::GetICN(ICN::PORT0091, 0);
+        case Race::SORC:        return AGG::GetICN(ICN::PORT0092, 0);
+        case Race::WRLK:        return AGG::GetICN(ICN::PORT0093, 0);
+        case Race::WZRD:        return AGG::GetICN(ICN::PORT0094, 0);
+        case Race::NECR:        return AGG::GetICN(ICN::PORT0095, 0);
+        default: break;
+      }
+      break;
 
-	case MEDIUM:
-	case SMALL:
-	    switch(rc)
-	    {
-    		case Race::KNGT:        return AGG::GetICN(ICN::MINICAPT, 0);
-    		case Race::BARB:        return AGG::GetICN(ICN::MINICAPT, 1);
-    		case Race::SORC:        return AGG::GetICN(ICN::MINICAPT, 2);
-    		case Race::WRLK:        return AGG::GetICN(ICN::MINICAPT, 3);
-    		case Race::WZRD:        return AGG::GetICN(ICN::MINICAPT, 4);
-    		case Race::NECR:        return AGG::GetICN(ICN::MINICAPT, 5);
-    		default: break;
-	    }
-	    break;
-    }
+    case MEDIUM:
+    case SMALL:
+      switch(rc)
+      {
+        case Race::KNGT:        return AGG::GetICN(ICN::MINICAPT, 0);
+        case Race::BARB:        return AGG::GetICN(ICN::MINICAPT, 1);
+        case Race::SORC:        return AGG::GetICN(ICN::MINICAPT, 2);
+        case Race::WRLK:        return AGG::GetICN(ICN::MINICAPT, 3);
+        case Race::WZRD:        return AGG::GetICN(ICN::MINICAPT, 4);
+        case Race::NECR:        return AGG::GetICN(ICN::MINICAPT, 5);
+        default: break;
+      }
+      break;
+  }
 
-    DEBUG(DBG_GAME, DBG_WARN, "unknown race");
+  DEBUG(DBG_GAME, DBG_WARN, "unknown race");
 
-    return AGG::GetICN(ICN::PORT0090, 0);
+  return AGG::GetICN(ICN::PORT0090, 0);
 }
 
 const Surface & Portrait::Hero(const Heroes & hero, const size_t sz)
 {
-    switch(sz)
-    {
-	case BIG:	return hero.GetPortrait101x93();
-	case MEDIUM:	return hero.GetPortrait50x46();
-	case SMALL:	return hero.GetPortrait30x22();
-	default: break;
-    }
+  switch(sz)
+  {
+    case BIG:   return hero.GetPortrait101x93();
+    case MEDIUM:    return hero.GetPortrait50x46();
+    case SMALL: return hero.GetPortrait30x22();
+    default: break;
+  }
 
-    return AGG::GetICN(ICN::PORTMEDI, 0);
+  return AGG::GetICN(ICN::PORTMEDI, 0);
 }

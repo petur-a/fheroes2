@@ -29,77 +29,77 @@ class HeroBase;
 
 class Spell
 {
-public:
+  public:
     enum
     {
-	NONE		= 0,
-	FIREBALL,
-	FIREBLAST,
-	LIGHTNINGBOLT,
-	CHAINLIGHTNING,
-	TELEPORT,
-	CURE,
-	MASSCURE,
-	RESURRECT,
-	RESURRECTTRUE,
-	HASTE,
-	MASSHASTE,
-	SLOW,
-	MASSSLOW,
-	BLIND,
-	BLESS,
-	MASSBLESS,
-	STONESKIN,
-	STEELSKIN,
-	CURSE,
-	MASSCURSE,
-	HOLYWORD,
-	HOLYSHOUT,
-	ANTIMAGIC,
-	DISPEL,
-	MASSDISPEL,
-	ARROW,
-	BERSERKER,
-	ARMAGEDDON,
-	ELEMENTALSTORM,
-	METEORSHOWER,
-	PARALYZE,
-	HYPNOTIZE,
-	COLDRAY,
-	COLDRING,
-	DISRUPTINGRAY,
-	DEATHRIPPLE,
-	DEATHWAVE,
-	DRAGONSLAYER,
-	BLOODLUST,
-	ANIMATEDEAD,
-	MIRRORIMAGE,
-	SHIELD,
-	MASSSHIELD,
-	SUMMONEELEMENT,
-	SUMMONAELEMENT,
-	SUMMONFELEMENT,
-	SUMMONWELEMENT,
-	EARTHQUAKE,
-	VIEWMINES,
-	VIEWRESOURCES,
-	VIEWARTIFACTS,
-	VIEWTOWNS,
-	VIEWHEROES,
-	VIEWALL,
-	IDENTIFYHERO,
-	SUMMONBOAT,
-	DIMENSIONDOOR,
-	TOWNGATE,
-	TOWNPORTAL,
-	VISIONS,
-	HAUNT,
-	SETEGUARDIAN,
-	SETAGUARDIAN,
-	SETFGUARDIAN,
-	SETWGUARDIAN,
+      NONE        = 0,
+      FIREBALL,
+      FIREBLAST,
+      LIGHTNINGBOLT,
+      CHAINLIGHTNING,
+      TELEPORT,
+      CURE,
+      MASSCURE,
+      RESURRECT,
+      RESURRECTTRUE,
+      HASTE,
+      MASSHASTE,
+      SLOW,
+      MASSSLOW,
+      BLIND,
+      BLESS,
+      MASSBLESS,
+      STONESKIN,
+      STEELSKIN,
+      CURSE,
+      MASSCURSE,
+      HOLYWORD,
+      HOLYSHOUT,
+      ANTIMAGIC,
+      DISPEL,
+      MASSDISPEL,
+      ARROW,
+      BERSERKER,
+      ARMAGEDDON,
+      ELEMENTALSTORM,
+      METEORSHOWER,
+      PARALYZE,
+      HYPNOTIZE,
+      COLDRAY,
+      COLDRING,
+      DISRUPTINGRAY,
+      DEATHRIPPLE,
+      DEATHWAVE,
+      DRAGONSLAYER,
+      BLOODLUST,
+      ANIMATEDEAD,
+      MIRRORIMAGE,
+      SHIELD,
+      MASSSHIELD,
+      SUMMONEELEMENT,
+      SUMMONAELEMENT,
+      SUMMONFELEMENT,
+      SUMMONWELEMENT,
+      EARTHQUAKE,
+      VIEWMINES,
+      VIEWRESOURCES,
+      VIEWARTIFACTS,
+      VIEWTOWNS,
+      VIEWHEROES,
+      VIEWALL,
+      IDENTIFYHERO,
+      SUMMONBOAT,
+      DIMENSIONDOOR,
+      TOWNGATE,
+      TOWNPORTAL,
+      VISIONS,
+      HAUNT,
+      SETEGUARDIAN,
+      SETAGUARDIAN,
+      SETFGUARDIAN,
+      SETWGUARDIAN,
 
-	STONE
+      STONE
     };
 
     Spell(u8 = NONE);
@@ -123,7 +123,7 @@ public:
 
     u8 ExtraValue(void) const;
     payment_t GetCost(void) const;
-    
+
     bool isValid(void) const;
     bool isLevel(u8) const;
     bool isCombat(void) const;
@@ -154,7 +154,7 @@ public:
     static void UpdateStats(const std::string &);
     static u8 CalculateDimensionDoorDistance(u8 current_sp, u32 total_hp);
 
-private:
+  private:
     u8 id;
 };
 

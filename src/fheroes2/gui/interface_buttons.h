@@ -29,31 +29,31 @@
 
 namespace Interface
 {
-    class ButtonsArea : protected Rect
-    {
+  class ButtonsArea : protected Rect
+  {
     public:
-    	static ButtonsArea & Get(void);
+      static ButtonsArea & Get(void);
 
-	void SetPos(s16, s16);
-	void Redraw(void);
-	void QueueEventProcessing(Game::menu_t &);
+      void SetPos(s16, s16);
+      void Redraw(void);
+      void QueueEventProcessing(Game::menu_t &);
 
-	const Rect & GetArea(void);
+      const Rect & GetArea(void);
 
     private:
-	ButtonsArea();
+      ButtonsArea();
 
-	Button	buttonNextHero;
-	Button	buttonMovement;
-	Button	buttonKingdom;
-	Button	buttonSpell;
-	Button	buttonEndTur;
-	Button	buttonAdventure;
-	Button	buttonFile;
-	Button	buttonSystem;
+      Button  buttonNextHero;
+      Button  buttonMovement;
+      Button  buttonKingdom;
+      Button  buttonSpell;
+      Button  buttonEndTur;
+      Button  buttonAdventure;
+      Button  buttonFile;
+      Button  buttonSystem;
 
-	Dialog::FrameBorder border;
-    };
+      Dialog::FrameBorder border;
+  };
 }
 
 #endif

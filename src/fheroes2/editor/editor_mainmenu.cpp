@@ -32,58 +32,58 @@
 
 Game::menu_t Game::Editor::MainMenu(void)
 {
-    Display & display = Display::Get();
+  Display & display = Display::Get();
 
-    // preload
-    AGG::PreloadObject(ICN::EDITOR);
-    AGG::PreloadObject(ICN::BTNEMAIN);
-    AGG::PreloadObject(ICN::REDBACK);
+  // preload
+  AGG::PreloadObject(ICN::EDITOR);
+  AGG::PreloadObject(ICN::BTNEMAIN);
+  AGG::PreloadObject(ICN::REDBACK);
 
-    // cursor
-    Cursor & cursor = Cursor::Get();
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  // cursor
+  Cursor & cursor = Cursor::Get();
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    Display::SetVideoMode(640, 480, Settings::Get().DisplayFlags());
+  Display::SetVideoMode(640, 480, Settings::Get().DisplayFlags());
 
-    // image background
-    const Sprite &back = AGG::GetICN(ICN::EDITOR, 0);
-    back.Blit();
+  // image background
+  const Sprite &back = AGG::GetICN(ICN::EDITOR, 0);
+  back.Blit();
 
-    const Sprite &panel = AGG::GetICN(ICN::REDBACK, 0);
-    panel.Blit(405, 5);
+  const Sprite &panel = AGG::GetICN(ICN::REDBACK, 0);
+  panel.Blit(405, 5);
 
-    LocalEvent & le = LocalEvent::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    Button buttonNewMap(455, 45, ICN::BTNEMAIN, 0, 1);
-    Button buttonLoadMap(455, 110, ICN::BTNEMAIN, 2, 3);
-    Button buttonCancelGame(455, 375, ICN::BTNEMAIN, 4, 5);
+  Button buttonNewMap(455, 45, ICN::BTNEMAIN, 0, 1);
+  Button buttonLoadMap(455, 110, ICN::BTNEMAIN, 2, 3);
+  Button buttonCancelGame(455, 375, ICN::BTNEMAIN, 4, 5);
 
-    buttonNewMap.Draw();
-    buttonLoadMap.Draw();
-    buttonCancelGame.Draw();
+  buttonNewMap.Draw();
+  buttonLoadMap.Draw();
+  buttonCancelGame.Draw();
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    // NewMap loop
-    while(le.HandleEvents())
-    {
-	le.MousePressLeft(buttonNewMap) ? buttonNewMap.PressDraw() : buttonNewMap.ReleaseDraw();
-	le.MousePressLeft(buttonLoadMap) ? buttonLoadMap.PressDraw() : buttonLoadMap.ReleaseDraw();
-	le.MousePressLeft(buttonCancelGame) ? buttonCancelGame.PressDraw() : buttonCancelGame.ReleaseDraw();
+  // NewMap loop
+  while(le.HandleEvents())
+  {
+    le.MousePressLeft(buttonNewMap) ? buttonNewMap.PressDraw() : buttonNewMap.ReleaseDraw();
+    le.MousePressLeft(buttonLoadMap) ? buttonLoadMap.PressDraw() : buttonLoadMap.ReleaseDraw();
+    le.MousePressLeft(buttonCancelGame) ? buttonCancelGame.PressDraw() : buttonCancelGame.ReleaseDraw();
 
-	if(le.MouseClickLeft(buttonNewMap) || HotKeyPress(EVENT_BUTTON_NEWGAME)) return EDITNEWMAP;
-	if(le.MouseClickLeft(buttonLoadMap) || HotKeyPress(EVENT_BUTTON_LOADGAME)) return EDITLOADMAP;
-	if(le.MouseClickLeft(buttonCancelGame) || HotKeyPress(EVENT_DEFAULT_EXIT)) return QUITGAME;
+    if(le.MouseClickLeft(buttonNewMap) || HotKeyPress(EVENT_BUTTON_NEWGAME)) return EDITNEWMAP;
+    if(le.MouseClickLeft(buttonLoadMap) || HotKeyPress(EVENT_BUTTON_LOADGAME)) return EDITLOADMAP;
+    if(le.MouseClickLeft(buttonCancelGame) || HotKeyPress(EVENT_DEFAULT_EXIT)) return QUITGAME;
 
-        // right info
-	if(le.MousePressRight(buttonNewMap)) Dialog::Message(_("New Map"), _("Create a new map, either from scratch or using the random map generator."), Font::BIG);
-	if(le.MousePressRight(buttonLoadMap)) Dialog::Message(_("Load Map"), _("Load an existing map."), Font::BIG);
-	if(le.MousePressRight(buttonCancelGame)) Dialog::Message(_("Quit"), _("Quit out of the map editor."), Font::BIG);
-    }
+    // right info
+    if(le.MousePressRight(buttonNewMap)) Dialog::Message(_("New Map"), _("Create a new map, either from scratch or using the random map generator."), Font::BIG);
+    if(le.MousePressRight(buttonLoadMap)) Dialog::Message(_("Load Map"), _("Load an existing map."), Font::BIG);
+    if(le.MousePressRight(buttonCancelGame)) Dialog::Message(_("Quit"), _("Quit out of the map editor."), Font::BIG);
+  }
 
-    return QUITGAME;
+  return QUITGAME;
 }
 
 #endif

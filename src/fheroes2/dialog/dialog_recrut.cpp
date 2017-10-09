@@ -31,409 +31,409 @@
 #include "dialog.h"
 
 void RedrawCurrentInfo(const Point & pos, u16 available, u32 result,
-	    const payment_t & paymentMonster, const payment_t & paymentCosts)
+    const payment_t & paymentMonster, const payment_t & paymentCosts)
 {
-    Text text;
+  Text text;
 
-    std::string str = _("Available: %{count}");
-    String::Replace(str, "%{count}", available);
-    text.Set(str, Font::SMALL);
-    text.Blit(pos.x + 70 - text.w() / 2, pos.y + 130);
-    text.Set(GetString(result), Font::BIG);
-    text.Blit(pos.x + 167 - text.w() / 2, pos.y + 160);
+  std::string str = _("Available: %{count}");
+  String::Replace(str, "%{count}", available);
+  text.Set(str, Font::SMALL);
+  text.Blit(pos.x + 70 - text.w() / 2, pos.y + 130);
+  text.Set(GetString(result), Font::BIG);
+  text.Blit(pos.x + 167 - text.w() / 2, pos.y + 160);
 
-    if(2 == paymentMonster.GetValidItems())
-    {
-	text.Set(GetString(paymentCosts.gold), Font::SMALL);
-	text.Blit(pos.x + 133 - text.w() / 2, pos.y + 228);
+  if(2 == paymentMonster.GetValidItems())
+  {
+    text.Set(GetString(paymentCosts.gold), Font::SMALL);
+    text.Blit(pos.x + 133 - text.w() / 2, pos.y + 228);
 
-	text.Set(GetString(paymentMonster.GetFirstValidItems(Resource::ALL & ~Resource::GOLD)), Font::SMALL);
-	text.Blit(pos.x + 195 - text.w() / 2, pos.y + 228);
-    }
-    else
-    {
-	text.Set(GetString(paymentCosts.gold), Font::SMALL);
-	text.Blit(pos.x + 160 - text.w() / 2, pos.y + 228);
-    }
+    text.Set(GetString(paymentMonster.GetFirstValidItems(Resource::ALL & ~Resource::GOLD)), Font::SMALL);
+    text.Blit(pos.x + 195 - text.w() / 2, pos.y + 228);
+  }
+  else
+  {
+    text.Set(GetString(paymentCosts.gold), Font::SMALL);
+    text.Blit(pos.x + 160 - text.w() / 2, pos.y + 228);
+  }
 }
 
 void RedrawResourceInfo(const Surface & sres, const Point & pos, s32 value,
-	u8 px1, u8 py1, u8 px2, u8 py2)
+    u8 px1, u8 py1, u8 px2, u8 py2)
 {
-    Display & display = Display::Get();
-    Point dst_pt;
+  Display & display = Display::Get();
+  Point dst_pt;
 
-    dst_pt.x = pos.x + px1;
-    dst_pt.y = pos.y + py1;
-    sres.Blit(dst_pt, display);
+  dst_pt.x = pos.x + px1;
+  dst_pt.y = pos.y + py1;
+  sres.Blit(dst_pt, display);
 
-    Text text(GetString(value), Font::SMALL);
-    dst_pt.x = pos.x + px2 - text.w() / 2;
-    dst_pt.y = pos.y + py2;
-    text.Blit(dst_pt);
+  Text text(GetString(value), Font::SMALL);
+  dst_pt.x = pos.x + px2 - text.w() / 2;
+  dst_pt.y = pos.y + py2;
+  text.Blit(dst_pt);
 }
 
 u16 Dialog::RecruitMonster(const Monster & monster, u16 available)
 {
-    Display & display = Display::Get();
-    LocalEvent & le = LocalEvent::Get();
+  Display & display = Display::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    // cursor
-    Cursor & cursor = Cursor::Get();
-    const Cursor::themes_t oldcursor = cursor.Themes();
-    cursor.Hide();
-    cursor.SetThemes(Cursor::POINTER);
-    
-    // calculate max count
-    u32 max = 0;
-    const payment_t paymentMonster = monster.GetCost();
-    const Funds & kingdomResource = world.GetKingdom(Settings::Get().CurrentColor()).GetFunds();
-    while(Funds(paymentMonster * max) <= kingdomResource && max <= available) ++max;
+  // cursor
+  Cursor & cursor = Cursor::Get();
+  const Cursor::themes_t oldcursor = cursor.Themes();
+  cursor.Hide();
+  cursor.SetThemes(Cursor::POINTER);
 
-    u32 result = --max;
+  // calculate max count
+  u32 max = 0;
+  const payment_t paymentMonster = monster.GetCost();
+  const Funds & kingdomResource = world.GetKingdom(Settings::Get().CurrentColor()).GetFunds();
+  while(Funds(paymentMonster * max) <= kingdomResource && max <= available) ++max;
 
-    payment_t paymentCosts(paymentMonster * result);
+  u32 result = --max;
 
-    const Sprite & box = AGG::GetICN(ICN::RECRBKG, 0);
-    const Rect pos((display.w() - box.w()) / 2, Settings::Get().QVGA() ? (display.h() - box.h()) / 2 - 15 : (display.h() - box.h()) / 2, box.w(), box.h());
+  payment_t paymentCosts(paymentMonster * result);
 
-    Background back(pos);
-    back.Save();
+  const Sprite & box = AGG::GetICN(ICN::RECRBKG, 0);
+  const Rect pos((display.w() - box.w()) / 2, Settings::Get().QVGA() ? (display.h() - box.h()) / 2 - 15 : (display.h() - box.h()) / 2, box.w(), box.h());
 
-    box.Blit(pos.x, pos.y);
+  Background back(pos);
+  back.Save();
 
-    Point dst_pt;
-    std::string str;
-    Text text;
+  box.Blit(pos.x, pos.y);
 
-    // smear hardcore text "Cost per troop:"
-    const Sprite & smear = AGG::GetICN(ICN::TOWNNAME, 0);
-    dst_pt.x = pos.x + 144;
-    dst_pt.y = pos.y + 55;
-    smear.Blit(Rect(8, 1, 120, 12), dst_pt);
+  Point dst_pt;
+  std::string str;
+  Text text;
 
-    text.Set(_("Cost per troop:"), Font::SMALL);
-    dst_pt.x = pos.x + 206 - text.w() / 2;
-    dst_pt.y = pos.y + 55;
-    text.Blit(dst_pt);
+  // smear hardcore text "Cost per troop:"
+  const Sprite & smear = AGG::GetICN(ICN::TOWNNAME, 0);
+  dst_pt.x = pos.x + 144;
+  dst_pt.y = pos.y + 55;
+  smear.Blit(Rect(8, 1, 120, 12), dst_pt);
 
-    // text recruit monster
-    str = _("Recruit %{name}");
-    String::Replace(str, "%{name}", monster.GetMultiName());
-    text.Set(str, Font::BIG);
-    dst_pt.x = pos.x + (pos.w - text.w()) / 2;
-    dst_pt.y = pos.y + 25;
-    text.Blit(dst_pt);
+  text.Set(_("Cost per troop:"), Font::SMALL);
+  dst_pt.x = pos.x + 206 - text.w() / 2;
+  dst_pt.y = pos.y + 55;
+  text.Blit(dst_pt);
 
-    // sprite monster
-    const Sprite & smon = AGG::GetICN(monster.ICNMonh(), 0);
-    dst_pt.x = pos.x + 70 - smon.w() / 2;
-    dst_pt.y = pos.y + 130 - smon.h();
-    smon.Blit(dst_pt);
+  // text recruit monster
+  str = _("Recruit %{name}");
+  String::Replace(str, "%{name}", monster.GetMultiName());
+  text.Set(str, Font::BIG);
+  dst_pt.x = pos.x + (pos.w - text.w()) / 2;
+  dst_pt.y = pos.y + 25;
+  text.Blit(dst_pt);
 
-    bool extres = 2 == paymentMonster.GetValidItems();
+  // sprite monster
+  const Sprite & smon = AGG::GetICN(monster.ICNMonh(), 0);
+  dst_pt.x = pos.x + 70 - smon.w() / 2;
+  dst_pt.y = pos.y + 130 - smon.h();
+  smon.Blit(dst_pt);
 
-    // info resource
-    // gold
-    const Sprite & sgold = AGG::GetICN(ICN::RESOURCE, 6);
-    dst_pt.x = pos.x + (extres ? 150 : 175);
-    dst_pt.y = pos.y + 75;
-    sgold.Blit(dst_pt);
+  bool extres = 2 == paymentMonster.GetValidItems();
 
-    dst_pt.x = pos.x + (extres ? 105 : 130);
+  // info resource
+  // gold
+  const Sprite & sgold = AGG::GetICN(ICN::RESOURCE, 6);
+  dst_pt.x = pos.x + (extres ? 150 : 175);
+  dst_pt.y = pos.y + 75;
+  sgold.Blit(dst_pt);
+
+  dst_pt.x = pos.x + (extres ? 105 : 130);
+  dst_pt.y = pos.y + 200;
+  sgold.Blit(dst_pt);
+
+  text.Set(GetString(paymentMonster.gold), Font::SMALL);
+  dst_pt.x = pos.x + (extres ? 183 : 205) - text.w() / 2;
+  dst_pt.y = pos.y + 103;
+  text.Blit(dst_pt);
+
+  // crystal
+  if(paymentMonster.crystal)
+  {
+    const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 4);
+    RedrawResourceInfo(sres, pos, paymentMonster.crystal,
+        225, 75, 240, 103);
+    dst_pt.x = pos.x + 180;
     dst_pt.y = pos.y + 200;
-    sgold.Blit(dst_pt);
-
-    text.Set(GetString(paymentMonster.gold), Font::SMALL);
-    dst_pt.x = pos.x + (extres ? 183 : 205) - text.w() / 2;
-    dst_pt.y = pos.y + 103;
-    text.Blit(dst_pt);
-
-    // crystal
-    if(paymentMonster.crystal)
-    {
-        const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 4);
-	RedrawResourceInfo(sres, pos, paymentMonster.crystal,
-				225, 75, 240, 103);
-	dst_pt.x = pos.x + 180;
-	dst_pt.y = pos.y + 200;
-	sres.Blit(dst_pt);
-    }
-    else
+    sres.Blit(dst_pt);
+  }
+  else
     // mercury
     if(paymentMonster.mercury)
     {
-        const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 1);
-	RedrawResourceInfo(sres, pos, paymentMonster.mercury,
-				225, 72, 240, 103);
-	dst_pt.x = pos.x + 180;
-	dst_pt.y = pos.y + 197;
-	sres.Blit(dst_pt);
+      const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 1);
+      RedrawResourceInfo(sres, pos, paymentMonster.mercury,
+          225, 72, 240, 103);
+      dst_pt.x = pos.x + 180;
+      dst_pt.y = pos.y + 197;
+      sres.Blit(dst_pt);
     }
     else
-    // wood
-    if(paymentMonster.wood)
-    {
+      // wood
+      if(paymentMonster.wood)
+      {
         const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 0);
-	RedrawResourceInfo(sres, pos, paymentMonster.wood,
-				225, 72, 240, 103);
-	dst_pt.x = pos.x + 180;
-	dst_pt.y = pos.y + 197;
-	sres.Blit(dst_pt);
+        RedrawResourceInfo(sres, pos, paymentMonster.wood,
+            225, 72, 240, 103);
+        dst_pt.x = pos.x + 180;
+        dst_pt.y = pos.y + 197;
+        sres.Blit(dst_pt);
+      }
+      else
+        // ore
+        if(paymentMonster.ore)
+        {
+          const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 2);
+          RedrawResourceInfo(sres, pos, paymentMonster.ore,
+              225, 72, 240, 103);
+          dst_pt.x = pos.x + 180;
+          dst_pt.y = pos.y + 197;
+          sres.Blit(dst_pt);
+        }
+        else
+          // sulfur
+          if(paymentMonster.sulfur)
+          {
+            const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 3);
+            RedrawResourceInfo(sres, pos, paymentMonster.sulfur,
+                225, 75, 240, 103);
+            dst_pt.x = pos.x + 180;
+            dst_pt.y = pos.y + 200;
+            sres.Blit(dst_pt);
+          }
+          else
+            // gems
+            if(paymentMonster.gems)
+            {
+              const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 5);
+              RedrawResourceInfo(sres, pos, paymentMonster.gems,
+                  225, 75, 240, 103);
+              dst_pt.x = pos.x + 180;
+              dst_pt.y = pos.y + 200;
+              sres.Blit(dst_pt);
+            }
+
+  // text number buy
+  text.Set(_("Number to buy:"));
+  dst_pt.x = pos.x + 30;
+  dst_pt.y = pos.y + 163;
+  text.Blit(dst_pt);
+
+  Background static_info(Rect(pos.x + 16, pos.y + 125, pos.w - 32, 122));
+  static_info.Save();
+
+  RedrawCurrentInfo(pos, available, result, paymentMonster, paymentCosts);
+
+  // buttons
+  dst_pt.x = pos.x + 34;
+  dst_pt.y = pos.y + 249;
+  Button buttonOk(dst_pt, ICN::RECRUIT, 8, 9);
+
+  dst_pt.x = pos.x + 187;
+  dst_pt.y = pos.y + 249;
+  Button buttonCancel(dst_pt, ICN::RECRUIT, 6, 7);
+
+  dst_pt.x = pos.x + 230;
+  dst_pt.y = pos.y + 155;
+  Button buttonMax(dst_pt, ICN::RECRUIT, 4, 5);
+  dst_pt.x = pos.x + 208;
+  dst_pt.y = pos.y + 156;
+  Button buttonUp(dst_pt, ICN::RECRUIT, 0, 1);
+
+  dst_pt.x = pos.x + 208;
+  dst_pt.y = pos.y + 171;
+  Button buttonDn(dst_pt, ICN::RECRUIT, 2, 3);
+
+  buttonOk.Draw();
+  buttonCancel.Draw();
+  buttonMax.Draw();
+  buttonUp.Draw();
+  buttonDn.Draw();
+
+  cursor.Show();
+  display.Flip();
+
+  bool redraw = false;
+
+  // str loop
+  while(le.HandleEvents())
+  {
+    le.MousePressLeft(buttonOk) ? buttonOk.PressDraw() : buttonOk.ReleaseDraw();
+    le.MousePressLeft(buttonCancel) ? buttonCancel.PressDraw() : buttonCancel.ReleaseDraw();
+    le.MousePressLeft(buttonMax) ? buttonMax.PressDraw() : buttonMax.ReleaseDraw();
+    le.MousePressLeft(buttonUp) ? buttonUp.PressDraw() : buttonUp.ReleaseDraw();
+    le.MousePressLeft(buttonDn) ? buttonDn.PressDraw() : buttonDn.ReleaseDraw();
+
+    if(PressIntKey(0, max, result))
+    {
+      paymentCosts = paymentMonster * result;
+      redraw = true;
+    }
+
+    if(le.MouseClickLeft(buttonUp) && result < max)
+    {
+      ++result;
+      paymentCosts += paymentMonster;
+      redraw = true;
     }
     else
-    // ore
-    if(paymentMonster.ore)
+      if(le.MouseClickLeft(buttonDn) && result)
+      {
+        --result;
+        paymentCosts -= paymentMonster;
+        redraw = true;
+      }
+      else
+        if(le.MouseClickLeft(buttonMax) && result != max)
+        {
+          result = max;
+          paymentCosts = paymentMonster * max;
+          redraw = true;
+        }
+
+    if(redraw)
     {
-        const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 2);
-	RedrawResourceInfo(sres, pos, paymentMonster.ore,
-				225, 72, 240, 103);
-	dst_pt.x = pos.x + 180;
-	dst_pt.y = pos.y + 197;
-	sres.Blit(dst_pt);
-    }
-    else
-    // sulfur
-    if(paymentMonster.sulfur)
-    {
-        const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 3);
-	RedrawResourceInfo(sres, pos, paymentMonster.sulfur,
-				225, 75, 240, 103);
-	dst_pt.x = pos.x + 180;
-	dst_pt.y = pos.y + 200;
-	sres.Blit(dst_pt);
-    }
-    else
-    // gems
-    if(paymentMonster.gems)
-    {
-        const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 5);
-	RedrawResourceInfo(sres, pos, paymentMonster.gems,
-				225, 75, 240, 103);
-	dst_pt.x = pos.x + 180;
-	dst_pt.y = pos.y + 200;
-	sres.Blit(dst_pt);
+      cursor.Hide();
+      static_info.Restore();
+      RedrawCurrentInfo(pos, available, result, paymentMonster, paymentCosts);
+      cursor.Show();
+      display.Flip();
+      redraw = false;
     }
 
-    // text number buy
-    text.Set(_("Number to buy:"));
-    dst_pt.x = pos.x + 30;
-    dst_pt.y = pos.y + 163;
-    text.Blit(dst_pt);
+    if(le.MouseClickLeft(buttonOk) || Game::HotKeyPress(Game::EVENT_DEFAULT_READY)) break;
 
-    Background static_info(Rect(pos.x + 16, pos.y + 125, pos.w - 32, 122));
-    static_info.Save();
+    if(le.MouseClickLeft(buttonCancel) || Game::HotKeyPress(Game::EVENT_DEFAULT_EXIT)){ result = 0; break; }
+  }
 
-    RedrawCurrentInfo(pos, available, result, paymentMonster, paymentCosts);
+  cursor.Hide();
 
-    // buttons
-    dst_pt.x = pos.x + 34;
-    dst_pt.y = pos.y + 249;
-    Button buttonOk(dst_pt, ICN::RECRUIT, 8, 9);
+  back.Restore();
+  cursor.SetThemes(oldcursor);
 
-    dst_pt.x = pos.x + 187;
-    dst_pt.y = pos.y + 249;
-    Button buttonCancel(dst_pt, ICN::RECRUIT, 6, 7);
+  cursor.Show();
+  display.Flip();
 
-    dst_pt.x = pos.x + 230;
-    dst_pt.y = pos.y + 155;
-    Button buttonMax(dst_pt, ICN::RECRUIT, 4, 5);
-    dst_pt.x = pos.x + 208;
-    dst_pt.y = pos.y + 156;
-    Button buttonUp(dst_pt, ICN::RECRUIT, 0, 1);
-
-    dst_pt.x = pos.x + 208;
-    dst_pt.y = pos.y + 171;
-    Button buttonDn(dst_pt, ICN::RECRUIT, 2, 3);
-
-    buttonOk.Draw();
-    buttonCancel.Draw();
-    buttonMax.Draw();
-    buttonUp.Draw();
-    buttonDn.Draw();
-
-    cursor.Show();
-    display.Flip();
-
-    bool redraw = false;
-
-    // str loop
-    while(le.HandleEvents())
-    {
-	le.MousePressLeft(buttonOk) ? buttonOk.PressDraw() : buttonOk.ReleaseDraw();
-	le.MousePressLeft(buttonCancel) ? buttonCancel.PressDraw() : buttonCancel.ReleaseDraw();
-	le.MousePressLeft(buttonMax) ? buttonMax.PressDraw() : buttonMax.ReleaseDraw();
-	le.MousePressLeft(buttonUp) ? buttonUp.PressDraw() : buttonUp.ReleaseDraw();
-	le.MousePressLeft(buttonDn) ? buttonDn.PressDraw() : buttonDn.ReleaseDraw();
-
-	if(PressIntKey(0, max, result))
-	{
-	    paymentCosts = paymentMonster * result;
-	    redraw = true;
-	}
-
-	if(le.MouseClickLeft(buttonUp) && result < max)
-	{
-	    ++result;
-	    paymentCosts += paymentMonster;
-	    redraw = true;
-	}
-	else
-	if(le.MouseClickLeft(buttonDn) && result)
-	{
-	    --result;
-	    paymentCosts -= paymentMonster;
-	    redraw = true;
-	}
-	else
-	if(le.MouseClickLeft(buttonMax) && result != max)
-	{
-	    result = max;
-	    paymentCosts = paymentMonster * max;
-	    redraw = true;
-	}
-
-	if(redraw)
-	{
-	    cursor.Hide();
-	    static_info.Restore();
-	    RedrawCurrentInfo(pos, available, result, paymentMonster, paymentCosts);
-	    cursor.Show();
-	    display.Flip();
-	    redraw = false;
-	}
-
-	if(le.MouseClickLeft(buttonOk) || Game::HotKeyPress(Game::EVENT_DEFAULT_READY)) break;
-	
-	if(le.MouseClickLeft(buttonCancel) || Game::HotKeyPress(Game::EVENT_DEFAULT_EXIT)){ result = 0; break; }
-    }
-
-    cursor.Hide();
-
-    back.Restore();
-    cursor.SetThemes(oldcursor);
-
-    cursor.Show();
-    display.Flip();
-
-    return result;
+  return result;
 }
 
 void Dialog::DwellingInfo(const Monster & monster, u16 available)
 {
-    Display & display = Display::Get();
+  Display & display = Display::Get();
 
-    // cursor
-    Cursor & cursor = Cursor::Get();
-    const Cursor::themes_t oldcursor = cursor.Themes();
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
-    
-    const payment_t paymentMonster = monster.GetCost();
-    const Sprite & box = AGG::GetICN(ICN::RECR2BKG, 0);
-    const Rect pos((display.w() - box.w()) / 2, (display.h() - box.h()) / 2, box.w(), box.h());
+  // cursor
+  Cursor & cursor = Cursor::Get();
+  const Cursor::themes_t oldcursor = cursor.Themes();
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    Background back(pos);
-    back.Save();
+  const payment_t paymentMonster = monster.GetCost();
+  const Sprite & box = AGG::GetICN(ICN::RECR2BKG, 0);
+  const Rect pos((display.w() - box.w()) / 2, (display.h() - box.h()) / 2, box.w(), box.h());
 
-    box.Blit(pos.x, pos.y);
-    
-    LocalEvent & le = LocalEvent::Get();
+  Background back(pos);
+  back.Save();
 
-    Point dst_pt;
-    Text text;
-    std::string str;
+  box.Blit(pos.x, pos.y);
 
-    // text recruit monster
-    str = _("Recruit %{name}");
-    String::Replace(str, "%{name}", monster.GetMultiName());
-    text.Set(str, Font::BIG);
-    text.Blit(pos.x + (pos.w - text.w()) / 2, pos.y + 25);
+  LocalEvent & le = LocalEvent::Get();
 
-    // sprite monster
-    const Sprite & smon = AGG::GetICN(monster.ICNMonh(), 0);
-    dst_pt.x = pos.x + 70 - smon.w() / 2;
-    dst_pt.y = pos.y + 120 - smon.h();
-    smon.Blit(dst_pt);
+  Point dst_pt;
+  Text text;
+  std::string str;
 
-    bool extres = 2 == paymentMonster.GetValidItems();
+  // text recruit monster
+  str = _("Recruit %{name}");
+  String::Replace(str, "%{name}", monster.GetMultiName());
+  text.Set(str, Font::BIG);
+  text.Blit(pos.x + (pos.w - text.w()) / 2, pos.y + 25);
 
-    // info resource
-    // gold
-    const Sprite & sgold = AGG::GetICN(ICN::RESOURCE, 6);
-    dst_pt.x = pos.x + (extres ? 150 : 175);
-    dst_pt.y = pos.y + 75;
-    sgold.Blit(dst_pt);
+  // sprite monster
+  const Sprite & smon = AGG::GetICN(monster.ICNMonh(), 0);
+  dst_pt.x = pos.x + 70 - smon.w() / 2;
+  dst_pt.y = pos.y + 120 - smon.h();
+  smon.Blit(dst_pt);
 
-    text.Set(GetString(paymentMonster.gold), Font::SMALL);
-    dst_pt.x = pos.x + (extres ? 183 : 205) - text.w() / 2;
-    dst_pt.y = pos.y + 103;
-    text.Blit(dst_pt);
-    // crystal
-    if(paymentMonster.crystal)
-    {
-	const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 4);
-	RedrawResourceInfo(sres, pos, paymentMonster.crystal,
-				225, 75, 240, 103);
-    }
-    else
+  bool extres = 2 == paymentMonster.GetValidItems();
+
+  // info resource
+  // gold
+  const Sprite & sgold = AGG::GetICN(ICN::RESOURCE, 6);
+  dst_pt.x = pos.x + (extres ? 150 : 175);
+  dst_pt.y = pos.y + 75;
+  sgold.Blit(dst_pt);
+
+  text.Set(GetString(paymentMonster.gold), Font::SMALL);
+  dst_pt.x = pos.x + (extres ? 183 : 205) - text.w() / 2;
+  dst_pt.y = pos.y + 103;
+  text.Blit(dst_pt);
+  // crystal
+  if(paymentMonster.crystal)
+  {
+    const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 4);
+    RedrawResourceInfo(sres, pos, paymentMonster.crystal,
+        225, 75, 240, 103);
+  }
+  else
     // mercury
     if(paymentMonster.mercury)
     {
-	const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 1);
-	RedrawResourceInfo(sres, pos, paymentMonster.mercury,
-				225, 72, 240, 103);
+      const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 1);
+      RedrawResourceInfo(sres, pos, paymentMonster.mercury,
+          225, 72, 240, 103);
     }
     else
-    // wood
-    if(paymentMonster.wood)
-    {
-	const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 0);
-	RedrawResourceInfo(sres, pos, paymentMonster.wood,
-				225, 72, 240, 103);
-    }
-    else
-    // ore
-    if(paymentMonster.ore)
-    {
-	const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 2);
-	RedrawResourceInfo(sres, pos, paymentMonster.ore,
-				225, 72, 240, 103);
-    }
-    else
-    // sulfur
-    if(paymentMonster.sulfur)
-    {
-	const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 3);
-	RedrawResourceInfo(sres, pos, paymentMonster.sulfur,
-				225, 75, 240, 103);
-    }
-    else
-    // gems
-    if(paymentMonster.gems)
-    {
-	const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 5);
-	RedrawResourceInfo(sres, pos, paymentMonster.gems,
-				225, 75, 240, 103);
-    }
+      // wood
+      if(paymentMonster.wood)
+      {
+        const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 0);
+        RedrawResourceInfo(sres, pos, paymentMonster.wood,
+            225, 72, 240, 103);
+      }
+      else
+        // ore
+        if(paymentMonster.ore)
+        {
+          const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 2);
+          RedrawResourceInfo(sres, pos, paymentMonster.ore,
+              225, 72, 240, 103);
+        }
+        else
+          // sulfur
+          if(paymentMonster.sulfur)
+          {
+            const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 3);
+            RedrawResourceInfo(sres, pos, paymentMonster.sulfur,
+                225, 75, 240, 103);
+          }
+          else
+            // gems
+            if(paymentMonster.gems)
+            {
+              const Sprite & sres = AGG::GetICN(ICN::RESOURCE, 5);
+              RedrawResourceInfo(sres, pos, paymentMonster.gems,
+                  225, 75, 240, 103);
+            }
 
-    // text available
-    str = _("Available: %{count}");
-    String::Replace(str, "%{count}", available);
-    text.Set(str);
-    text.Blit(pos.x + 70 - text.w() / 2, pos.y + 130);
+  // text available
+  str = _("Available: %{count}");
+  String::Replace(str, "%{count}", available);
+  text.Set(str);
+  text.Blit(pos.x + 70 - text.w() / 2, pos.y + 130);
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    //
-    while(le.HandleEvents() && le.MousePressRight());
+  //
+  while(le.HandleEvents() && le.MousePressRight());
 
-    cursor.Hide();
+  cursor.Hide();
 
-    back.Restore();
-    cursor.SetThemes(oldcursor);
+  back.Restore();
+  cursor.SetThemes(oldcursor);
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 }

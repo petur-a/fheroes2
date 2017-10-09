@@ -30,28 +30,28 @@
 
 Game::menu_t Game::Editor::LoadMaps(void)
 {
-    Settings & conf = Settings::Get();
+  Settings & conf = Settings::Get();
 
-    MapsFileInfoList lists;
+  MapsFileInfoList lists;
 
-    if(! PrepareMapsFileInfoList(lists, true))
-    {
-        Dialog::Message(_("Warning"), _("No maps available!"), Font::BIG, Dialog::OK);
-        return MAINMENU;
-    }
-
-    const Maps::FileInfo* fi = Dialog::SelectScenario(lists);
-    if(fi)
-    {
-	conf.SetCurrentFileInfo(*fi);
-	Game::ShowLoadMapsText();
-    	//
-    	world.LoadMaps(fi->file);
-
-	return EDITSTART;
-    }
-
+  if(! PrepareMapsFileInfoList(lists, true))
+  {
+    Dialog::Message(_("Warning"), _("No maps available!"), Font::BIG, Dialog::OK);
     return MAINMENU;
+  }
+
+  const Maps::FileInfo* fi = Dialog::SelectScenario(lists);
+  if(fi)
+  {
+    conf.SetCurrentFileInfo(*fi);
+    Game::ShowLoadMapsText();
+    //
+    world.LoadMaps(fi->file);
+
+    return EDITSTART;
+  }
+
+  return MAINMENU;
 }
 
 #endif

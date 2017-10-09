@@ -28,23 +28,23 @@
 
 bool SkipLocalAlpha(u16 icn)
 {
-    switch(icn)
-    {
-        case ICN::SYSTEM:
-        case ICN::SYSTEME:
-        case ICN::BUYBUILD:
-        case ICN::BUYBUILE:
-        case ICN::BOOK:
-        case ICN::CSPANBKE:
-        case ICN::CPANBKGE:
-        case ICN::CAMPBKGE:
+  switch(icn)
+  {
+    case ICN::SYSTEM:
+    case ICN::SYSTEME:
+    case ICN::BUYBUILD:
+    case ICN::BUYBUILE:
+    case ICN::BOOK:
+    case ICN::CSPANBKE:
+    case ICN::CPANBKGE:
+    case ICN::CAMPBKGE:
 
-            return true;
+      return true;
 
-        default: break;
-    }
+    default: break;
+  }
 
-    return false;
+  return false;
 }
 
 Sprite::Sprite() : offsetX(0), offsetY(0)
@@ -57,206 +57,206 @@ Sprite::Sprite(const Sprite & sp) : Surface(sp), offsetX(sp.offsetX), offsetY(sp
 
 void Sprite::SetOffset(s16 ox, s16 oy)
 {
-    offsetX = ox;
-    offsetY = oy;
+  offsetX = ox;
+  offsetY = oy;
 }
 
 void Sprite::DrawICN(u16 icn, Surface & sf, const u8* cur, const u32 size, bool reflect)
 {
-    if(NULL == cur || 0 == size) return;
+  if(NULL == cur || 0 == size) return;
 
-    const u8 *max = cur + size;
+  const u8 *max = cur + size;
 
-    u8  c = 0;
-    u16 x = reflect ? sf.w() - 1 : 0;
-    u16 y = 0;
+  u8  c = 0;
+  u16 x = reflect ? sf.w() - 1 : 0;
+  u16 y = 0;
 
-    Surface sf_tmp;
-    Surface* sf_cur = sf.amask() ? &sf : &sf_tmp;
-    u32 shadow = sf_cur->isValid() ? sf_cur->MapRGB(0, 0, 0, 0x40) : 0;
+  Surface sf_tmp;
+  Surface* sf_cur = sf.amask() ? &sf : &sf_tmp;
+  u32 shadow = sf_cur->isValid() ? sf_cur->MapRGB(0, 0, 0, 0x40) : 0;
 
-    // lock surface
-    sf.Lock();
+  // lock surface
+  sf.Lock();
 
-    while(1)
+  while(1)
+  {
+    // 0x00 - end line
+    if(0 == *cur)
     {
-	// 0x00 - end line
-	if(0 == *cur)
-	{
-	    ++y;
-	    x = reflect ? sf.w() - 1 : 0;
-	    ++cur;
-	}
-	else
-	// 0x7F - count data
-	if(0x80 > *cur)
-	{
-	    c = *cur;
-	    ++cur;
-	    while(c-- && cur < max)
-	    {
-		sf.SetPixel(x, y, sf.GetColorIndex(*cur));
-		reflect ? x-- : x++;
-		++cur;
-	    }
-	}
-	else
-	// 0x80 - end data
-	if(0x80 == *cur)
-	{
-	    break;
-	}
-	else
-	// 0xBF - skip data
-	if(0xC0 > *cur)
-	{
-	    reflect ? x -= *cur - 0x80 : x += *cur - 0x80;
-	    ++cur;
-	}
-	else
-	// 0xC0 - shadow
-	if(0xC0 == *cur)
-	{
-	    ++cur;
-	    c = *cur % 4 ? *cur % 4 : *(++cur);
-
-	    if(SkipLocalAlpha(icn) || 8 == sf.depth())
-	    {
-		while(c--){ reflect ? x-- : x++; }
-	    }
-	    else
-	    {
-		if(! sf_cur->isValid())
-		{
-		    sf_cur->Set(sf.w(), sf.h(), true);
-		    shadow = sf_cur->MapRGB(0, 0, 0, 0x40);
-		}
-
-		while(c--){ sf_cur->SetPixel(x, y, shadow); reflect ? x-- : x++; }
-	    }
-
-	    ++cur;
-	}
-	else
-	// 0xC1
-	if(0xC1 == *cur)
-	{
-	    ++cur;
-	    c = *cur;
-	    ++cur;
-	    while(c--){ sf.SetPixel(x, y, sf.GetColorIndex(*cur)); reflect ? x-- : x++; }
-	    ++cur;
-	}
-	else
-	{
-	    c = *cur - 0xC0;
-	    ++cur;
-	    while(c--){ sf.SetPixel(x, y, sf.GetColorIndex(*cur)); reflect ? x-- : x++; }
-	    ++cur;
-	}
-
-	if(cur >= max)
-	{
-	    DEBUG(DBG_ENGINE, DBG_WARN, "out of range: " << cur - max);
-	    break;
-	}
+      ++y;
+      x = reflect ? sf.w() - 1 : 0;
+      ++cur;
     }
+    else
+      // 0x7F - count data
+      if(0x80 > *cur)
+      {
+        c = *cur;
+        ++cur;
+        while(c-- && cur < max)
+        {
+          sf.SetPixel(x, y, sf.GetColorIndex(*cur));
+          reflect ? x-- : x++;
+          ++cur;
+        }
+      }
+      else
+        // 0x80 - end data
+        if(0x80 == *cur)
+        {
+          break;
+        }
+        else
+          // 0xBF - skip data
+          if(0xC0 > *cur)
+          {
+            reflect ? x -= *cur - 0x80 : x += *cur - 0x80;
+            ++cur;
+          }
+          else
+            // 0xC0 - shadow
+            if(0xC0 == *cur)
+            {
+              ++cur;
+              c = *cur % 4 ? *cur % 4 : *(++cur);
 
-    // unlock surface
-    sf.Unlock();
+              if(SkipLocalAlpha(icn) || 8 == sf.depth())
+              {
+                while(c--){ reflect ? x-- : x++; }
+              }
+              else
+              {
+                if(! sf_cur->isValid())
+                {
+                  sf_cur->Set(sf.w(), sf.h(), true);
+                  shadow = sf_cur->MapRGB(0, 0, 0, 0x40);
+                }
 
-    if(sf_tmp.isValid())
+                while(c--){ sf_cur->SetPixel(x, y, shadow); reflect ? x-- : x++; }
+              }
+
+              ++cur;
+            }
+            else
+              // 0xC1
+              if(0xC1 == *cur)
+              {
+                ++cur;
+                c = *cur;
+                ++cur;
+                while(c--){ sf.SetPixel(x, y, sf.GetColorIndex(*cur)); reflect ? x-- : x++; }
+                ++cur;
+              }
+              else
+              {
+                c = *cur - 0xC0;
+                ++cur;
+                while(c--){ sf.SetPixel(x, y, sf.GetColorIndex(*cur)); reflect ? x-- : x++; }
+                ++cur;
+              }
+
+    if(cur >= max)
     {
-	sf.Blit(sf_tmp);
-	Surface::Swap(sf_tmp, sf);
+      DEBUG(DBG_ENGINE, DBG_WARN, "out of range: " << cur - max);
+      break;
     }
+  }
+
+  // unlock surface
+  sf.Unlock();
+
+  if(sf_tmp.isValid())
+  {
+    sf.Blit(sf_tmp);
+    Surface::Swap(sf_tmp, sf);
+  }
 }
 
 u32 Sprite::GetSize(void) const
 {
-    return Surface::GetSize() + sizeof(offsetX) + sizeof(offsetY);
+  return Surface::GetSize() + sizeof(offsetX) + sizeof(offsetY);
 }
 
 void Sprite::ScaleMinifyByTwo(void)
 {
-    Cursor & cursor = Cursor::Get();
-    Display & display = Display::Get();
+  Cursor & cursor = Cursor::Get();
+  Display & display = Display::Get();
 
-    if(w() > 3 && h() > 3)
+  if(w() > 3 && h() > 3)
+  {
+    u16 theme = 0;
+    if(cursor.isVisible() && Cursor::WAIT != cursor.Themes())
     {
-	u16 theme = 0;
-	if(cursor.isVisible() && Cursor::WAIT != cursor.Themes())
-	{
-	    theme = cursor.Themes();
-	    cursor.SetThemes(Cursor::WAIT);
-	    cursor.Show();
-	    display.Flip();
-	}
-
-	Surface sf;
-	Surface::ScaleMinifyByTwo(sf, *this, cursor.isVisible());
-	Surface::Swap(sf, *this);
-
-	if(theme)
-	{
-	    cursor.SetThemes(theme);
-	    cursor.Show();
-	    display.Flip();
-	}
+      theme = cursor.Themes();
+      cursor.SetThemes(Cursor::WAIT);
+      cursor.Show();
+      display.Flip();
     }
 
-    offsetX /= 2;
-    offsetY /= 2;
+    Surface sf;
+    Surface::ScaleMinifyByTwo(sf, *this, cursor.isVisible());
+    Surface::Swap(sf, *this);
+
+    if(theme)
+    {
+      cursor.SetThemes(theme);
+      cursor.Show();
+      display.Flip();
+    }
+  }
+
+  offsetX /= 2;
+  offsetY /= 2;
 }
 
 void Sprite::AddonExtensionModify(Sprite & sp, u16 icn, u16 index)
 {
-    switch(icn)
-    {
-	case ICN::AELEM:
-	    if(sp.w() > 3 && sp.h() > 3)
-	    {
-		Surface sf;
-		Surface::MakeContour(sf, sp, sp.GetColorIndex(0xEF));
-		sf.Blit(-1, -1, sp);
-	    }
-	    break;
+  switch(icn)
+  {
+    case ICN::AELEM:
+      if(sp.w() > 3 && sp.h() > 3)
+      {
+        Surface sf;
+        Surface::MakeContour(sf, sp, sp.GetColorIndex(0xEF));
+        sf.Blit(-1, -1, sp);
+      }
+      break;
 
-	default: break;
-    }
+    default: break;
+  }
 }
 
 void Sprite::Blit(Surface & dst) const
 {
-    Surface::Blit(dst);
+  Surface::Blit(dst);
 }
 
 void Sprite::Blit(s16 dstx, s16 dsty, Surface & dst) const
 {
-    Surface::Blit(dstx, dsty, dst);
+  Surface::Blit(dstx, dsty, dst);
 }
 
 void Sprite::Blit(const Point & dpt, Surface & dst) const
 {
-    Surface::Blit(dpt, dst);
+  Surface::Blit(dpt, dst);
 }
 
 void Sprite::Blit(const Rect & srt, s16 dstx, s16 dsty, Surface & dst) const
 {
-    Surface::Blit(srt, dstx, dsty, dst);
+  Surface::Blit(srt, dstx, dsty, dst);
 }
 
 void Sprite::Blit(const Rect & srt, const Point & dpt, Surface & dst) const
 {
-    Surface::Blit(srt, dpt, dst);
+  Surface::Blit(srt, dpt, dst);
 }
 
 void Sprite::Blit(u8 alpha, s16 dstx, s16 dsty, Surface & dst) const
 {
-    Surface::Blit(alpha, dstx, dsty, dst);
+  Surface::Blit(alpha, dstx, dsty, dst);
 }
 
 void Sprite::Blit(u8 alpha, const Rect & srt, const Point & dpt, Surface & dst) const
 {
-    Surface::Blit(alpha, srt, dpt, dst);
+  Surface::Blit(alpha, srt, dpt, dst);
 }

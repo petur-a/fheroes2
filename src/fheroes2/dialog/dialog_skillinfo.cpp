@@ -29,183 +29,183 @@
 
 void Dialog::SecondarySkillInfo(const Skill::Secondary & skill, const bool ok_button)
 {
-    SecondarySkillInfo(skill.GetName(), skill.GetDescription(), skill, ok_button);
+  SecondarySkillInfo(skill.GetName(), skill.GetDescription(), skill, ok_button);
 }
 
 void Dialog::SecondarySkillInfo(const std::string & header, const std::string & message, const Skill::Secondary & skill, const bool ok_button)
 {
-    Display & display = Display::Get();
-    const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
+  Display & display = Display::Get();
+  const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
 
-    // preload
-    AGG::PreloadObject(system);
+  // preload
+  AGG::PreloadObject(system);
 
-    // cursor
-    Cursor & cursor = Cursor::Get();
+  // cursor
+  Cursor & cursor = Cursor::Get();
 
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    TextBox box1(header, Font::YELLOW_BIG, BOXAREA_WIDTH);
-    TextBox box2(message, Font::BIG, BOXAREA_WIDTH);
-    const Sprite & border = AGG::GetICN(ICN::SECSKILL, 15);
-    const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
+  TextBox box1(header, Font::YELLOW_BIG, BOXAREA_WIDTH);
+  TextBox box2(message, Font::BIG, BOXAREA_WIDTH);
+  const Sprite & border = AGG::GetICN(ICN::SECSKILL, 15);
+  const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
 
-    Box box(box1.h() + spacer + box2.h() + spacer + border.h(), ok_button);
-    Rect pos = box.GetArea();
+  Box box(box1.h() + spacer + box2.h() + spacer + border.h(), ok_button);
+  Rect pos = box.GetArea();
 
-    if(header.size()) box1.Blit(pos);
-    pos.y += box1.h() + spacer;
+  if(header.size()) box1.Blit(pos);
+  pos.y += box1.h() + spacer;
 
-    if(message.size()) box2.Blit(pos);
-    pos.y += box2.h() + spacer;
+  if(message.size()) box2.Blit(pos);
+  pos.y += box2.h() + spacer;
 
-    // blit sprite
-    pos.x = box.GetArea().x + (pos.w - border.w()) / 2;
-    border.Blit(pos.x, pos.y);
-    const Sprite & sprite = AGG::GetICN(ICN::SECSKILL, skill.GetIndexSprite1());
-    pos.x = box.GetArea().x + (pos.w - sprite.w()) / 2;
-    sprite.Blit(pos.x, pos.y + 3);
+  // blit sprite
+  pos.x = box.GetArea().x + (pos.w - border.w()) / 2;
+  border.Blit(pos.x, pos.y);
+  const Sprite & sprite = AGG::GetICN(ICN::SECSKILL, skill.GetIndexSprite1());
+  pos.x = box.GetArea().x + (pos.w - sprite.w()) / 2;
+  sprite.Blit(pos.x, pos.y + 3);
 
-    Text text;
+  Text text;
 
-    // small text
-    text.Set(Skill::Secondary::String(skill.Skill()), Font::SMALL);
-    pos.x = box.GetArea().x + (pos.w - text.w()) / 2;
-    text.Blit(pos.x, pos.y + 3);
+  // small text
+  text.Set(Skill::Secondary::String(skill.Skill()), Font::SMALL);
+  pos.x = box.GetArea().x + (pos.w - text.w()) / 2;
+  text.Blit(pos.x, pos.y + 3);
 
-    text.Set(Skill::Level::String(skill.Level()));
-    pos.x = box.GetArea().x + (pos.w - text.w()) / 2;
-    text.Blit(pos.x, pos.y + 55);
+  text.Set(Skill::Level::String(skill.Level()));
+  pos.x = box.GetArea().x + (pos.w - text.w()) / 2;
+  text.Blit(pos.x, pos.y + 55);
 
-    LocalEvent & le = LocalEvent::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    Button *button = NULL;
-    Point pt;
+  Button *button = NULL;
+  Point pt;
 
-    if(ok_button)
-    {
-        pt.x = box.GetArea().x + (box.GetArea().w - AGG::GetICN(system, 1).w()) / 2;
-        pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 1).h();
-	button = new Button(pt, system, 1, 2);
-    }
+  if(ok_button)
+  {
+    pt.x = box.GetArea().x + (box.GetArea().w - AGG::GetICN(system, 1).w()) / 2;
+    pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 1).h();
+    button = new Button(pt, system, 1, 2);
+  }
 
-    if(button) (*button).Draw();
+  if(button) (*button).Draw();
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    // message loop
-    while(le.HandleEvents())
-    {
-        if(!ok_button && !le.MousePressRight()) break;
+  // message loop
+  while(le.HandleEvents())
+  {
+    if(!ok_button && !le.MousePressRight()) break;
 
-	if(button) le.MousePressLeft(*button) ? button->PressDraw() : button->ReleaseDraw();
+    if(button) le.MousePressLeft(*button) ? button->PressDraw() : button->ReleaseDraw();
 
-        if(button && le.MouseClickLeft(*button)){ break; }
+    if(button && le.MouseClickLeft(*button)){ break; }
 
-	if(HotKeyCloseWindow){ break; }
-    }
+    if(HotKeyCloseWindow){ break; }
+  }
 
-    cursor.Hide();
-    if(button) delete button;
+  cursor.Hide();
+  if(button) delete button;
 }
 
 void Dialog::PrimarySkillInfo(const std::string &header, const std::string &message, const Skill::Primary::skill_t skill)
 {
-    Display & display = Display::Get();
-    const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
+  Display & display = Display::Get();
+  const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
 
-    // preload
-    AGG::PreloadObject(system);
+  // preload
+  AGG::PreloadObject(system);
 
-    // cursor
-    Cursor & cursor = Cursor::Get();
+  // cursor
+  Cursor & cursor = Cursor::Get();
 
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    u8 index = 0;
-    std::string skill_name;
+  u8 index = 0;
+  std::string skill_name;
 
-    switch(skill)
-    {
-	case Skill::Primary::ATTACK:
-	    index = 0;
-	    skill_name = _("Attack Skill");
-	    break;
+  switch(skill)
+  {
+    case Skill::Primary::ATTACK:
+      index = 0;
+      skill_name = _("Attack Skill");
+      break;
 
-	case Skill::Primary::DEFENSE:
-	    index = 1;
-	    skill_name = _("Defense Skill");
-	    break;
+    case Skill::Primary::DEFENSE:
+      index = 1;
+      skill_name = _("Defense Skill");
+      break;
 
-	case Skill::Primary::POWER:
-	    index = 2;
-	    skill_name = _("Spell Power");
-	    break;
+    case Skill::Primary::POWER:
+      index = 2;
+      skill_name = _("Spell Power");
+      break;
 
-	case Skill::Primary::KNOWLEDGE:
-	    index = 3;
-	    skill_name = _("Knowledge");
-	    break;
+    case Skill::Primary::KNOWLEDGE:
+      index = 3;
+      skill_name = _("Knowledge");
+      break;
 
-	default: break;
-    }
+    default: break;
+  }
 
-    TextBox box1(header, Font::BIG, BOXAREA_WIDTH);
-    TextBox box2(message, Font::BIG, BOXAREA_WIDTH);
-    const Sprite & border = AGG::GetICN(ICN::PRIMSKIL, 4);
-    const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
+  TextBox box1(header, Font::BIG, BOXAREA_WIDTH);
+  TextBox box2(message, Font::BIG, BOXAREA_WIDTH);
+  const Sprite & border = AGG::GetICN(ICN::PRIMSKIL, 4);
+  const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
 
-    Box box(box1.h() + spacer + box2.h() + spacer + border.h(), Dialog::OK);
-    Rect pos = box.GetArea();
+  Box box(box1.h() + spacer + box2.h() + spacer + border.h(), Dialog::OK);
+  Rect pos = box.GetArea();
 
-    if(header.size()) box1.Blit(pos);
-    pos.y += box1.h() + spacer;
+  if(header.size()) box1.Blit(pos);
+  pos.y += box1.h() + spacer;
 
-    if(message.size()) box2.Blit(pos);
-    pos.y += box2.h() + spacer;
+  if(message.size()) box2.Blit(pos);
+  pos.y += box2.h() + spacer;
 
-    // blit sprite
-    pos.x = box.GetArea().x + (pos.w - border.w()) / 2;
-    border.Blit(pos.x, pos.y);
-    const Sprite & sprite = AGG::GetICN(ICN::PRIMSKIL, index);
-    pos.x = box.GetArea().x + (pos.w - sprite.w()) / 2;
-    sprite.Blit(pos.x, pos.y + 6);
+  // blit sprite
+  pos.x = box.GetArea().x + (pos.w - border.w()) / 2;
+  border.Blit(pos.x, pos.y);
+  const Sprite & sprite = AGG::GetICN(ICN::PRIMSKIL, index);
+  pos.x = box.GetArea().x + (pos.w - sprite.w()) / 2;
+  sprite.Blit(pos.x, pos.y + 6);
 
-    Text text;
+  Text text;
 
-    text.Set(skill_name, Font::SMALL);
-    pos.x = box.GetArea().x + (pos.w - text.w()) / 2;
-    text.Blit(pos.x, pos.y + 8);
+  text.Set(skill_name, Font::SMALL);
+  pos.x = box.GetArea().x + (pos.w - text.w()) / 2;
+  text.Blit(pos.x, pos.y + 8);
 
-    text.Set("+1", Font::BIG);
-    pos.x = box.GetArea().x + (pos.w - text.w()) / 2;
-    text.Blit(pos.x, pos.y + 80);
+  text.Set("+1", Font::BIG);
+  pos.x = box.GetArea().x + (pos.w - text.w()) / 2;
+  text.Blit(pos.x, pos.y + 80);
 
-    LocalEvent & le = LocalEvent::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    Point pt;
-    
-    pt.x = box.GetArea().x + (box.GetArea().w - AGG::GetICN(system, 1).w()) / 2;
-    pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 1).h();
-    Button button(pt, system, 1, 2);
+  Point pt;
 
-    button.Draw();
+  pt.x = box.GetArea().x + (box.GetArea().w - AGG::GetICN(system, 1).w()) / 2;
+  pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 1).h();
+  Button button(pt, system, 1, 2);
 
-    cursor.Show();
-    display.Flip();
+  button.Draw();
 
-    // message loop
-    while(le.HandleEvents())
-    {
-	le.MousePressLeft(button) ? button.PressDraw() : button.ReleaseDraw();
+  cursor.Show();
+  display.Flip();
 
-        if(le.MouseClickLeft(button)){ break; }
+  // message loop
+  while(le.HandleEvents())
+  {
+    le.MousePressLeft(button) ? button.PressDraw() : button.ReleaseDraw();
 
-	if(HotKeyCloseWindow){ break; }
-    }
+    if(le.MouseClickLeft(button)){ break; }
 
-    cursor.Hide();
+    if(HotKeyCloseWindow){ break; }
+  }
+
+  cursor.Hide();
 }

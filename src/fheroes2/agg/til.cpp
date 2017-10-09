@@ -25,18 +25,18 @@
 
 namespace TIL
 {
-    const struct
-    {
-	til_t type;
-	const char* string;
-    } tilmap[] = {
-	{ CLOF32,	"CLOF32.TIL" },
-	{ GROUND32,	"GROUND32.TIL" },
-	{ STON,		"STON.TIL" },
-    };
+  const struct
+  {
+    til_t type;
+    const char* string;
+  } tilmap[] = {
+    { CLOF32,   "CLOF32.TIL" },
+    { GROUND32, "GROUND32.TIL" },
+    { STON,     "STON.TIL" },
+  };
 }
 
 const char* TIL::GetString(const til_t til)
 {
-    return tilmap[til].string;
+  return tilmap[til].string;
 }

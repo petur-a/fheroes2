@@ -29,7 +29,7 @@ class Size;
 
 class SizeCursor : public SpriteCursor
 {
-public:
+  public:
     SizeCursor(u8 sw = 1, u8 sh = 1);
 
     void ModifySize(const u8 w, const u8 h);
@@ -38,7 +38,7 @@ public:
     u8 w(void);
     u8 h(void);
 
-private:
+  private:
     void ModifyCursor(const u8 w, const u8 h);
 
     Surface cursor;

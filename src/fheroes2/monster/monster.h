@@ -33,88 +33,88 @@ class Spell;
 
 class Monster
 {
-public:
+  public:
     enum { JOIN_CONDITION_SKIP  = 0, JOIN_CONDITION_MONEY = 1, JOIN_CONDITION_FREE  = 2, JOIN_CONDITION_FORCE = 3 };
 
     enum level_t { LEVEL0, LEVEL1, LEVEL2, LEVEL3, LEVEL4 };
 
     enum monster_t
     {
-	UNKNOWN,
+      UNKNOWN,
 
-	PEASANT,
-	ARCHER,
-	RANGER,
-	PIKEMAN,
-	VETERAN_PIKEMAN,
-	SWORDSMAN,
-	MASTER_SWORDSMAN,
-	CAVALRY,
-	CHAMPION,
-	PALADIN,
-	CRUSADER,
-	GOBLIN,
-	ORC,
-	ORC_CHIEF,
-	WOLF,
-	OGRE,
-	OGRE_LORD,
-	TROLL,
-	WAR_TROLL,
-	CYCLOPS,
-	SPRITE,
-	DWARF,
-	BATTLE_DWARF,
-	ELF,
-	GRAND_ELF,
-	DRUID,
-	GREATER_DRUID,
-	UNICORN,
-	PHOENIX,
-	CENTAUR,
-	GARGOYLE,
-	GRIFFIN,
-	MINOTAUR,
-	MINOTAUR_KING,
-	HYDRA,
-	GREEN_DRAGON,
-	RED_DRAGON,
-	BLACK_DRAGON,
-	HALFLING,
-	BOAR,
-	IRON_GOLEM,
-	STEEL_GOLEM,
-	ROC,
-	MAGE,
-	ARCHMAGE,
-	GIANT,
-	TITAN,
-	SKELETON,
-	ZOMBIE,
-	MUTANT_ZOMBIE,
-	MUMMY,
-	ROYAL_MUMMY,
-	VAMPIRE,
-	VAMPIRE_LORD,
-	LICH,
-	POWER_LICH,
-	BONE_DRAGON,
+      PEASANT,
+      ARCHER,
+      RANGER,
+      PIKEMAN,
+      VETERAN_PIKEMAN,
+      SWORDSMAN,
+      MASTER_SWORDSMAN,
+      CAVALRY,
+      CHAMPION,
+      PALADIN,
+      CRUSADER,
+      GOBLIN,
+      ORC,
+      ORC_CHIEF,
+      WOLF,
+      OGRE,
+      OGRE_LORD,
+      TROLL,
+      WAR_TROLL,
+      CYCLOPS,
+      SPRITE,
+      DWARF,
+      BATTLE_DWARF,
+      ELF,
+      GRAND_ELF,
+      DRUID,
+      GREATER_DRUID,
+      UNICORN,
+      PHOENIX,
+      CENTAUR,
+      GARGOYLE,
+      GRIFFIN,
+      MINOTAUR,
+      MINOTAUR_KING,
+      HYDRA,
+      GREEN_DRAGON,
+      RED_DRAGON,
+      BLACK_DRAGON,
+      HALFLING,
+      BOAR,
+      IRON_GOLEM,
+      STEEL_GOLEM,
+      ROC,
+      MAGE,
+      ARCHMAGE,
+      GIANT,
+      TITAN,
+      SKELETON,
+      ZOMBIE,
+      MUTANT_ZOMBIE,
+      MUMMY,
+      ROYAL_MUMMY,
+      VAMPIRE,
+      VAMPIRE_LORD,
+      LICH,
+      POWER_LICH,
+      BONE_DRAGON,
 
-	ROGUE,
-	NOMAD,
-	GHOST,
-	GENIE,
-	MEDUSA,
-	EARTH_ELEMENT,
-	AIR_ELEMENT,
-	FIRE_ELEMENT,
-	WATER_ELEMENT,
+      ROGUE,
+      NOMAD,
+      GHOST,
+      GENIE,
+      MEDUSA,
+      EARTH_ELEMENT,
+      AIR_ELEMENT,
+      FIRE_ELEMENT,
+      WATER_ELEMENT,
 
-	MONSTER_RND1,
-	MONSTER_RND2,
-	MONSTER_RND3,
-	MONSTER_RND4,
-	MONSTER_RND
+      MONSTER_RND1,
+      MONSTER_RND2,
+      MONSTER_RND3,
+      MONSTER_RND4,
+      MONSTER_RND
     };
 
     Monster(u8 = UNKNOWN);
@@ -161,10 +161,10 @@ public:
 
     ICN::icn_t ICNMonh(void) const;
 
-    u8		GetSpriteIndex(void) const;
-    payment_t	GetCost(void) const;
-    payment_t	GetUpgradeCost(void) const;
-    u32		GetDwelling(void) const;
+    u8      GetSpriteIndex(void) const;
+    payment_t   GetCost(void) const;
+    payment_t   GetUpgradeCost(void) const;
+    u32     GetDwelling(void) const;
 
     static Monster Rand(level_t = LEVEL0);
     static u8 Rand4WeekOf(void);
@@ -175,7 +175,7 @@ public:
     static void UpdateStats(const std::string &);
     static float GetUpgradeRatio(void);
 
-protected:
+  protected:
     static Monster FromDwelling(u8 race, u32 dw);
 
     u8 id;

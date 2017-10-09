@@ -33,50 +33,50 @@
 class FH2Server;
 namespace Battle2
 {
-    class Actions;
-    class Arena;
-    class Stats;
-    struct Result;
-    struct TargetInfo;
-    struct TargetsInfo;
+  class Actions;
+  class Arena;
+  class Stats;
+  struct Result;
+  struct TargetInfo;
+  struct TargetsInfo;
 }
 
 struct FH2RemoteClient : public FH2Client
 {
-    FH2RemoteClient();
+  FH2RemoteClient();
 
-    void InitMutex(void);
-    int Main(void);
-    bool ConnectionChat(void);
-    void CloseConnection(void);
+  void InitMutex(void);
+  int Main(void);
+  bool ConnectionChat(void);
+  void CloseConnection(void);
 
-    void RunThread(void);
-    void ShutdownThread(void);
+  void RunThread(void);
+  void ShutdownThread(void);
 
-    void SetModes(u32);
-    bool Modes(u32) const;
+  void SetModes(u32);
+  bool Modes(u32) const;
 
-    bool SendCurrentMapInfo(QueueMessage &);
-    bool SendCurrentColor(QueueMessage &);
-    bool SendMapsInfoList(QueueMessage &);
-    void MsgChangeColors(void);
-    void MsgChangeRace(void);
-    void SetGameType(u8 type);
+  bool SendCurrentMapInfo(QueueMessage &);
+  bool SendCurrentColor(QueueMessage &);
+  bool SendMapsInfoList(QueueMessage &);
+  void MsgChangeColors(void);
+  void MsgChangeRace(void);
+  void SetGameType(u8 type);
 
-    std::string String(void) const;
-    void Reset(void);
+  std::string String(void) const;
+  void Reset(void);
 
-    static int callbackCreateThread(void*);
+  static int callbackCreateThread(void*);
 
-    bool UpdateColors(void);
+  bool UpdateColors(void);
 
-    SDL::Thread thread;
-    SDL::Mutex mutexModes;
+  SDL::Thread thread;
+  SDL::Mutex mutexModes;
 };
 
 class FH2RemoteClients
 {
-public:
+  public:
     FH2RemoteClients();
 
     void InitMutex(void);
@@ -94,7 +94,7 @@ public:
     void SetNewAdmin(u32 old_rid);
     void Dump(void) const;
 
-private:
+  private:
     std::vector<FH2RemoteClient> clients;
     SDL::Mutex mutexClients;
 };

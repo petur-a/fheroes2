@@ -29,27 +29,27 @@
 
 int main(int argc, char **argv)
 {
-    if(argc != 3)
-    {
-	std::cout << argv[0] << " infile.xmi outfile.mid" << std::endl;
-
-	return EXIT_SUCCESS;
-    }
-
-    MIDI::Xmi x;
-    MIDI::Mid m;
-    MIDI::MTrk track;
-
-    x.Read(argv[1]);
-
-    track.ImportXmiEVNT(x.EVNT());
-
-    m.AddTrack(track);
-    m.SetPPQN(64);
-
-    // m.Dump();
-
-    m.Write(argv[2]);
+  if(argc != 3)
+  {
+    std::cout << argv[0] << " infile.xmi outfile.mid" << std::endl;
 
     return EXIT_SUCCESS;
+  }
+
+  MIDI::Xmi x;
+  MIDI::Mid m;
+  MIDI::MTrk track;
+
+  x.Read(argv[1]);
+
+  track.ImportXmiEVNT(x.EVNT());
+
+  m.AddTrack(track);
+  m.SetPPQN(64);
+
+  // m.Dump();
+
+  m.Write(argv[2]);
+
+  return EXIT_SUCCESS;
 }

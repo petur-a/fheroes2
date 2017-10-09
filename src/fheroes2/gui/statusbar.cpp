@@ -30,36 +30,36 @@ StatusBar::StatusBar()
 
 void StatusBar::SetCenter(const Point & pt)
 {
-    center = pt;
+  center = pt;
 }
 
 void StatusBar::SetCenter(s16 cx, s16 cy)
 {
-    center.x = cx;
-    center.y = cy;
+  center.x = cx;
+  center.y = cy;
 }
 
 void StatusBar::ShowMessage(const std::string & msg)
 {
-    if(msg != prev)
-    {
-        Cursor::Get().Hide();
-        SetText(msg);
-        SetPos(center.x - w() / 2, center.y - h() / 2);
-        Show();
-        Cursor::Get().Show();
-        Display::Get().Flip();
-	prev = msg;
-    }
+  if(msg != prev)
+  {
+    Cursor::Get().Hide();
+    SetText(msg);
+    SetPos(center.x - w() / 2, center.y - h() / 2);
+    Show();
+    Cursor::Get().Show();
+    Display::Get().Flip();
+    prev = msg;
+  }
 }
 
 void StatusBar::Redraw(void)
 {
-    Hide();
-    Show();
+  Hide();
+  Show();
 }
 
 const std::string & StatusBar::GetMessage(void) const
 {
-    return prev;
+  return prev;
 }

@@ -30,7 +30,7 @@
 
 class CastleHeroes : protected std::pair<Heroes*, Heroes*>
 {
-public:
+  public:
     CastleHeroes(Heroes* guest, Heroes* guard) : std::pair<Heroes*, Heroes*>(guest, guard) {};
 
     Heroes* Guest(void) { return first; };

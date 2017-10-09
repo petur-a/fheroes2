@@ -26,7 +26,7 @@
 
 class Splitter : public SpriteCursor
 {
-public:
+  public:
     enum positions_t { HORIZONTAL, VERTICAL };
 
     Splitter();
@@ -48,7 +48,7 @@ public:
     const Rect & GetRect(void) const{ return area; };
     const Rect & GetCursor(void) const{ return SpriteCursor::GetRect(); };
 
-private:
+  private:
     Rect area;
     u16 step;
     u16 min;

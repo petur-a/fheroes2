@@ -33,45 +33,45 @@ class LocalEvent;
 
 class SelectArtifactsBar
 {
-public:
+  public:
     SelectArtifactsBar(Heroes &);
 
     const Rect &GetArea(void) const;
-    bool	isSelected(void) const;
-    s8		GetIndexFromCoord(const Point &);
-    s8		Selected(void) const;
+    bool    isSelected(void) const;
+    s8      GetIndexFromCoord(const Point &);
+    s8      Selected(void) const;
 
-    bool	ChangeMode(void) const;
-    bool	ReadOnly(void) const;
-    bool	isValid(void) const;
+    bool    ChangeMode(void) const;
+    bool    ReadOnly(void) const;
+    bool    isValid(void) const;
 
-    void 	SetPos(const Point &);
-    void 	SetPos(s16, s16);
-    void 	SetBackgroundSprite(const Surface &);
-    void	SetCursorSprite(const Surface &);
-    void 	SetInterval(u8);
+    void    SetPos(const Point &);
+    void    SetPos(s16, s16);
+    void    SetBackgroundSprite(const Surface &);
+    void    SetCursorSprite(const Surface &);
+    void    SetInterval(u8);
 
     void        SetChangeMode(void);
-    void	SetReadOnly(void);
+    void    SetReadOnly(void);
     void        SetUseArts32Sprite(void);
 
-    void 	Redraw(Surface & display = Display::Get());
-    void 	Reset(void);
-    void	Select(u8);
+    void    Redraw(Surface & display = Display::Get());
+    void    Reset(void);
+    void    Select(u8);
 
     static bool QueueEventProcessing(SelectArtifactsBar &);
     static bool QueueEventProcessing(SelectArtifactsBar &, SelectArtifactsBar &);
 
-private:
-    Heroes &		hero;
-    Rect		pos;
-    u8			interval;
-    s8			selected;
-    u8			flags;
-    Point		offset;
+  private:
+    Heroes &        hero;
+    Rect        pos;
+    u8          interval;
+    s8          selected;
+    u8          flags;
+    Point       offset;
 
-    const Surface *	background;
-    SpriteCursor	spritecursor;
+    const Surface * background;
+    SpriteCursor    spritecursor;
 };
 
 #endif

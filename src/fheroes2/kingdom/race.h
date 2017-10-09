@@ -27,23 +27,23 @@
 
 namespace Race
 {
-    enum
-    {
-        NONE    = 0x00,
-        KNGT    = 0x01,
-        BARB    = 0x02,
-        SORC    = 0x04,
-        WRLK    = 0x08,
-        WZRD    = 0x10,
-        NECR    = 0x20,
-        MULT    = 0x40,
-        RAND    = 0x80,
-	ALL	= KNGT | BARB | SORC | WRLK | WZRD | NECR
-    };
+  enum
+  {
+    NONE    = 0x00,
+    KNGT    = 0x01,
+    BARB    = 0x02,
+    SORC    = 0x04,
+    WRLK    = 0x08,
+    WZRD    = 0x10,
+    NECR    = 0x20,
+    MULT    = 0x40,
+    RAND    = 0x80,
+    ALL = KNGT | BARB | SORC | WRLK | WZRD | NECR
+  };
 
-    const char* String(u8);
-    u8 Rand(void);
-    u8 Get(u8);
+  const char* String(u8);
+  u8 Rand(void);
+  u8 Get(u8);
 }
 
 #endif

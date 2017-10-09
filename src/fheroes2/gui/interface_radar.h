@@ -28,45 +28,45 @@
 
 namespace Interface
 {
-    class Radar : protected Rect
-    {
+  class Radar : protected Rect
+  {
     public:
-	static Radar & Get(void);
-	~Radar();
+      static Radar & Get(void);
+      ~Radar();
 
-	void SetPos(s16, s16);
-	const Rect & GetArea(void) const;
+      void SetPos(s16, s16);
+      const Rect & GetArea(void) const;
 
-	void Build(void);
-	void Generate(void);
-	void Redraw(void);
-	void RedrawArea(const u8 color = 0xFF);
-	void SetHide(bool);
-	void RedrawCursor(void);
+      void Build(void);
+      void Generate(void);
+      void Redraw(void);
+      void RedrawArea(const u8 color = 0xFF);
+      void SetHide(bool);
+      void RedrawCursor(void);
 
-	void QueueEventProcessing(void);
+      void QueueEventProcessing(void);
 
     private:
-	Surface *GetSurfaceFromColor(const u8);
-	Radar();
+      Surface *GetSurfaceFromColor(const u8);
+      Radar();
 
-        Surface *spriteArea;
-	Surface *spriteCursor;
-	SpriteCursor *cursorArea;
+      Surface *spriteArea;
+      Surface *spriteCursor;
+      SpriteCursor *cursorArea;
 
-        Surface* sf_blue;
-	Surface* sf_green;
-        Surface* sf_red;
-	Surface* sf_yellow;
-        Surface* sf_orange;
-	Surface* sf_purple;
-        Surface* sf_gray;
-	Surface* sf_black;
+      Surface* sf_blue;
+      Surface* sf_green;
+      Surface* sf_red;
+      Surface* sf_yellow;
+      Surface* sf_orange;
+      Surface* sf_purple;
+      Surface* sf_gray;
+      Surface* sf_black;
 
-	Dialog::FrameBorder border;
+      Dialog::FrameBorder border;
 
-	bool hide;
-    };
+      bool hide;
+  };
 }
 
 #endif

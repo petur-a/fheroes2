@@ -26,16 +26,16 @@
 
 namespace Difficulty
 {
-    enum
-    {
-	EASY,
-        NORMAL,
-        HARD,
-        EXPERT,
-        IMPOSSIBLE
-    };
+  enum
+  {
+    EASY,
+    NORMAL,
+    HARD,
+    EXPERT,
+    IMPOSSIBLE
+  };
 
-    const char* String(u8);
+  const char* String(u8);
 }
 
 #endif

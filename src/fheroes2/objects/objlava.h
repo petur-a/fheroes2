@@ -27,26 +27,26 @@
 
 namespace ObjLav2
 {
-    bool	isAction(const u8 & index);
-    bool	isShadow(const u8 & index);
-    u16         GetPassable(const u8 & index);
-    u8          GetActionObject(const u8 & index);
+  bool    isAction(const u8 & index);
+  bool    isShadow(const u8 & index);
+  u16         GetPassable(const u8 & index);
+  u8          GetActionObject(const u8 & index);
 }
 
 namespace ObjLav3
 {
-    bool	isAction(const u8 & index);
-    bool	isShadow(const u8 & index);
-    u16         GetPassable(const u8 & index);
-    u8          GetActionObject(const u8 & index);
+  bool    isAction(const u8 & index);
+  bool    isShadow(const u8 & index);
+  u16         GetPassable(const u8 & index);
+  u8          GetActionObject(const u8 & index);
 }
 
 namespace ObjLava
 {
-    bool	isAction(const u8 & index);
-    bool	isShadow(const u8 & index);
-    u16         GetPassable(const u8 & index);
-    u8          GetActionObject(const u8 & index);
+  bool    isAction(const u8 & index);
+  bool    isShadow(const u8 & index);
+  u16         GetPassable(const u8 & index);
+  u8          GetActionObject(const u8 & index);
 }
 
 #endif

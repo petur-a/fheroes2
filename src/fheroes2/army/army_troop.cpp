@@ -46,239 +46,239 @@ Army::Troop::Troop(const Troop & t) : Monster(t.id), count(t.count), army(t.army
 
 Army::Troop::~Troop()
 {
-    if(battle) BattleQuit();
+  if(battle) BattleQuit();
 }
 
 Army::Troop & Army::Troop::operator= (const Troop & t)
 {
-    id = t.id;
-    count = t.count;
-    if(!army && t.army) army = t.army;
-    if(battle) BattleQuit();
+  id = t.id;
+  count = t.count;
+  if(!army && t.army) army = t.army;
+  if(battle) BattleQuit();
 
-    return *this;
+  return *this;
 }
 
 bool Army::Troop::operator== (const Monster & m) const
 {
-    return static_cast<Monster>(*this) == m;
+  return static_cast<Monster>(*this) == m;
 }
 
 Monster Army::Troop::operator() (void) const
 {
-    return *this;
+  return *this;
 }
 
 void Army::Troop::Set(const Monster & m, u32 c)
 {
-    SetMonster(m);
-    SetCount(c);
+  SetMonster(m);
+  SetCount(c);
 }
 
 void Army::Troop::SetMonster(const Monster & m)
 {
-    id = m();
+  id = m();
 }
 
 void Army::Troop::SetCount(u32 c)
 {
-    count = c;
+  count = c;
 }
 
 void Army::Troop::Reset(void)
 {
-    id = Monster::UNKNOWN;
-    count = 0;
+  id = Monster::UNKNOWN;
+  count = 0;
 }
 
 const Battle2::Stats* Army::Troop::GetBattleStats(void) const
 {
-    if(!battle) DEBUG(DBG_GAME, DBG_WARN, "return NULL");
-    return battle;
+  if(!battle) DEBUG(DBG_GAME, DBG_WARN, "return NULL");
+  return battle;
 }
 
 Battle2::Stats* Army::Troop::GetBattleStats(void)
 {
-    return battle;
+  return battle;
 }
 
 bool Army::Troop::BattleInit(void)
 {
-    if(isValid())
-    {
-	if(battle) delete battle;
-	battle = new Battle2::Stats(*this);
-	return battle;
-    }
-    DEBUG(DBG_BATTLE, DBG_WARN, "invalid troop");
-    return false;
+  if(isValid())
+  {
+    if(battle) delete battle;
+    battle = new Battle2::Stats(*this);
+    return battle;
+  }
+  DEBUG(DBG_BATTLE, DBG_WARN, "invalid troop");
+  return false;
 }
 
 void Army::Troop::BattleQuit(void)
 {
-    if(battle)
+  if(battle)
+  {
+    if(battle->dead > count)
     {
-	if(battle->dead > count)
-	{
-	    VERBOSE("Army::Troop::BattleQuit: " << GetName() << ", dead(" << battle->dead << ") > current(" << count << ") incorrect!! FIXME!");
-	    count = 0;
-	}
-	else
-	    count -= battle->dead;
-
-	delete battle;
-	battle = NULL;
+      VERBOSE("Army::Troop::BattleQuit: " << GetName() << ", dead(" << battle->dead << ") > current(" << count << ") incorrect!! FIXME!");
+      count = 0;
     }
+    else
+      count -= battle->dead;
+
+    delete battle;
+    battle = NULL;
+  }
 }
 
 u32 Army::Troop::BattleKilled(void) const
 {
-    return battle ? battle->dead : 0;
+  return battle ? battle->dead : 0;
 }
 
 void Army::Troop::SetArmy(army_t* a)
 {
-    army = a;
+  army = a;
 }
 
 Army::army_t* Army::Troop::GetArmy(void)
 {
-    return army;
+  return army;
 }
 
 const Army::army_t* Army::Troop::GetArmy(void) const
 {
-    return army;
+  return army;
 }
 
 const char* Army::Troop::GetName(u32 amount /* = 0 */) const
 {
-    u32 cmp = count;
-    if(amount)
-        cmp = amount;
-    return 1 < cmp ? Monster::GetMultiName() : Monster::GetName();
+  u32 cmp = count;
+  if(amount)
+    cmp = amount;
+  return 1 < cmp ? Monster::GetMultiName() : Monster::GetName();
 }
 
 u32 Army::Troop::GetCount(void) const
 {
-    return count;
+  return count;
 }
 
 u8 Army::Troop::GetAttack(bool hero) const
 {
-    return battle ? battle->GetAttack() : Monster::GetAttack() +
-            (army && hero && army->GetCommander() ? army->GetCommander()->GetAttack() : 0);
+  return battle ? battle->GetAttack() : Monster::GetAttack() +
+    (army && hero && army->GetCommander() ? army->GetCommander()->GetAttack() : 0);
 }
 
 u8 Army::Troop::GetDefense(bool hero) const
 {
-    return battle ? battle->GetDefense() : Monster::GetDefense() +
-            (army && hero && army->GetCommander() ? army->GetCommander()->GetDefense() : 0);
+  return battle ? battle->GetDefense() : Monster::GetDefense() +
+    (army && hero && army->GetCommander() ? army->GetCommander()->GetDefense() : 0);
 }
 
 u8 Army::Troop::GetColor(void) const
 {
-    return army ? army->GetColor() : Color::NONE;
+  return army ? army->GetColor() : Color::NONE;
 }
 
 u32 Army::Troop::GetHitPoints(void) const
 {
-    return battle ? battle->GetHitPoints() : Monster::GetHitPoints() * count;
+  return battle ? battle->GetHitPoints() : Monster::GetHitPoints() * count;
 }
 
 u32 Army::Troop::GetDamageMin(void) const
 {
-    return Monster::GetDamageMin() * count;
+  return Monster::GetDamageMin() * count;
 }
 
 u32 Army::Troop::GetDamageMax(void) const
 {
-    return Monster::GetDamageMax() * count;
+  return Monster::GetDamageMax() * count;
 }
 
 u32 Army::Troop::GetStrength(void) const
 {
-    float res = (GetDamageMin() + GetDamageMax()) >> 1;
+  float res = (GetDamageMin() + GetDamageMax()) >> 1;
 
-    // increase strength
-    if(isFly())		res += res * 0.5;
-    if(isArchers())	res += res * 0.5;
-    if(isTwiceAttack())	res += res * 0.5;
-    if(isHideAttack())	res += res * 0.5;
+  // increase strength
+  if(isFly())     res += res * 0.5;
+  if(isArchers()) res += res * 0.5;
+  if(isTwiceAttack()) res += res * 0.5;
+  if(isHideAttack())  res += res * 0.5;
 
-    // slowly: decrease strength
-    if((!isFly() && !isArchers()) && Speed::AVERAGE > GetSpeed()) res -= res * 0.5;
+  // slowly: decrease strength
+  if((!isFly() && !isArchers()) && Speed::AVERAGE > GetSpeed()) res -= res * 0.5;
 
-    switch(GetID())
-    {
-	case Monster::GHOST: res *= 2; break;
+  switch(GetID())
+  {
+    case Monster::GHOST: res *= 2; break;
 
-	default: break;
-    }
-    return static_cast<u32>(res);
+    default: break;
+  }
+  return static_cast<u32>(res);
 }
 
 u8 Army::Troop::GetSpeed(void) const
 {
-    return battle ? battle->GetSpeed() : Monster::GetSpeed();
+  return battle ? battle->GetSpeed() : Monster::GetSpeed();
 }
 
 s8 Army::Troop::GetMorale(void) const
 {
-    return isAffectedByMorale() && army ? army->GetMorale() : Morale::NORMAL;
+  return isAffectedByMorale() && army ? army->GetMorale() : Morale::NORMAL;
 }
 
 s8 Army::Troop::GetLuck(void) const
 {
-    return army ? army->GetLuck() : Luck::NORMAL;
+  return army ? army->GetLuck() : Luck::NORMAL;
 }
 
 bool Army::Troop::isValid(void) const
 {
-    return battle ? battle->isValid() : Monster::UNKNOWN < id && count;
+  return battle ? battle->isValid() : Monster::UNKNOWN < id && count;
 }
 
 bool Army::Troop::isAffectedByMorale(void) const
 {
-    return !(isUndead() || isElemental());
+  return !(isUndead() || isElemental());
 }
 
 s8 Army::Troop::GetArmyIndex(void) const
 {
-    return army ? army->GetTroopIndex(*this) : -1;
+  return army ? army->GetTroopIndex(*this) : -1;
 }
 
 payment_t Army::Troop::GetCost(void) const
 {
-    return Monster::GetCost() * count;
+  return Monster::GetCost() * count;
 }
 
 payment_t Army::Troop::GetUpgradeCost(void) const
 {
-    return Monster::GetUpgradeCost() * count;
+  return Monster::GetUpgradeCost() * count;
 }
 
 bool Army::isValidTroop(const Troop & troop)
 {
-    return troop.isValid();
+  return troop.isValid();
 }
 
 bool Army::WeakestTroop(const Troop & t1, const Troop & t2)
 {
-    return t1.GetDamageMax() < t2.GetDamageMax();
+  return t1.GetDamageMax() < t2.GetDamageMax();
 }
 
 bool Army::StrongestTroop(const Troop & t1, const Troop & t2)
 {
-    return t1.GetDamageMin() > t2.GetDamageMin();
+  return t1.GetDamageMin() > t2.GetDamageMin();
 }
 
 bool Army::SlowestTroop(const Troop & t1, const Troop & t2)
 {
-    return t1.GetSpeed() < t2.GetSpeed();
+  return t1.GetSpeed() < t2.GetSpeed();
 }
 
 void Army::SwapTroops(Troop & t1, Troop & t2)
 {
-    std::swap(t1, t2);
+  std::swap(t1, t2);
 }

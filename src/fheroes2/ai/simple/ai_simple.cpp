@@ -34,12 +34,12 @@
 
 const char* AI::Type(void)
 {
-    return "simple";
+  return "simple";
 }
 
 const char* AI::License(void)
 {
-    return "Non-Commercial";
+  return "Non-Commercial";
 }
 
 void AI::AddHeroes(const Heroes &)
@@ -56,22 +56,22 @@ void AI::AddCastle(const Castle &)
 
 void AI::RemoveCastle(const Castle & castle)
 {
-    AIKingdom & ai = AIKingdoms::Get(castle.GetColor());
+  AIKingdom & ai = AIKingdoms::Get(castle.GetColor());
 
-    if(ai.capital == &castle)
-    {
-        ai.capital->ResetModes(Castle::CAPITAL);
-        ai.capital = NULL;
-    }
+  if(ai.capital == &castle)
+  {
+    ai.capital->ResetModes(Castle::CAPITAL);
+    ai.capital = NULL;
+  }
 }
 
 void AI::Init(void)
 {
-    AIKingdoms::Reset();
-    AIHeroes::Reset();
+  AIKingdoms::Reset();
+  AIHeroes::Reset();
 }
 
 bool Queue::isPresent(s32 index) const
 {
-    return end() != std::find(begin(), end(), index);
+  return end() != std::find(begin(), end(), index);
 }

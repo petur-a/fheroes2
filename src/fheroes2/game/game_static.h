@@ -29,37 +29,37 @@ struct cost_t;
 
 namespace GameStatic
 {
-    u8		GetLostOnWhirlpoolPercent(void);
-    u8		GetGameOverLostDays(void);
-    u8		GetOverViewDistance(u8);
+  u8      GetLostOnWhirlpoolPercent(void);
+  u8      GetGameOverLostDays(void);
+  u8      GetOverViewDistance(u8);
 
-    cost_t &	GetKingdomStartingResource(u8);
-    u8		GetKingdomMaxHeroes(void);
+  cost_t &    GetKingdomStartingResource(u8);
+  u8      GetKingdomMaxHeroes(void);
 
-    u8		GetCastleGrownWell(void);
-    u8		GetCastleGrownWel2(void);
-    u8		GetCastleGrownWeekOf(void);
-    u8		GetCastleGrownMonthOf(void);
+  u8      GetCastleGrownWell(void);
+  u8      GetCastleGrownWel2(void);
+  u8      GetCastleGrownWeekOf(void);
+  u8      GetCastleGrownMonthOf(void);
 
-    u8		GetHeroesRestoreSpellPointsPerDay(void);
-    u8		GetMageGuildRestoreSpellPointsPercentDay(u8);
+  u8      GetHeroesRestoreSpellPointsPerDay(void);
+  u8      GetMageGuildRestoreSpellPointsPercentDay(u8);
 
-    float	GetMonsterUpgradeRatio(void);
-    s8		ObjectVisitedModifiers(u8);
+  float   GetMonsterUpgradeRatio(void);
+  s8      ObjectVisitedModifiers(u8);
 }
 
 #ifdef WITH_XML
 #include "xmlccwrap.h"
 namespace Game
 {
-    void	CastleUpdateGrowth(const TiXmlElement*);
-    void	KingdomUpdateStartingResource(const TiXmlElement*);
-    void	HeroesUpdateStatic(const TiXmlElement*);
-    void	KingdomUpdateStatic(const TiXmlElement*);
-    void	GameOverUpdateStatic(const TiXmlElement*);
-    void	OverViewUpdateStatic(const TiXmlElement*);
-    void	WhirlpoolUpdateStatic(const TiXmlElement*);
-    void	MonsterUpdateStatic(const TiXmlElement*);
+  void    CastleUpdateGrowth(const TiXmlElement*);
+  void    KingdomUpdateStartingResource(const TiXmlElement*);
+  void    HeroesUpdateStatic(const TiXmlElement*);
+  void    KingdomUpdateStatic(const TiXmlElement*);
+  void    GameOverUpdateStatic(const TiXmlElement*);
+  void    OverViewUpdateStatic(const TiXmlElement*);
+  void    WhirlpoolUpdateStatic(const TiXmlElement*);
+  void    MonsterUpdateStatic(const TiXmlElement*);
 }
 #endif
 

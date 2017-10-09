@@ -33,345 +33,345 @@
 
 s32 Route::Step::GetIndex(void) const
 {
-    return from < 0 ? -1 : Maps::GetDirectionIndex(from, direction);
+  return from < 0 ? -1 : Maps::GetDirectionIndex(from, direction);
 }
 
 bool Route::Step::isBad(void) const
 {
-    return from < 0 || (direction == Direction::UNKNOWN || direction == Direction::CENTER);
+  return from < 0 || (direction == Direction::UNKNOWN || direction == Direction::CENTER);
 }
 
 /* construct */
 Route::Path::Path(const Heroes & h)
-    : hero(h), dst(h.GetIndex()), hide(true)
+  : hero(h), dst(h.GetIndex()), hide(true)
 {
 }
 
 u16 Route::Path::GetFrontDirection(void) const
 {
-    return empty() ?
-	(dst != hero.GetIndex() ? Direction::Get(hero.GetIndex(), dst)
-					    : Direction::CENTER) : front().direction;
+  return empty() ?
+    (dst != hero.GetIndex() ? Direction::Get(hero.GetIndex(), dst)
+     : Direction::CENTER) : front().direction;
 }
 
 u16 Route::Path::GetFrontPenalty(void) const
 {
-    return empty() ? 0 : front().penalty;
+  return empty() ? 0 : front().penalty;
 }
 
 void Route::Path::PopFront(void)
 {
-    if(!empty()) pop_front();
+  if(!empty()) pop_front();
 }
 
 void Route::Path::PopBack(void)
 {
-    if(!empty())
-    {
-	pop_back();
-	dst = empty() ? -1 : back().GetIndex();
-    }
+  if(!empty())
+  {
+    pop_back();
+    dst = empty() ? -1 : back().GetIndex();
+  }
 }
 
 s32 Route::Path::GetDestinationIndex(void) const
 {
-    return empty() ? GetDestinedIndex() : GetLastIndex();
+  return empty() ? GetDestinedIndex() : GetLastIndex();
 }
 
 s32 Route::Path::GetLastIndex(void) const
 {
-    return empty() ? -1 : back().GetIndex();
+  return empty() ? -1 : back().GetIndex();
 }
 
 s32 Route::Path::GetDestinedIndex(void) const
 {
-    return dst;
+  return dst;
 }
 
 /* return length path */
 bool Route::Path::Calculate(const s32 dst_index, const u16 limit)
 {
-    clear();
-    Algorithm::PathFind(this, hero.GetIndex(), dst_index, limit, &hero);
+  clear();
+  Algorithm::PathFind(this, hero.GetIndex(), dst_index, limit, &hero);
 
-    // check monster dst
-    if(!empty() &&
-	Maps::isValidAbsIndex(dst_index) &&
-	MP2::OBJ_MONSTER == world.GetTiles(dst_index).GetObject())
-	pop_back();
+  // check monster dst
+  if(!empty() &&
+      Maps::isValidAbsIndex(dst_index) &&
+      MP2::OBJ_MONSTER == world.GetTiles(dst_index).GetObject())
+    pop_back();
 
-    dst = dst_index;
+  dst = dst_index;
 
-    return !empty();
+  return !empty();
 }
 
 void Route::Path::Reset(void)
 {
-    dst = hero.GetIndex();
-    if(!empty())
-    {
-	clear();
-	hide = true;
-    }
+  dst = hero.GetIndex();
+  if(!empty())
+  {
+    clear();
+    hide = true;
+  }
 }
 
 bool Route::Path::isValid(void) const
 {
-    return !empty() || (dst != hero.GetIndex() &&
-			Direction::UNKNOWN != Direction::Get(hero.GetIndex(), dst));
+  return !empty() || (dst != hero.GetIndex() &&
+      Direction::UNKNOWN != Direction::Get(hero.GetIndex(), dst));
 }
 
 /*
-bool Route::Path::isBroken(void) const
-{
-    return end() != std::find_if(begin(), end(), std::mem_fun_ref(&Route::Step::isBad));
-}
-*/
+   bool Route::Path::isBroken(void) const
+   {
+   return end() != std::find_if(begin(), end(), std::mem_fun_ref(&Route::Step::isBad));
+   }
+   */
 
 u16 Route::Path::GetIndexSprite(u16 from, u16 to, u8 mod)
 {
-    // ICN::ROUTE
-    // start index 1, 25, 49, 73, 97, 121 (size arrow path)
-    u16 index = 1;
+  // ICN::ROUTE
+  // start index 1, 25, 49, 73, 97, 121 (size arrow path)
+  u16 index = 1;
 
-    switch(mod)
-    {
-	case 200:	index = 121; break;
-	case 175:	index = 97; break;
-	case 150:	index = 73; break;
-	case 125:	index = 49; break;
-	case 100:	index = 25; break;
+  switch(mod)
+  {
+    case 200:   index = 121; break;
+    case 175:   index = 97; break;
+    case 150:   index = 73; break;
+    case 125:   index = 49; break;
+    case 100:   index = 25; break;
 
-	default: break;
-    }
+    default: break;
+  }
 
-    switch(from)
-    {
-	case Direction::TOP:
-	    switch(to)
-	    {
-		case Direction::TOP:		index +=  8; break;
-		case Direction::TOP_RIGHT:	index += 17; break;
-		case Direction::RIGHT:		index += 18; break;
-		case Direction::LEFT:		index +=  6; break;
-		case Direction::TOP_LEFT:	index +=  7; break;
-		case Direction::BOTTOM_LEFT:	index +=  5; break;
-		case Direction::BOTTOM_RIGHT:	index += 19; break;
-		default: 			index  =  0; break;
-	    }
-	    break;
+  switch(from)
+  {
+    case Direction::TOP:
+      switch(to)
+      {
+        case Direction::TOP:        index +=  8; break;
+        case Direction::TOP_RIGHT:  index += 17; break;
+        case Direction::RIGHT:      index += 18; break;
+        case Direction::LEFT:       index +=  6; break;
+        case Direction::TOP_LEFT:   index +=  7; break;
+        case Direction::BOTTOM_LEFT:    index +=  5; break;
+        case Direction::BOTTOM_RIGHT:   index += 19; break;
+        default:            index  =  0; break;
+      }
+      break;
 
-	case Direction::TOP_RIGHT:
-	    switch(to)
-	    {
-		case Direction::TOP:		index +=  0; break;
-		case Direction::TOP_RIGHT:	index +=  9; break;
-		case Direction::RIGHT:		index += 18; break;
-		case Direction::BOTTOM_RIGHT:	index += 19; break;
-		case Direction::TOP_LEFT:	index +=  7; break;
-		case Direction::BOTTOM:		index += 20; break;
-		case Direction::LEFT:		index +=  6; break;
-		default: 			index  =  0; break;
-	    }
-	    break;
+    case Direction::TOP_RIGHT:
+      switch(to)
+      {
+        case Direction::TOP:        index +=  0; break;
+        case Direction::TOP_RIGHT:  index +=  9; break;
+        case Direction::RIGHT:      index += 18; break;
+        case Direction::BOTTOM_RIGHT:   index += 19; break;
+        case Direction::TOP_LEFT:   index +=  7; break;
+        case Direction::BOTTOM:     index += 20; break;
+        case Direction::LEFT:       index +=  6; break;
+        default:            index  =  0; break;
+      }
+      break;
 
-	case Direction::RIGHT:
-	    switch(to)
-	    {
-		case Direction::TOP:		index +=  0; break;
-		case Direction::BOTTOM:		index += 20; break;
-		case Direction::BOTTOM_RIGHT:	index += 19; break;
-		case Direction::RIGHT:		index += 10; break;
-		case Direction::TOP_RIGHT:	index +=  1; break;
-		case Direction::TOP_LEFT:	index +=  7; break;
-		case Direction::BOTTOM_LEFT:	index += 21; break;
-		default: 			index  =  0; break;
-	    }
-	    break;
+    case Direction::RIGHT:
+      switch(to)
+      {
+        case Direction::TOP:        index +=  0; break;
+        case Direction::BOTTOM:     index += 20; break;
+        case Direction::BOTTOM_RIGHT:   index += 19; break;
+        case Direction::RIGHT:      index += 10; break;
+        case Direction::TOP_RIGHT:  index +=  1; break;
+        case Direction::TOP_LEFT:   index +=  7; break;
+        case Direction::BOTTOM_LEFT:    index += 21; break;
+        default:            index  =  0; break;
+      }
+      break;
 
-	case Direction::BOTTOM_RIGHT:
-	    switch(to)
-	    {
-		case Direction::TOP_RIGHT:	index +=  1; break;
-		case Direction::RIGHT:		index +=  2; break;
-		case Direction::BOTTOM_RIGHT:	index += 11; break;
-		case Direction::BOTTOM:		index += 20; break;
-		case Direction::BOTTOM_LEFT:	index += 21; break;
-		case Direction::TOP:		index +=  0; break;
-		case Direction::LEFT:		index += 22; break;
-		default: 			index  =  0; break;
-	    }
-	    break;
+    case Direction::BOTTOM_RIGHT:
+      switch(to)
+      {
+        case Direction::TOP_RIGHT:  index +=  1; break;
+        case Direction::RIGHT:      index +=  2; break;
+        case Direction::BOTTOM_RIGHT:   index += 11; break;
+        case Direction::BOTTOM:     index += 20; break;
+        case Direction::BOTTOM_LEFT:    index += 21; break;
+        case Direction::TOP:        index +=  0; break;
+        case Direction::LEFT:       index += 22; break;
+        default:            index  =  0; break;
+      }
+      break;
 
-	case Direction::BOTTOM:
-	    switch(to)
-	    {
-		case Direction::RIGHT:		index +=  2; break;
-		case Direction::BOTTOM_RIGHT:	index +=  3; break;
-		case Direction::BOTTOM:		index += 12; break;
-		case Direction::BOTTOM_LEFT:	index += 21; break;
-		case Direction::LEFT:		index += 22; break;
-		case Direction::TOP_LEFT:	index += 16; break;
-		case Direction::TOP_RIGHT:	index +=  1; break;
-		default: 			index  =  0; break;
-	    }
-	    break;
+    case Direction::BOTTOM:
+      switch(to)
+      {
+        case Direction::RIGHT:      index +=  2; break;
+        case Direction::BOTTOM_RIGHT:   index +=  3; break;
+        case Direction::BOTTOM:     index += 12; break;
+        case Direction::BOTTOM_LEFT:    index += 21; break;
+        case Direction::LEFT:       index += 22; break;
+        case Direction::TOP_LEFT:   index += 16; break;
+        case Direction::TOP_RIGHT:  index +=  1; break;
+        default:            index  =  0; break;
+      }
+      break;
 
-	case Direction::BOTTOM_LEFT:
-	    switch(to)
-	    {
-		case Direction::BOTTOM_RIGHT:	index +=  3; break;
-		case Direction::BOTTOM:		index +=  4; break;
-		case Direction::BOTTOM_LEFT:	index += 13; break;
-		case Direction::LEFT:		index += 22; break;
-		case Direction::TOP_LEFT:	index += 23; break;
-		case Direction::TOP:		index += 16; break;
-		case Direction::RIGHT:		index +=  2; break;
-		default: 			index  =  0; break;
-	    }
-	    break;
+    case Direction::BOTTOM_LEFT:
+      switch(to)
+      {
+        case Direction::BOTTOM_RIGHT:   index +=  3; break;
+        case Direction::BOTTOM:     index +=  4; break;
+        case Direction::BOTTOM_LEFT:    index += 13; break;
+        case Direction::LEFT:       index += 22; break;
+        case Direction::TOP_LEFT:   index += 23; break;
+        case Direction::TOP:        index += 16; break;
+        case Direction::RIGHT:      index +=  2; break;
+        default:            index  =  0; break;
+      }
+      break;
 
-	case Direction::LEFT:
-	    switch(to)
-	    {
-		case Direction::TOP:		index += 16; break;
-		case Direction::BOTTOM:		index +=  4; break;
-		case Direction::BOTTOM_LEFT:	index +=  5; break;
-		case Direction::LEFT:		index += 14; break;
-		case Direction::TOP_LEFT:	index += 23; break;
-		case Direction::TOP_RIGHT:	index += 17; break;
-		case Direction::BOTTOM_RIGHT:	index +=  3; break;
-		default: 			index  =  0; break;
-	    }
-	    break;
+    case Direction::LEFT:
+      switch(to)
+      {
+        case Direction::TOP:        index += 16; break;
+        case Direction::BOTTOM:     index +=  4; break;
+        case Direction::BOTTOM_LEFT:    index +=  5; break;
+        case Direction::LEFT:       index += 14; break;
+        case Direction::TOP_LEFT:   index += 23; break;
+        case Direction::TOP_RIGHT:  index += 17; break;
+        case Direction::BOTTOM_RIGHT:   index +=  3; break;
+        default:            index  =  0; break;
+      }
+      break;
 
-	case Direction::TOP_LEFT:
-	    switch(to)
-	    {
-		case Direction::TOP:		index += 16; break;
-		case Direction::TOP_RIGHT:	index += 17; break;
-		case Direction::BOTTOM_LEFT:	index +=  5; break;
-		case Direction::LEFT:		index +=  6; break;
-		case Direction::TOP_LEFT:	index += 15; break;
-		case Direction::BOTTOM:		index +=  4; break;
-		case Direction::RIGHT:		index += 18; break;
-		default: 			index  =  0; break;
-	    }
-	    break;
+    case Direction::TOP_LEFT:
+      switch(to)
+      {
+        case Direction::TOP:        index += 16; break;
+        case Direction::TOP_RIGHT:  index += 17; break;
+        case Direction::BOTTOM_LEFT:    index +=  5; break;
+        case Direction::LEFT:       index +=  6; break;
+        case Direction::TOP_LEFT:   index += 15; break;
+        case Direction::BOTTOM:     index +=  4; break;
+        case Direction::RIGHT:      index += 18; break;
+        default:            index  =  0; break;
+      }
+      break;
 
-	default: 		   	        index  =  0; break;
-    }
+    default:                    index  =  0; break;
+  }
 
-    return index;
+  return index;
 }
 
 /* total penalty cast */
 u32 Route::Path::TotalPenalty(void) const
 {
-    u32 result = 0;
+  u32 result = 0;
 
-    for(const_iterator
-	it = begin(); it != end(); ++it)
-	result += (*it).penalty;
+  for(const_iterator
+      it = begin(); it != end(); ++it)
+    result += (*it).penalty;
 
-    return result;
+  return result;
 }
 
 u16 Route::Path::GetAllowStep(void) const
 {
-    u16 green = 0;
-    u16 move_point = hero.GetMovePoints();
+  u16 green = 0;
+  u16 move_point = hero.GetMovePoints();
 
-    for(const_iterator
-	it = begin(); it != end() && move_point >= (*it).penalty; ++it)
-    {
-	move_point -= (*it).penalty;
-	++green;
-    }
+  for(const_iterator
+      it = begin(); it != end() && move_point >= (*it).penalty; ++it)
+  {
+    move_point -= (*it).penalty;
+    ++green;
+  }
 
-    return green;
+  return green;
 }
 
 std::string Route::Path::String(void) const
 {
-    std::ostringstream os;
+  std::ostringstream os;
 
-    os << "from: " << hero.GetIndex() << ", to: " << GetLastIndex() <<
-	", obj: " << MP2::StringObject(world.GetTiles(dst).GetObject()) << ", dump: ";
+  os << "from: " << hero.GetIndex() << ", to: " << GetLastIndex() <<
+    ", obj: " << MP2::StringObject(world.GetTiles(dst).GetObject()) << ", dump: ";
 
-    for(const_iterator
-	it = begin(); it != end(); ++it)
-	os << Direction::String((*it).direction) << "(" << (*it).penalty << ")" << ", ";
+  for(const_iterator
+      it = begin(); it != end(); ++it)
+    os << Direction::String((*it).direction) << "(" << (*it).penalty << ")" << ", ";
 
-    os << "end";
-    return os.str();
+  os << "end";
+  return os.str();
 }
 
 bool StepIsObstacle(const Route::Step & s)
 {
-    s32 index = s.GetIndex();
-    u8 obj = 0 <= index ? world.GetTiles(index).GetObject() : MP2::OBJ_ZERO;
+  s32 index = s.GetIndex();
+  u8 obj = 0 <= index ? world.GetTiles(index).GetObject() : MP2::OBJ_ZERO;
 
-    switch(obj)
-    {
-	case MP2::OBJ_HEROES:
-	case MP2::OBJ_MONSTER:
-	    return true;
+  switch(obj)
+  {
+    case MP2::OBJ_HEROES:
+    case MP2::OBJ_MONSTER:
+      return true;
 
-	default: break;
-    }
+    default: break;
+  }
 
-    return false;
+  return false;
 }
 
 bool StepIsPassable(const Route::Step & s, const Heroes* h)
 {
-    return world.GetTiles(s.from).isPassable(h, s.direction, false);
+  return world.GetTiles(s.from).isPassable(h, s.direction, false);
 }
 
 bool Route::Path::hasObstacle(void) const
 {
-    const_iterator it = std::find_if(begin(), end(), StepIsObstacle);
-    return it != end() && (*it).GetIndex() != GetLastIndex();
+  const_iterator it = std::find_if(begin(), end(), StepIsObstacle);
+  return it != end() && (*it).GetIndex() != GetLastIndex();
 }
 
 void Route::Path::RescanObstacle(void)
 {
-    // scan obstacle
-    iterator it = std::find_if(begin(), end(), StepIsObstacle);
- 
-    if(it != end() && (*it).GetIndex() != GetLastIndex())
-    {
-	size_t size1 = size();
-	s32 reduce = (*it).from;
-	Calculate(dst);
-	// reduce
-	if(size() > size1 * 2) Calculate(reduce);
-    }
+  // scan obstacle
+  iterator it = std::find_if(begin(), end(), StepIsObstacle);
+
+  if(it != end() && (*it).GetIndex() != GetLastIndex())
+  {
+    size_t size1 = size();
+    s32 reduce = (*it).from;
+    Calculate(dst);
+    // reduce
+    if(size() > size1 * 2) Calculate(reduce);
+  }
 }
 
 void Route::Path::RescanPassable(void)
 {
-    // scan passable
-    iterator it = begin();
+  // scan passable
+  iterator it = begin();
 
-    for(; it != end(); ++it)
-	if(! world.GetTiles((*it).from).isPassable(NULL, (*it).direction, false))
-	break;
+  for(; it != end(); ++it)
+    if(! world.GetTiles((*it).from).isPassable(NULL, (*it).direction, false))
+      break;
 
-    if(hero.GetControl() == CONTROL_AI)
-    {
-	Reset();
-    }
-    else
+  if(hero.GetControl() == CONTROL_AI)
+  {
+    Reset();
+  }
+  else
     if(it != end())
     {
-	if(it == begin())
-	    Reset();
-	else
-	{
-	    dst = (*it).from;
-	    erase(it, end());
-	}
+      if(it == begin())
+        Reset();
+      else
+      {
+        dst = (*it).from;
+        erase(it, end());
+      }
     }
 }

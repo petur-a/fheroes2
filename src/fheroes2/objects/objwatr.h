@@ -27,18 +27,18 @@
 
 namespace ObjWatr
 {
-    bool	isShadow(const u8 & index);
-    bool	isAction(const u8 & index);
-    u16         GetPassable(const u8 & index);
-    u8          GetActionObject(const u8 & index);
+  bool    isShadow(const u8 & index);
+  bool    isAction(const u8 & index);
+  u16         GetPassable(const u8 & index);
+  u8          GetActionObject(const u8 & index);
 }
 
 namespace ObjWat2
 {
-    bool	isShadow(const u8 & index);
-    bool	isAction(const u8 & index);
-    u16         GetPassable(const u8 & index);
-    u8          GetActionObject(const u8 & index);
+  bool    isShadow(const u8 & index);
+  bool    isAction(const u8 & index);
+  u16         GetPassable(const u8 & index);
+  u8          GetActionObject(const u8 & index);
 }
 
 #endif

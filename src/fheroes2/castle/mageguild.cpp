@@ -32,79 +32,79 @@ Spell GetCombatSpellCompatibility(u8 race, u8 level);
 
 void MageGuild::Builds(u8 race, bool libraryCap)
 {
-    general.clear();
-    library.clear();
+  general.clear();
+  library.clear();
 
-    // level 5
-    general.Append(7 > Rand::Get(1, 10) ? Spell::RandCombat(5) : Spell::RandAdventure(5));
+  // level 5
+  general.Append(7 > Rand::Get(1, 10) ? Spell::RandCombat(5) : Spell::RandAdventure(5));
 
-    // level 4
-    general.Append(GetCombatSpellCompatibility(race, 4));
-    general.Append(Spell::RandAdventure(4));
+  // level 4
+  general.Append(GetCombatSpellCompatibility(race, 4));
+  general.Append(Spell::RandAdventure(4));
 
-    // level 3
-    general.Append(GetCombatSpellCompatibility(race, 3));
-    general.Append(Spell::RandAdventure(3));
+  // level 3
+  general.Append(GetCombatSpellCompatibility(race, 3));
+  general.Append(Spell::RandAdventure(3));
 
-    // level 2
-    general.Append(GetCombatSpellCompatibility(race, 2));
-    general.Append(GetUniqueCombatSpellCompatibility(general, race, 2));
-    general.Append(Spell::RandAdventure(2));
+  // level 2
+  general.Append(GetCombatSpellCompatibility(race, 2));
+  general.Append(GetUniqueCombatSpellCompatibility(general, race, 2));
+  general.Append(Spell::RandAdventure(2));
 
-    // level 1
-    general.Append(GetCombatSpellCompatibility(race, 1));
-    general.Append(GetUniqueCombatSpellCompatibility(general, race, 1));
-    general.Append(Spell::RandAdventure(1));
+  // level 1
+  general.Append(GetCombatSpellCompatibility(race, 1));
+  general.Append(GetUniqueCombatSpellCompatibility(general, race, 1));
+  general.Append(Spell::RandAdventure(1));
 
-    if(libraryCap)
-    {
-	library.Append(GetUniqueCombatSpellCompatibility(general, race, 1));
-	library.Append(GetUniqueCombatSpellCompatibility(general, race, 2));
-	library.Append(GetUniqueCombatSpellCompatibility(general, race, 3));
-	library.Append(GetUniqueCombatSpellCompatibility(general, race, 4));
-	library.Append(GetUniqueCombatSpellCompatibility(general, race, 5));
-    }
+  if(libraryCap)
+  {
+    library.Append(GetUniqueCombatSpellCompatibility(general, race, 1));
+    library.Append(GetUniqueCombatSpellCompatibility(general, race, 2));
+    library.Append(GetUniqueCombatSpellCompatibility(general, race, 3));
+    library.Append(GetUniqueCombatSpellCompatibility(general, race, 4));
+    library.Append(GetUniqueCombatSpellCompatibility(general, race, 5));
+  }
 }
 
 SpellStorage MageGuild::GetSpells(u8 lvlmage, bool islibrary, u8 level) const
 {
-    SpellStorage result;
+  SpellStorage result;
 
-    if(lvlmage >= level)
-    {
-	result = general.GetSpells(level);
-	if(islibrary) result.Append(library.GetSpells(level));
-    }
+  if(lvlmage >= level)
+  {
+    result = general.GetSpells(level);
+    if(islibrary) result.Append(library.GetSpells(level));
+  }
 
-    return result;
+  return result;
 }
 
 void MageGuild::EducateHero(HeroBase & hero, u8 lvlmage, bool isLibraryBuild) const
 {
-    if(hero.HaveSpellBook() && lvlmage)
+  if(hero.HaveSpellBook() && lvlmage)
+  {
+    SpellStorage spells;
+
+    for(u8 level = 1; level <= 5; ++level) if(level <= lvlmage)
     {
-	SpellStorage spells;
-
-	for(u8 level = 1; level <= 5; ++level) if(level <= lvlmage)
-	{
-	    spells.Append(general.GetSpells(level));
-	    if(isLibraryBuild) spells.Append(library.GetSpells(level));
-	}
-
-	hero.AppendSpellsToBook(spells);
+      spells.Append(general.GetSpells(level));
+      if(isLibraryBuild) spells.Append(library.GetSpells(level));
     }
+
+    hero.AppendSpellsToBook(spells);
+  }
 }
 
 Spell GetUniqueCombatSpellCompatibility(const SpellStorage & spells, u8 race, u8 lvl)
 {
-    Spell spell = GetCombatSpellCompatibility(race, lvl);
-    while(spells.isPresentSpell(spell)) spell = GetCombatSpellCompatibility(race, lvl);
-    return spell;
+  Spell spell = GetCombatSpellCompatibility(race, lvl);
+  while(spells.isPresentSpell(spell)) spell = GetCombatSpellCompatibility(race, lvl);
+  return spell;
 }
 
 Spell GetCombatSpellCompatibility(u8 race, u8 lvl)
 {
-    Spell spell = Spell::RandCombat(lvl);
-    while(!spell.isRaceCompatible(race)) spell = Spell::RandCombat(lvl);
-    return spell;
+  Spell spell = Spell::RandCombat(lvl);
+  while(!spell.isRaceCompatible(race)) spell = Spell::RandCombat(lvl);
+  return spell;
 }

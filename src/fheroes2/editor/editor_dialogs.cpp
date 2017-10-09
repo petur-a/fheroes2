@@ -28,24 +28,24 @@
 
 class SelectEnum : public Interface::ListBox<int>
 {
-public:
+  public:
     SelectEnum(const Rect & rt) : Interface::ListBox<int>(rt), area(rt), ok(false)
-    {
-      RedrawBackground(rt);
-      SetScrollButtonUp(ICN::LISTBOX, 3, 4, Point(rt.x + rt.w - 24, rt.y + 25));
-      SetScrollButtonDn(ICN::LISTBOX, 5, 6, Point(rt.x + rt.w - 24, rt.y + rt.h - 55));
+  {
+    RedrawBackground(rt);
+    SetScrollButtonUp(ICN::LISTBOX, 3, 4, Point(rt.x + rt.w - 24, rt.y + 25));
+    SetScrollButtonDn(ICN::LISTBOX, 5, 6, Point(rt.x + rt.w - 24, rt.y + rt.h - 55));
 
-      SetScrollSplitter(AGG::GetICN(ICN::LISTBOX, 10), Rect(rt.x + rt.w - 19, rt.y + 48, 14, rt.h - 106));
-      SetAreaMaxItems(5);
-      SetAreaItems(Rect(rt.x + 10, rt.y + 30, rt.w - 30, rt.h - 70));
-    };
-   
+    SetScrollSplitter(AGG::GetICN(ICN::LISTBOX, 10), Rect(rt.x + rt.w - 19, rt.y + 48, 14, rt.h - 106));
+    SetAreaMaxItems(5);
+    SetAreaItems(Rect(rt.x + 10, rt.y + 30, rt.w - 30, rt.h - 70));
+  };
+
     void RedrawBackground(const Point & dst)
     {
       Dialog::FrameBorder::Redraw(Rect(dst.x, dst.y + 25, rtAreaItems.w + 5, rtAreaItems.h + 10),
-							AGG::GetICN(ICN::CELLWIN, 1));
+          AGG::GetICN(ICN::CELLWIN, 1));
       // scroll
-     AGG::GetICN(ICN::LISTBOX, 7).Blit(dst.x + area.w - 24, dst.y + 45);
+      AGG::GetICN(ICN::LISTBOX, 7).Blit(dst.x + area.w - 24, dst.y + 45);
 
       for(u8 ii = 1; ii < 9; ++ii)
         AGG::GetICN(ICN::LISTBOX, 8).Blit(dst.x + area.w - 24, dst.y + 44 + (ii * 19));
@@ -70,7 +70,7 @@ public:
 
 class SelectEnumMonster : public SelectEnum
 {
-public:
+  public:
     SelectEnumMonster(const Rect & rt) : SelectEnum(rt) {};
 
 
@@ -100,7 +100,7 @@ public:
 
 class SelectEnumHeroes : public SelectEnum
 {
-public:
+  public:
     SelectEnumHeroes(const Rect & rt) : SelectEnum(rt) { SetAreaMaxItems(6); };
 
     void RedrawItem(const int & index, s16 dstx, s16 dsty, bool current)
@@ -124,7 +124,7 @@ public:
 
 class SelectEnumArtifact : public SelectEnum
 {
-public:
+  public:
     SelectEnumArtifact(const Rect & rt) : SelectEnum(rt) {};
 
     void RedrawItem(const int & index, s16 dstx, s16 dsty, bool current)
@@ -147,7 +147,7 @@ public:
 
 class SelectEnumSpell : public SelectEnum
 {
-public:
+  public:
     SelectEnumSpell(const Rect & rt) : SelectEnum(rt) { SetAreaMaxItems(4); };
 
     void RedrawItem(const int & index, s16 dstx, s16 dsty, bool current)
@@ -170,7 +170,7 @@ public:
 
 class SelectEnumSecSkill : public SelectEnum
 {
-public:
+  public:
     SelectEnumSecSkill(const Rect & rt) : SelectEnum(rt) { SetAreaMaxItems(5); };
 
     void RedrawItem(const int & index, s16 dstx, s16 dsty, bool current)
@@ -193,284 +193,284 @@ public:
 
 Skill::Secondary Dialog::SelectSecondarySkill(void)
 {
-    Display & display = Display::Get();
-    Cursor & cursor = Cursor::Get();
-    LocalEvent & le = LocalEvent::Get();
+  Display & display = Display::Get();
+  Cursor & cursor = Cursor::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    std::vector<int> skills(MAXSECONDARYSKILL * 3, 0);
+  std::vector<int> skills(MAXSECONDARYSKILL * 3, 0);
 
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    for(size_t ii = 0; ii < MAXSECONDARYSKILL * 3; ++ii) skills[ii] = ii;
+  for(size_t ii = 0; ii < MAXSECONDARYSKILL * 3; ++ii) skills[ii] = ii;
 
-    const u16 window_w = 310;
-    const u16 window_h = 280;
+  const u16 window_w = 310;
+  const u16 window_h = 280;
 
-    Dialog::FrameBorder frameborder;
-    frameborder.SetPosition((display.w() - window_w) / 2 - BORDERWIDTH,
-			    (display.h() - window_h) / 2 - BORDERWIDTH, window_w, window_h);
-    frameborder.Redraw(AGG::GetICN(ICN::TEXTBAK2, 0));
+  Dialog::FrameBorder frameborder;
+  frameborder.SetPosition((display.w() - window_w) / 2 - BORDERWIDTH,
+      (display.h() - window_h) / 2 - BORDERWIDTH, window_w, window_h);
+  frameborder.Redraw(AGG::GetICN(ICN::TEXTBAK2, 0));
 
-    const Rect & area = frameborder.GetArea();
+  const Rect & area = frameborder.GetArea();
 
-    SelectEnumSecSkill listbox(area);
+  SelectEnumSecSkill listbox(area);
 
-    listbox.SetListContent(skills);
-    listbox.Redraw();
+  listbox.SetListContent(skills);
+  listbox.Redraw();
 
-    ButtonGroups btnGroups(area, Dialog::OK|Dialog::CANCEL);
-    btnGroups.Draw();
+  ButtonGroups btnGroups(area, Dialog::OK|Dialog::CANCEL);
+  btnGroups.Draw();
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    u16 result = Dialog::ZERO;
+  u16 result = Dialog::ZERO;
 
-    while(result == Dialog::ZERO && ! listbox.ok && le.HandleEvents())
+  while(result == Dialog::ZERO && ! listbox.ok && le.HandleEvents())
+  {
+    result = btnGroups.QueueEventProcessing();
+    listbox.QueueEventProcessing();
+
+    if(!cursor.isVisible())
     {
-        result = btnGroups.QueueEventProcessing();
-        listbox.QueueEventProcessing();
-
-        if(!cursor.isVisible())
-        {
-            listbox.Redraw();
-            cursor.Show();
-            display.Flip();
-        }
+      listbox.Redraw();
+      cursor.Show();
+      display.Flip();
     }
+  }
 
-    Skill::Secondary skill;
+  Skill::Secondary skill;
 
-    if(result == Dialog::OK || listbox.ok)
-    {
-	skill.SetSkill(1 + (listbox.GetCurrent() / 3));
-	skill.SetLevel(1 + (listbox.GetCurrent() % 3));
-    }
+  if(result == Dialog::OK || listbox.ok)
+  {
+    skill.SetSkill(1 + (listbox.GetCurrent() / 3));
+    skill.SetLevel(1 + (listbox.GetCurrent() % 3));
+  }
 
-    return skill;
+  return skill;
 }
 
 Spell Dialog::SelectSpell(u8 cur)
 {
-    Display & display = Display::Get();
-    Cursor & cursor = Cursor::Get();
-    LocalEvent & le = LocalEvent::Get();
+  Display & display = Display::Get();
+  Cursor & cursor = Cursor::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    std::vector<int> spells(static_cast<int>(Spell::STONE - 1), Spell::NONE);
+  std::vector<int> spells(static_cast<int>(Spell::STONE - 1), Spell::NONE);
 
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    for(size_t ii = 0; ii < spells.size(); ++ii) spells[ii] = ii + 1;
+  for(size_t ii = 0; ii < spells.size(); ++ii) spells[ii] = ii + 1;
 
-    const u16 window_w = 340;
-    const u16 window_h = 280;
+  const u16 window_w = 340;
+  const u16 window_h = 280;
 
-    Dialog::FrameBorder frameborder;
-    frameborder.SetPosition((display.w() - window_w) / 2 - BORDERWIDTH,
-			    (display.h() - window_h) / 2 - BORDERWIDTH, window_w, window_h);
-    frameborder.Redraw(AGG::GetICN(ICN::TEXTBAK2, 0));
+  Dialog::FrameBorder frameborder;
+  frameborder.SetPosition((display.w() - window_w) / 2 - BORDERWIDTH,
+      (display.h() - window_h) / 2 - BORDERWIDTH, window_w, window_h);
+  frameborder.Redraw(AGG::GetICN(ICN::TEXTBAK2, 0));
 
-    const Rect & area = frameborder.GetArea();
+  const Rect & area = frameborder.GetArea();
 
-    SelectEnumSpell listbox(area);
+  SelectEnumSpell listbox(area);
 
-    listbox.SetListContent(spells);
-    if(cur != Spell::NONE)
-	listbox.SetCurrent(static_cast<int>(cur));
-    listbox.Redraw();
+  listbox.SetListContent(spells);
+  if(cur != Spell::NONE)
+    listbox.SetCurrent(static_cast<int>(cur));
+  listbox.Redraw();
 
-    ButtonGroups btnGroups(area, Dialog::OK|Dialog::CANCEL);
-    btnGroups.Draw();
+  ButtonGroups btnGroups(area, Dialog::OK|Dialog::CANCEL);
+  btnGroups.Draw();
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    u16 result = Dialog::ZERO;
+  u16 result = Dialog::ZERO;
 
-    while(result == Dialog::ZERO && ! listbox.ok && le.HandleEvents())
+  while(result == Dialog::ZERO && ! listbox.ok && le.HandleEvents())
+  {
+    result = btnGroups.QueueEventProcessing();
+    listbox.QueueEventProcessing();
+
+    if(!cursor.isVisible())
     {
-        result = btnGroups.QueueEventProcessing();
-        listbox.QueueEventProcessing();
-
-        if(!cursor.isVisible())
-        {
-            listbox.Redraw();
-            cursor.Show();
-            display.Flip();
-        }
+      listbox.Redraw();
+      cursor.Show();
+      display.Flip();
     }
+  }
 
-    return result == Dialog::OK || listbox.ok ?
-	Spell(listbox.GetCurrent()) : Spell(Spell::NONE);
+  return result == Dialog::OK || listbox.ok ?
+    Spell(listbox.GetCurrent()) : Spell(Spell::NONE);
 }
 
 
 Artifact Dialog::SelectArtifact(u8 cur)
 {
-    Display & display = Display::Get();
-    Cursor & cursor = Cursor::Get();
-    LocalEvent & le = LocalEvent::Get();
+  Display & display = Display::Get();
+  Cursor & cursor = Cursor::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    std::vector<int> artifacts(static_cast<int>(Artifact::UNKNOWN), Artifact::UNKNOWN);
+  std::vector<int> artifacts(static_cast<int>(Artifact::UNKNOWN), Artifact::UNKNOWN);
 
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
 
-    for(size_t ii = 0; ii < artifacts.size(); ++ii) artifacts[ii] = ii;
+  for(size_t ii = 0; ii < artifacts.size(); ++ii) artifacts[ii] = ii;
 
-    const u16 window_w = 370;
-    const u16 window_h = 280;
+  const u16 window_w = 370;
+  const u16 window_h = 280;
 
-    Dialog::FrameBorder frameborder;
-    frameborder.SetPosition((display.w() - window_w) / 2 - BORDERWIDTH,
-			    (display.h() - window_h) / 2 - BORDERWIDTH, window_w, window_h);
-    frameborder.Redraw(AGG::GetICN(ICN::TEXTBAK2, 0));
+  Dialog::FrameBorder frameborder;
+  frameborder.SetPosition((display.w() - window_w) / 2 - BORDERWIDTH,
+      (display.h() - window_h) / 2 - BORDERWIDTH, window_w, window_h);
+  frameborder.Redraw(AGG::GetICN(ICN::TEXTBAK2, 0));
 
-    const Rect & area = frameborder.GetArea();
+  const Rect & area = frameborder.GetArea();
 
-    SelectEnumArtifact listbox(area);
+  SelectEnumArtifact listbox(area);
 
-    listbox.SetListContent(artifacts);
-    if(cur != Artifact::UNKNOWN)
-	listbox.SetCurrent(static_cast<int>(cur));
-    listbox.Redraw();
+  listbox.SetListContent(artifacts);
+  if(cur != Artifact::UNKNOWN)
+    listbox.SetCurrent(static_cast<int>(cur));
+  listbox.Redraw();
 
-    ButtonGroups btnGroups(area, Dialog::OK|Dialog::CANCEL);
-    btnGroups.Draw();
+  ButtonGroups btnGroups(area, Dialog::OK|Dialog::CANCEL);
+  btnGroups.Draw();
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    u16 result = Dialog::ZERO;
+  u16 result = Dialog::ZERO;
 
-    while(result == Dialog::ZERO && ! listbox.ok && le.HandleEvents())
+  while(result == Dialog::ZERO && ! listbox.ok && le.HandleEvents())
+  {
+    result = btnGroups.QueueEventProcessing();
+    listbox.QueueEventProcessing();
+
+    if(!cursor.isVisible())
     {
-        result = btnGroups.QueueEventProcessing();
-        listbox.QueueEventProcessing();
-
-        if(!cursor.isVisible())
-        {
-            listbox.Redraw();
-            cursor.Show();
-            display.Flip();
-        }
+      listbox.Redraw();
+      cursor.Show();
+      display.Flip();
     }
+  }
 
-    return result == Dialog::OK || listbox.ok ?
-	Artifact(listbox.GetCurrent()) : Artifact(Artifact::UNKNOWN);
+  return result == Dialog::OK || listbox.ok ?
+    Artifact(listbox.GetCurrent()) : Artifact(Artifact::UNKNOWN);
 }
 
 Monster Dialog::SelectMonster(u8 id)
 {
-    Display & display = Display::Get();
-    Cursor & cursor = Cursor::Get();
-    LocalEvent & le = LocalEvent::Get();
+  Display & display = Display::Get();
+  Cursor & cursor = Cursor::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    std::vector<int> monsters(static_cast<int>(Monster::WATER_ELEMENT), Monster::UNKNOWN);
+  std::vector<int> monsters(static_cast<int>(Monster::WATER_ELEMENT), Monster::UNKNOWN);
 
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
 
-    for(size_t ii = 0; ii < monsters.size(); ++ii) monsters[ii] = ii + 1; // skip Monser::UNKNOWN
+  for(size_t ii = 0; ii < monsters.size(); ++ii) monsters[ii] = ii + 1; // skip Monser::UNKNOWN
 
-    const u16 window_w = 260;
-    const u16 window_h = 280;
+  const u16 window_w = 260;
+  const u16 window_h = 280;
 
-    Dialog::FrameBorder frameborder;
-    frameborder.SetPosition((display.w() - window_w) / 2 - BORDERWIDTH,
-			    (display.h() - window_h) / 2 - BORDERWIDTH, window_w, window_h);
-    frameborder.Redraw(AGG::GetICN(ICN::TEXTBAK2, 0));
+  Dialog::FrameBorder frameborder;
+  frameborder.SetPosition((display.w() - window_w) / 2 - BORDERWIDTH,
+      (display.h() - window_h) / 2 - BORDERWIDTH, window_w, window_h);
+  frameborder.Redraw(AGG::GetICN(ICN::TEXTBAK2, 0));
 
-    const Rect & area = frameborder.GetArea();
+  const Rect & area = frameborder.GetArea();
 
-    SelectEnumMonster listbox(area);
+  SelectEnumMonster listbox(area);
 
-    listbox.SetListContent(monsters);
-    if(id != Monster::UNKNOWN)
-	listbox.SetCurrent(static_cast<int>(id));
-    listbox.Redraw();
+  listbox.SetListContent(monsters);
+  if(id != Monster::UNKNOWN)
+    listbox.SetCurrent(static_cast<int>(id));
+  listbox.Redraw();
 
-    ButtonGroups btnGroups(area, Dialog::OK|Dialog::CANCEL);
-    btnGroups.Draw();
+  ButtonGroups btnGroups(area, Dialog::OK|Dialog::CANCEL);
+  btnGroups.Draw();
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    u16 result = Dialog::ZERO;
+  u16 result = Dialog::ZERO;
 
-    while(result == Dialog::ZERO && ! listbox.ok && le.HandleEvents())
+  while(result == Dialog::ZERO && ! listbox.ok && le.HandleEvents())
+  {
+    result = btnGroups.QueueEventProcessing();
+    listbox.QueueEventProcessing();
+
+    if(!cursor.isVisible())
     {
-        result = btnGroups.QueueEventProcessing();
-        listbox.QueueEventProcessing();
-
-        if(!cursor.isVisible())
-        {
-            listbox.Redraw();
-            cursor.Show();
-            display.Flip();
-        }
+      listbox.Redraw();
+      cursor.Show();
+      display.Flip();
     }
+  }
 
-    return result == Dialog::OK || listbox.ok ?
-	Monster(listbox.GetCurrent()) : Monster(Monster::UNKNOWN);
+  return result == Dialog::OK || listbox.ok ?
+    Monster(listbox.GetCurrent()) : Monster(Monster::UNKNOWN);
 }
 
 Heroes::heroes_t Dialog::SelectHeroes(Heroes::heroes_t cur)
 {
-    Display & display = Display::Get();
-    Cursor & cursor = Cursor::Get();
-    LocalEvent & le = LocalEvent::Get();
+  Display & display = Display::Get();
+  Cursor & cursor = Cursor::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    std::vector<int> heroes(static_cast<int>(Heroes::SANDYSANDY), Heroes::UNKNOWN);
+  std::vector<int> heroes(static_cast<int>(Heroes::SANDYSANDY), Heroes::UNKNOWN);
 
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
 
-    for(size_t ii = 0; ii < heroes.size(); ++ii) heroes[ii] = Heroes::ConvertID(ii);
+  for(size_t ii = 0; ii < heroes.size(); ++ii) heroes[ii] = Heroes::ConvertID(ii);
 
-    const u16 window_w = 240;
-    const u16 window_h = 280;
+  const u16 window_w = 240;
+  const u16 window_h = 280;
 
-    Dialog::FrameBorder frameborder;
-    frameborder.SetPosition((display.w() - window_w) / 2 - BORDERWIDTH,
-			    (display.h() - window_h) / 2 - BORDERWIDTH, window_w, window_h);
-    frameborder.Redraw(AGG::GetICN(ICN::TEXTBAK2, 0));
+  Dialog::FrameBorder frameborder;
+  frameborder.SetPosition((display.w() - window_w) / 2 - BORDERWIDTH,
+      (display.h() - window_h) / 2 - BORDERWIDTH, window_w, window_h);
+  frameborder.Redraw(AGG::GetICN(ICN::TEXTBAK2, 0));
 
-    const Rect & area = frameborder.GetArea();
+  const Rect & area = frameborder.GetArea();
 
-    SelectEnumHeroes listbox(area);
+  SelectEnumHeroes listbox(area);
 
-    listbox.SetListContent(heroes);
-    if(cur != Heroes::UNKNOWN)
-	listbox.SetCurrent(static_cast<int>(cur));
-    listbox.Redraw();
+  listbox.SetListContent(heroes);
+  if(cur != Heroes::UNKNOWN)
+    listbox.SetCurrent(static_cast<int>(cur));
+  listbox.Redraw();
 
-    ButtonGroups btnGroups(area, Dialog::OK|Dialog::CANCEL);
-    btnGroups.Draw();
+  ButtonGroups btnGroups(area, Dialog::OK|Dialog::CANCEL);
+  btnGroups.Draw();
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    u16 result = Dialog::ZERO;
+  u16 result = Dialog::ZERO;
 
-    while(result == Dialog::ZERO && ! listbox.ok && le.HandleEvents())
+  while(result == Dialog::ZERO && ! listbox.ok && le.HandleEvents())
+  {
+    result = btnGroups.QueueEventProcessing();
+    listbox.QueueEventProcessing();
+
+    if(!cursor.isVisible())
     {
-        result = btnGroups.QueueEventProcessing();
-        listbox.QueueEventProcessing();
-
-        if(!cursor.isVisible())
-        {
-            listbox.Redraw();
-            cursor.Show();
-            display.Flip();
-        }
+      listbox.Redraw();
+      cursor.Show();
+      display.Flip();
     }
+  }
 
-    return result == Dialog::OK || listbox.ok ?
-	Heroes::ConvertID(listbox.GetCurrent()) : Heroes::UNKNOWN;
+  return result == Dialog::OK || listbox.ok ?
+    Heroes::ConvertID(listbox.GetCurrent()) : Heroes::UNKNOWN;
 }

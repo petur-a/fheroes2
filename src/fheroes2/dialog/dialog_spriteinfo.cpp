@@ -29,71 +29,71 @@
 
 u16 Dialog::ArtifactInfo(const std::string & hdr, const std::string & msg, const Artifact & art, const u16 buttons)
 {
-    const Sprite & border = AGG::GetICN(ICN::RESOURCE, 7);
-    const Sprite & artifact = AGG::GetICN(ICN::ARTIFACT, art.IndexSprite64());
-    Surface image(border.w(), border.h());
-    border.Blit(image);
-    artifact.Blit(5, 5, image);
+  const Sprite & border = AGG::GetICN(ICN::RESOURCE, 7);
+  const Sprite & artifact = AGG::GetICN(ICN::ARTIFACT, art.IndexSprite64());
+  Surface image(border.w(), border.h());
+  border.Blit(image);
+  artifact.Blit(5, 5, image);
 
-    std::string ext = msg;
-    ext.append("\n");
-    ext.append(" ");
-    ext.append("\n");
-    ext.append(art.GetDescription());
+  std::string ext = msg;
+  ext.append("\n");
+  ext.append(" ");
+  ext.append("\n");
+  ext.append(art.GetDescription());
 
-    return Dialog::SpriteInfo(hdr, ext, image, buttons);
+  return Dialog::SpriteInfo(hdr, ext, image, buttons);
 }
 
 u16 Dialog::SpriteInfo(const std::string &header, const std::string &message, const Surface & sprite, u16 buttons)
 {
-    Display & display = Display::Get();
-    const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
+  Display & display = Display::Get();
+  const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
 
-    // preload
-    AGG::PreloadObject(system);
+  // preload
+  AGG::PreloadObject(system);
 
-    // cursor
-    Cursor & cursor = Cursor::Get();
+  // cursor
+  Cursor & cursor = Cursor::Get();
 
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    TextBox box1(header, Font::YELLOW_BIG, BOXAREA_WIDTH);
-    TextBox box2(message, Font::BIG, BOXAREA_WIDTH);
-    const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
+  TextBox box1(header, Font::YELLOW_BIG, BOXAREA_WIDTH);
+  TextBox box2(message, Font::BIG, BOXAREA_WIDTH);
+  const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
 
-    Box box(box1.h() + spacer + box2.h() + spacer + sprite.h(), buttons);
-    Rect pos = box.GetArea();
+  Box box(box1.h() + spacer + box2.h() + spacer + sprite.h(), buttons);
+  Rect pos = box.GetArea();
 
-    if(header.size()) box1.Blit(pos);
-    pos.y += box1.h() + spacer;
+  if(header.size()) box1.Blit(pos);
+  pos.y += box1.h() + spacer;
 
-    if(message.size()) box2.Blit(pos);
-    pos.y += box2.h() + spacer;
+  if(message.size()) box2.Blit(pos);
+  pos.y += box2.h() + spacer;
 
-    // blit sprite
-    pos.x = box.GetArea().x + (pos.w - sprite.w()) / 2;
-    sprite.Blit(pos.x, pos.y, display);
+  // blit sprite
+  pos.x = box.GetArea().x + (pos.w - sprite.w()) / 2;
+  sprite.Blit(pos.x, pos.y, display);
 
-    LocalEvent & le = LocalEvent::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    ButtonGroups btnGroups(box.GetArea(), buttons);
-    btnGroups.Draw();
+  ButtonGroups btnGroups(box.GetArea(), buttons);
+  btnGroups.Draw();
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    // message loop
-    u16 result = Dialog::ZERO;
+  // message loop
+  u16 result = Dialog::ZERO;
 
-    while(result == Dialog::ZERO && le.HandleEvents())
-    {
-        if(!buttons && !le.MousePressRight()) break;
+  while(result == Dialog::ZERO && le.HandleEvents())
+  {
+    if(!buttons && !le.MousePressRight()) break;
 
-        result = btnGroups.QueueEventProcessing();
-    }
+    result = btnGroups.QueueEventProcessing();
+  }
 
-    cursor.Hide();
+  cursor.Hide();
 
-    return result;
+  return result;
 }

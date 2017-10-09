@@ -34,62 +34,62 @@
 
 enum redraw_t
 {
-    REDRAW_RADAR     = 0x01,
-    REDRAW_HEROES    = 0x02,
-    REDRAW_CASTLES   = 0x04,
-    REDRAW_BUTTONS   = 0x08,
-    REDRAW_STATUS    = 0x10,
-    REDRAW_BORDER    = 0x20,
-    REDRAW_GAMEAREA  = 0x40,
-    REDRAW_CURSOR    = 0x80,
+  REDRAW_RADAR     = 0x01,
+  REDRAW_HEROES    = 0x02,
+  REDRAW_CASTLES   = 0x04,
+  REDRAW_BUTTONS   = 0x08,
+  REDRAW_STATUS    = 0x10,
+  REDRAW_BORDER    = 0x20,
+  REDRAW_GAMEAREA  = 0x40,
+  REDRAW_CURSOR    = 0x80,
 
-    REDRAW_ICONS     = REDRAW_HEROES | REDRAW_CASTLES,
-    REDRAW_ALL       = 0xFF
+  REDRAW_ICONS     = REDRAW_HEROES | REDRAW_CASTLES,
+  REDRAW_ALL       = 0xFF
 };
 
 namespace Interface
 {
-    bool NoGUI(void);
+  bool NoGUI(void);
 
-    void FixOutOfDisplay(const Rect &, s16 & , s16 &);
+  void FixOutOfDisplay(const Rect &, s16 & , s16 &);
 
-    class Basic
-    {
+  class Basic
+  {
     public:
-    	static Basic & Get(void);
+      static Basic & Get(void);
 
-	bool    NeedRedraw(void) const;
-	void    SetRedraw(u8);
-    	void	Redraw(u8 f = 0);
+      bool    NeedRedraw(void) const;
+      void    SetRedraw(u8);
+      void    Redraw(u8 f = 0);
 
-	const Rect & GetAreaScrollLeft(void) const;
-	const Rect & GetAreaScrollRight(void) const;
-	const Rect & GetAreaScrollTop(void) const;
-	const Rect & GetAreaScrollBottom(void) const;
+      const Rect & GetAreaScrollLeft(void) const;
+      const Rect & GetAreaScrollRight(void) const;
+      const Rect & GetAreaScrollTop(void) const;
+      const Rect & GetAreaScrollBottom(void) const;
 
-	s32 GetDimensionDoorDestination(const s32, const u8, bool) const;
+      s32 GetDimensionDoorDestination(const s32, const u8, bool) const;
 
-	GameArea & gameArea;
-	Radar & radar;
-	IconsPanel & iconsPanel;
-	ButtonsArea & buttonsArea;
-	StatusWindow & statusWindow;
-	BorderWindow & borderWindow;
-	ControlPanel & controlPanel;
+      GameArea & gameArea;
+      Radar & radar;
+      IconsPanel & iconsPanel;
+      ButtonsArea & buttonsArea;
+      StatusWindow & statusWindow;
+      BorderWindow & borderWindow;
+      ControlPanel & controlPanel;
 
     private:
-	Basic();
-	void RedrawSystemInfo(s16, s16, u32);
+      Basic();
+      void RedrawSystemInfo(s16, s16, u32);
 
-	u8 redraw;
+      u8 redraw;
 
-	Rect scrollLeft;
-	Rect scrollRight;
-	Rect scrollBottom;
-	Rect scrollTop;
+      Rect scrollLeft;
+      Rect scrollRight;
+      Rect scrollBottom;
+      Rect scrollTop;
 
-	Text system_info;
-    };
+      Text system_info;
+  };
 }
 
 #endif

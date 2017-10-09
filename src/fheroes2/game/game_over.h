@@ -29,51 +29,51 @@
 namespace Game { class IO; }
 namespace GameOver
 {
-    enum conditions_t
-    {
-	COND_NONE	= 0x0000,
+  enum conditions_t
+  {
+    COND_NONE   = 0x0000,
 
-	WINS_ALL	= 0x0001,
-	WINS_TOWN	= 0x0002,
-	WINS_HERO	= 0x0004,
-	WINS_ARTIFACT	= 0x0008,
-	WINS_SIDE	= 0x0010,
-	WINS_GOLD	= 0x0020,
-	WINS            = WINS_ALL | WINS_TOWN | WINS_HERO | WINS_ARTIFACT | WINS_SIDE | WINS_GOLD,
+    WINS_ALL    = 0x0001,
+    WINS_TOWN   = 0x0002,
+    WINS_HERO   = 0x0004,
+    WINS_ARTIFACT   = 0x0008,
+    WINS_SIDE   = 0x0010,
+    WINS_GOLD   = 0x0020,
+    WINS            = WINS_ALL | WINS_TOWN | WINS_HERO | WINS_ARTIFACT | WINS_SIDE | WINS_GOLD,
 
-	LOSS_ALL	= 0x0100,
-	LOSS_TOWN	= 0x0200,
-	LOSS_HERO	= 0x0400,
-	LOSS_TIME	= 0x0800,
-	LOSS_STARTHERO	= 0x1000,
-	LOSS            = LOSS_ALL | LOSS_TOWN | LOSS_HERO | LOSS_TIME | LOSS_STARTHERO
-    };
+    LOSS_ALL    = 0x0100,
+    LOSS_TOWN   = 0x0200,
+    LOSS_HERO   = 0x0400,
+    LOSS_TIME   = 0x0800,
+    LOSS_STARTHERO  = 0x1000,
+    LOSS            = LOSS_ALL | LOSS_TOWN | LOSS_HERO | LOSS_TIME | LOSS_STARTHERO
+  };
 
-    const char* GetString(conditions_t);
-    std::string GetActualDescription(u16);
+  const char* GetString(conditions_t);
+  std::string GetActualDescription(u16);
 
-    void DialogWins(u16);
-    void DialogLoss(u16);
+  void DialogWins(u16);
+  void DialogLoss(u16);
 
-    class Result
-    {
+  class Result
+  {
     public:
-	static Result & Get(void);
+      static Result & Get(void);
 
-	void Reset(void);
-	void SetResult(u16);
-	u16  GetResult(void) const;
-	bool LocalCheckGameOver(Game::menu_t &);
+      void Reset(void);
+      void SetResult(u16);
+      u16  GetResult(void) const;
+      bool LocalCheckGameOver(Game::menu_t &);
 
     private:
-	friend class Game::IO;
+      friend class Game::IO;
 
-	Result();
+      Result();
 
-	u8  colors;
-	u16 result;
-	bool continue_game;
-    };
+      u8  colors;
+      u16 result;
+      bool continue_game;
+  };
 }
 
 #endif

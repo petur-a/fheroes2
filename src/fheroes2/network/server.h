@@ -35,26 +35,26 @@ class Spell;
 
 struct RemoteMessage
 {
-    RemoteMessage(FH2RemoteClient* ptr) : uid(sid++), own(ptr), ready(false) {};
+  RemoteMessage(FH2RemoteClient* ptr) : uid(sid++), own(ptr), ready(false) {};
 
-    void InitMutex(void);
-    bool IsReady(void) const;
-    void SetReady(void);
+  void InitMutex(void);
+  bool IsReady(void) const;
+  void SetReady(void);
 
-    bool operator== (const RemoteMessage & rm) const { return rm.uid == uid; }
+  bool operator== (const RemoteMessage & rm) const { return rm.uid == uid; }
 
-    u32 uid;
-    FH2RemoteClient* own;
-    QueueMessage packet;
-    SDL::Mutex mutexReady;
-    bool ready;
+  u32 uid;
+  FH2RemoteClient* own;
+  QueueMessage packet;
+  SDL::Mutex mutexReady;
+  bool ready;
 
-    static u32 sid;
+  static u32 sid;
 };
 
 class FH2Server : public Network::Server, public BitModes
 {
-public:
+  public:
     static FH2Server & Get(void);
 
     ~FH2Server();
@@ -90,7 +90,7 @@ public:
     bool BattleSendResult(u8, const Battle2::Result &);
     bool BattleRecvTurn(u8, const Battle2::Stats &, const Battle2::Arena &, Battle2::Actions &);
 
-protected:
+  protected:
     FH2Server();
     RemoteMessage* FindRemoteReady(void);
     void RemoveMessage(const RemoteMessage &);

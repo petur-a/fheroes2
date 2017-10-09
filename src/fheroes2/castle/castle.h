@@ -42,65 +42,65 @@ namespace Maps { class Tiles; }
 
 enum building_t
 {
-    BUILD_NOTHING           = 0x00000000,
-    BUILD_THIEVESGUILD      = 0x00000001,
-    BUILD_TAVERN            = 0x00000002,
-    BUILD_SHIPYARD          = 0x00000004,
-    BUILD_WELL              = 0x00000008,
-    BUILD_STATUE            = 0x00000010,
-    BUILD_LEFTTURRET        = 0x00000020,
-    BUILD_RIGHTTURRET       = 0x00000040,
-    BUILD_MARKETPLACE       = 0x00000080,
-    BUILD_WEL2              = 0x00000100,   // Farm, Garbage He, Crystal Gar, Waterfall, Orchard, Skull Pile
-    BUILD_MOAT              = 0x00000200,
-    BUILD_SPEC              = 0x00000400,   // Fortification, Coliseum, Rainbow, Dungeon, Library, Storm
-    BUILD_CASTLE            = 0x00000800,
-    BUILD_CAPTAIN           = 0x00001000,
-    BUILD_SHRINE            = 0x00002000,
-    BUILD_MAGEGUILD1        = 0x00004000,
-    BUILD_MAGEGUILD2        = 0x00008000,
-    BUILD_MAGEGUILD3        = 0x00010000,
-    BUILD_MAGEGUILD4        = 0x00020000,
-    BUILD_MAGEGUILD5        = 0x00040000,
-    BUILD_MAGEGUILD         = BUILD_MAGEGUILD1 | BUILD_MAGEGUILD2 | BUILD_MAGEGUILD3 | BUILD_MAGEGUILD4 | BUILD_MAGEGUILD5,
-    BUILD_TENT              = 0x00080000,	// deprecated
-    DWELLING_MONSTER1       = 0x00100000,
-    DWELLING_MONSTER2       = 0x00200000,
-    DWELLING_MONSTER3       = 0x00400000,
-    DWELLING_MONSTER4       = 0x00800000,
-    DWELLING_MONSTER5       = 0x01000000,
-    DWELLING_MONSTER6       = 0x02000000,
-    DWELLING_UPGRADE2       = 0x04000000,
-    DWELLING_UPGRADE3       = 0x08000000,
-    DWELLING_UPGRADE4       = 0x10000000,
-    DWELLING_UPGRADE5       = 0x20000000,
-    DWELLING_UPGRADE6       = 0x40000000,
-    DWELLING_UPGRADE7       = 0x80000000        // black dragon
+  BUILD_NOTHING           = 0x00000000,
+  BUILD_THIEVESGUILD      = 0x00000001,
+  BUILD_TAVERN            = 0x00000002,
+  BUILD_SHIPYARD          = 0x00000004,
+  BUILD_WELL              = 0x00000008,
+  BUILD_STATUE            = 0x00000010,
+  BUILD_LEFTTURRET        = 0x00000020,
+  BUILD_RIGHTTURRET       = 0x00000040,
+  BUILD_MARKETPLACE       = 0x00000080,
+  BUILD_WEL2              = 0x00000100,   // Farm, Garbage He, Crystal Gar, Waterfall, Orchard, Skull Pile
+  BUILD_MOAT              = 0x00000200,
+  BUILD_SPEC              = 0x00000400,   // Fortification, Coliseum, Rainbow, Dungeon, Library, Storm
+  BUILD_CASTLE            = 0x00000800,
+  BUILD_CAPTAIN           = 0x00001000,
+  BUILD_SHRINE            = 0x00002000,
+  BUILD_MAGEGUILD1        = 0x00004000,
+  BUILD_MAGEGUILD2        = 0x00008000,
+  BUILD_MAGEGUILD3        = 0x00010000,
+  BUILD_MAGEGUILD4        = 0x00020000,
+  BUILD_MAGEGUILD5        = 0x00040000,
+  BUILD_MAGEGUILD         = BUILD_MAGEGUILD1 | BUILD_MAGEGUILD2 | BUILD_MAGEGUILD3 | BUILD_MAGEGUILD4 | BUILD_MAGEGUILD5,
+  BUILD_TENT              = 0x00080000,   // deprecated
+  DWELLING_MONSTER1       = 0x00100000,
+  DWELLING_MONSTER2       = 0x00200000,
+  DWELLING_MONSTER3       = 0x00400000,
+  DWELLING_MONSTER4       = 0x00800000,
+  DWELLING_MONSTER5       = 0x01000000,
+  DWELLING_MONSTER6       = 0x02000000,
+  DWELLING_UPGRADE2       = 0x04000000,
+  DWELLING_UPGRADE3       = 0x08000000,
+  DWELLING_UPGRADE4       = 0x10000000,
+  DWELLING_UPGRADE5       = 0x20000000,
+  DWELLING_UPGRADE6       = 0x40000000,
+  DWELLING_UPGRADE7       = 0x80000000        // black dragon
 };
 
 enum buildcond_t
 {
-    NOT_TODAY		= -1,
-    ALREADY_BUILT	= -2,
-    NEED_CASTLE		= -3,
-    CASTLE_DISABLE	= -4,
-    SHIPYARD_DISABLE	= -5,
-    UNKNOWN_UPGRADE	= -6,
-    REQUIRES_BUILD	= -7,
-    LACK_RESOURCES	= -8,
-    ALLOW_BUILD		= 1
+  NOT_TODAY       = -1,
+  ALREADY_BUILT   = -2,
+  NEED_CASTLE     = -3,
+  CASTLE_DISABLE  = -4,
+  SHIPYARD_DISABLE    = -5,
+  UNKNOWN_UPGRADE = -6,
+  REQUIRES_BUILD  = -7,
+  LACK_RESOURCES  = -8,
+  ALLOW_BUILD     = 1
 };
 
 class Castle : public Maps::Position, public BitModes
 {
-public:
+  public:
     enum flags_t
     {
-	ALLOWCASTLE		= 0x0002,
-	CUSTOMARMY		= 0x0004,
-	ALLOWBUILD		= 0x0008,
-	//			- 0x0010,
-	CAPITAL			= 0x0020
+      ALLOWCASTLE     = 0x0002,
+      CUSTOMARMY      = 0x0004,
+      ALLOWBUILD      = 0x0008,
+      //          - 0x0010,
+      CAPITAL         = 0x0020
     };
 
     Castle();
@@ -174,13 +174,13 @@ public:
     u32 GetBuildingRequires(u32) const;
 
     void Scoute(void) const;
-    
+
     static const char* GetStringBuilding(u32, u8 race = 0);
     static const char* GetDescriptionBuilding(u32, u8 race = 0);
     static ICN::icn_t GetICNBuilding(u32, u8);
     static ICN::icn_t GetICNBoat(const u8 & race);
     u32 GetUpgradeBuilding(u32) const;
-    
+
     static bool PredicateIsCastle(const Castle *castle);
     static bool PredicateIsTown(const Castle *castle);
     static bool PredicateIsBuildMarketplace(const Castle *castle);
@@ -197,7 +197,7 @@ public:
     Dialog::answer_t DialogBuyCaptain(bool fixed = true) const;
     Dialog::answer_t DialogBuyCastle(bool fixed = true) const;
 
-private:
+  private:
     u16* GetDwelling(u32 dw);
     void EducateHeroes(void);
     void RedrawResourcePanel(const Point &);
@@ -209,63 +209,63 @@ private:
     void WellRedrawInfoArea(const Point & cur_pt);
     void JoinRNDArmy(void);
 
-private:
+  private:
     friend class Game::IO;
 
-    u8			race;
-    u32			building;
-    Captain		captain;
+    u8          race;
+    u32         building;
+    Captain     captain;
 
-    Color::color_t	color;
-    std::string		name;
+    Color::color_t  color;
+    std::string     name;
 
-    MageGuild		mageguild;
-    u16			dwelling[CASTLEMAXMONSTER];
+    MageGuild       mageguild;
+    u16         dwelling[CASTLEMAXMONSTER];
     Army::army_t        army;
 };
 
 namespace CastleDialog
 {
-    struct builds_t
-    {
-	builds_t(building_t b, const Rect & r) : id(b), coord(r) {};
+  struct builds_t
+  {
+    builds_t(building_t b, const Rect & r) : id(b), coord(r) {};
 
-	bool operator== (u32 b) const { return b == id; };
+    bool operator== (u32 b) const { return b == id; };
 
-	building_t  id;
-	Rect        coord;
-	Sprite      contour;
-    };
+    building_t  id;
+    Rect        coord;
+    Sprite      contour;
+  };
 
-    struct CacheBuildings : std::vector<builds_t>
-    {
-	CacheBuildings(const Castle &, const Point &);
-	const Rect & GetRect(building_t) const;
-    };
+  struct CacheBuildings : std::vector<builds_t>
+  {
+    CacheBuildings(const Castle &, const Point &);
+    const Rect & GetRect(building_t) const;
+  };
 
-    void RedrawAllBuilding(const Castle &, const Point &, const CacheBuildings &, u32 flash = BUILD_NOTHING);
-    void RedrawAnimationBuilding(const Castle &, const Point &, const CacheBuildings &, u32 build);
-    void RedrawBuildingSpriteToArea(const Sprite &, s16, s16, const Rect &);
+  void RedrawAllBuilding(const Castle &, const Point &, const CacheBuildings &, u32 flash = BUILD_NOTHING);
+  void RedrawAnimationBuilding(const Castle &, const Point &, const CacheBuildings &, u32 build);
+  void RedrawBuildingSpriteToArea(const Sprite &, s16, s16, const Rect &);
 }
 
 struct VecCastles : public std::vector<Castle *>
 {
-    Castle* Get(s32) const;
-    Castle* Get(const Point &) const;
-    Castle* GetFirstCastle(void) const;
+  Castle* Get(s32) const;
+  Castle* Get(const Point &) const;
+  Castle* GetFirstCastle(void) const;
 
-    void ChangeColors(Color::color_t, Color::color_t);
+  void ChangeColors(Color::color_t, Color::color_t);
 };
 
 struct AllCastles : public VecCastles
 {
-    AllCastles();
-    ~AllCastles();
+  AllCastles();
+  ~AllCastles();
 
-    void Init(void);
-    void clear(void);
+  void Init(void);
+  void clear(void);
 
-    void Scoute(u8) const;
+  void Scoute(u8) const;
 };
 
 #endif

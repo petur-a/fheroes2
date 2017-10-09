@@ -29,28 +29,28 @@
 
 namespace Maps
 {
-    class Tiles;
+  class Tiles;
 
-    namespace Ground
+  namespace Ground
+  {
+    enum ground_t
     {
-        enum ground_t
-        {
-            UNKNOWN	= 0x0000,
-    	    DESERT	= 0x0001,
-    	    SNOW	= 0x0002,
-    	    SWAMP	= 0x0004,
-    	    WASTELAND   = 0x0008,
-    	    BEACH	= 0x0010,
-    	    LAVA	= 0x0020,
-    	    DIRT	= 0x0040,
-    	    GRASS	= 0x0080,
-    	    WATER	= 0x0100
-        };
+      UNKNOWN = 0x0000,
+      DESERT  = 0x0001,
+      SNOW    = 0x0002,
+      SWAMP   = 0x0004,
+      WASTELAND   = 0x0008,
+      BEACH   = 0x0010,
+      LAVA    = 0x0020,
+      DIRT    = 0x0040,
+      GRASS   = 0x0080,
+      WATER   = 0x0100
+    };
 
-        const char* String(u16);
-        u16 GetBasePenalty(const s32 index, const u8 pathfinding);
-        u16 GetPenalty(const s32 index, const Direction::vector_t direct, const u8 pathfinding);
-    }
+    const char* String(u16);
+    u16 GetBasePenalty(const s32 index, const u8 pathfinding);
+    u16 GetPenalty(const s32 index, const Direction::vector_t direct, const u8 pathfinding);
+  }
 }
 
 #endif

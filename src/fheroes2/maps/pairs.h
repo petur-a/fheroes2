@@ -31,7 +31,7 @@
 
 class IndexDistance : public std::pair<s32, u16>
 {
-    public:
+  public:
     IndexDistance() : std::pair<s32, u16>(-1, 0) {};
     IndexDistance(const s32 & i, const u16 & d) : std::pair<s32, u16>(i, d) {};
 
@@ -41,7 +41,7 @@ class IndexDistance : public std::pair<s32, u16>
 
 class IndexObject : public std::pair<s32, u8>
 {
-    public:
+  public:
     IndexObject() : std::pair<s32, u8>(-1, MP2::OBJ_ZERO) {};
     IndexObject(const s32 & index, const u8 & object) : std::pair<s32, u8>(index, object) {};
 
@@ -51,7 +51,7 @@ class IndexObject : public std::pair<s32, u8>
 
 class ObjectColor : public std::pair<u8, u8>
 {
-    public:
+  public:
     ObjectColor() : std::pair<u8, u8>(MP2::OBJ_ZERO, Color::NONE) {};
     ObjectColor(const u8 & object, const u8 & color) : std::pair<u8, u8>(object, color) {};
 
@@ -61,7 +61,7 @@ class ObjectColor : public std::pair<u8, u8>
 
 class ResourceCount : public std::pair<u8, u16>
 {
-    public:
+  public:
     ResourceCount() : std::pair<u8, u16>(Resource::UNKNOWN, 0) {};
     ResourceCount(const u8 & res, const u16 & count) : std::pair<u8, u16>(res, count) {};
 
@@ -70,15 +70,15 @@ class ResourceCount : public std::pair<u8, u16>
 };
 
 /*
-template<class T>
-struct map_data_compare : public std::binary_function<typename T::value_type,
-                                                      typename T::mapped_type, bool>
-{
-    bool operator() (const typename T::value_type & p, const typename T::mapped_type & i) const
-    {
-        return p.second == i;
-    }
-};
-*/
+   template<class T>
+   struct map_data_compare : public std::binary_function<typename T::value_type,
+   typename T::mapped_type, bool>
+   {
+   bool operator() (const typename T::value_type & p, const typename T::mapped_type & i) const
+   {
+   return p.second == i;
+   }
+   };
+   */
 
 #endif

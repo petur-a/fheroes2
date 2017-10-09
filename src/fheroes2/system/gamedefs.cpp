@@ -24,9 +24,9 @@
 
 const char* strip_context(const char* c)
 {
-    const char* p = c;
+  const char* p = c;
 
-    while(p && *p && *p++ != '|');
+  while(p && *p && *p++ != '|');
 
-    return p && *p ? p : c;
+  return p && *p ? p : c;
 }

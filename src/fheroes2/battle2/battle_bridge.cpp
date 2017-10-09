@@ -32,100 +32,100 @@ Battle2::Bridge::Bridge(Arena & a) : arena(a), destroy(false), down(false)
 
 bool Battle2::Bridge::isIndex(u16 index)
 {
-    switch(index)
-    {
-	case 49:
-	case 50: return true;
-	default: break;
-    }
-    return false;
+  switch(index)
+  {
+    case 49:
+    case 50: return true;
+    default: break;
+  }
+  return false;
 }
 
 bool Battle2::Bridge::isValid(void) const
 {
-    return !isDestroy();
+  return !isDestroy();
 }
 
 bool Battle2::Bridge::isDestroy(void) const
 {
-    return destroy;
+  return destroy;
 }
 
 bool Battle2::Bridge::isDown(void) const
 {
-    return down || isDestroy();
+  return down || isDestroy();
 }
 
 void Battle2::Bridge::SetDown(bool f)
 {
-    down = f;
+  down = f;
 }
 
 bool Battle2::Bridge::AllowUp(void) const
 {
-    return NULL == arena.GetTroopBoard(49) && NULL == arena.GetTroopBoard(50);
+  return NULL == arena.GetTroopBoard(49) && NULL == arena.GetTroopBoard(50);
 }
 
 bool Battle2::Bridge::NeedDown(const Stats & b, u16 pos2) const
 {
-    const u16 pos1 = b.GetPosition();
+  const u16 pos1 = b.GetPosition();
 
-    if(pos2 == 50)
-    {
-	if(pos1 == 51) return true;
-	if((pos1 == 61 || pos1 == 39) && b.GetColor() == arena.castle->GetColor()) return true;
-    }
-    else
+  if(pos2 == 50)
+  {
+    if(pos1 == 51) return true;
+    if((pos1 == 61 || pos1 == 39) && b.GetColor() == arena.castle->GetColor()) return true;
+  }
+  else
     if(pos2 == 49)
     {
-	if(pos1 != 50 && b.GetColor() == arena.castle->GetColor()) return true;
+      if(pos1 != 50 && b.GetColor() == arena.castle->GetColor()) return true;
     }
 
-    return false;
+  return false;
 }
 
 bool Battle2::Bridge::isPassable(u8 color) const
 {
-    return color == arena.castle->GetColor() || isDown();
+  return color == arena.castle->GetColor() || isDown();
 }
 
 void Battle2::Bridge::SetDestroy(void)
 {
-    destroy = true;
-    arena.board[49].object = 0;
-    arena.board[50].object = 0;
+  destroy = true;
+  arena.board[49].object = 0;
+  arena.board[50].object = 0;
 }
 
 void Battle2::Bridge::SetPassable(const Stats & b)
 {
-    if(Board::inCastle(b.GetPosition()) || b.GetColor() == arena.castle->GetColor())
-    {
-	arena.board[49].object = 0;
-	arena.board[50].object = 0;
-    }
-    else
-    {
-	arena.board[49].object = 1;
-	arena.board[50].object = 1;
-    }
+  if(Board::inCastle(b.GetPosition()) || b.GetColor() == arena.castle->GetColor())
+  {
+    arena.board[49].object = 0;
+    arena.board[50].object = 0;
+  }
+  else
+  {
+    arena.board[49].object = 1;
+    arena.board[50].object = 1;
+  }
 }
 
 
 bool Battle2::Bridge::NeedAction(const Stats & b, u16 dst) const
 {
-    return (!isDown() && NeedDown(b, dst)) ||
-	    (isValid() && isDown() && AllowUp());
+  return (!isDown() && NeedDown(b, dst)) ||
+    (isValid() && isDown() && AllowUp());
 }
 
 void Battle2::Bridge::Action(const Stats & b, u16 dst)
 {
-    bool action_down = false;
+  bool action_down = false;
 
-    if(!isDown() && NeedDown(b, dst))
-	action_down = true;
+  if(!isDown() && NeedDown(b, dst))
+    action_down = true;
 
-    if(arena.interface)
-	arena.interface->RedrawBridgeAnimation(action_down);
+  if(arena.interface)
+    arena.interface->RedrawBridgeAnimation(action_down);
 
-    SetDown(action_down);
+  SetDown(action_down);
 }

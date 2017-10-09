@@ -37,7 +37,7 @@ namespace Battle2 { class Arena; class Result; }
 
 class FH2LocalClient : public FH2Client
 {
-public:
+  public:
     static FH2LocalClient & Get(void);
 
     ~FH2LocalClient(){};
@@ -87,7 +87,7 @@ public:
     std::vector<Player> players;
     u32 admin_id;
 
-private:
+  private:
     FH2LocalClient();
 };
 

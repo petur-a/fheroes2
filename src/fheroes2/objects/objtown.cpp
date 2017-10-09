@@ -27,73 +27,73 @@
 
 u16 ObjTown::GetPassable(const u8 & index0)
 {
-    u8 index = index0 % 32;
+  u8 index = index0 % 32;
 
-    // 13, 29, 45, 61, 77, 93, 109, 125, 141, 157, 173, 189
-    if(13 == index || 29 == index)
-	return Direction::CENTER | Direction::BOTTOM;
-    else
+  // 13, 29, 45, 61, 77, 93, 109, 125, 141, 157, 173, 189
+  if(13 == index || 29 == index)
+    return Direction::CENTER | Direction::BOTTOM;
+  else
     // town/castle
     if((5 < index && index < 13) || (13 < index && index < 16) ||
-	(21 < index && index < 29) || (29 < index)) return 0;
+        (21 < index && index < 29) || (29 < index)) return 0;
 
-    return DIRECTION_ALL;
+  return DIRECTION_ALL;
 }
 
 u16 ObjTwba::GetPassable(const u8 & index0)
 {
-    u8 index = index0 % 10;
+  u8 index = index0 % 10;
 
-    // 2, 12, 22, 32, 42, 52, 62, 72
-    if(2 == index)
-	return Direction::CENTER | Direction::BOTTOM;
-    else
+  // 2, 12, 22, 32, 42, 52, 62, 72
+  if(2 == index)
+    return Direction::CENTER | Direction::BOTTOM;
+  else
     if(index < 5)
-	return 0;
+      return 0;
     else
-    // 7, 17, 27, 37, 47, 57, 67, 77
-    if(7 == index)
-	return DIRECTION_CENTER_ROW | DIRECTION_BOTTOM_ROW | Direction::TOP;
-    else
-    if(4 < index)
-	return DIRECTION_CENTER_ROW | DIRECTION_BOTTOM_ROW;
+      // 7, 17, 27, 37, 47, 57, 67, 77
+      if(7 == index)
+        return DIRECTION_CENTER_ROW | DIRECTION_BOTTOM_ROW | Direction::TOP;
+      else
+        if(4 < index)
+          return DIRECTION_CENTER_ROW | DIRECTION_BOTTOM_ROW;
 
-    return DIRECTION_ALL;
+  return DIRECTION_ALL;
 }
 
 bool ObjTown::isAction(const u8 & index)
 {
-    return MP2::OBJ_ZERO != GetActionObject(index);
+  return MP2::OBJ_ZERO != GetActionObject(index);
 }
 
 bool ObjTwba::isAction(const u8 & index)
 {
-    return MP2::OBJ_ZERO != GetActionObject(index);
+  return MP2::OBJ_ZERO != GetActionObject(index);
 }
 
 bool ObjTown::isShadow(const u8 & index)
 {
-    return false;
+  return false;
 }
 
 bool ObjTwba::isShadow(const u8 & index)
 {
-    return false;
+  return false;
 }
 
 u8 ObjTown::GetActionObject(const u8 & index)
 {
-    switch(index % 32)
-    {
-        case 13:
-        case 29:        return MP2::OBJ_CASTLE;
-        default: break;
-    }
+  switch(index % 32)
+  {
+    case 13:
+    case 29:        return MP2::OBJ_CASTLE;
+    default: break;
+  }
 
-    return MP2::OBJ_ZERO;
+  return MP2::OBJ_ZERO;
 }
 
 u8 ObjTwba::GetActionObject(const u8 & index)
 {
-    return MP2::OBJ_ZERO;
+  return MP2::OBJ_ZERO;
 }

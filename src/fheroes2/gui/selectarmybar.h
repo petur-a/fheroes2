@@ -34,56 +34,56 @@ class Castle;
 
 class SelectArmyBar
 {
-public:
+  public:
     SelectArmyBar();
 
     const Rect &GetArea(void) const;
-    bool	isSelected(void) const;
-    s8		GetIndexFromCoord(const Point &);
-    s8		Selected(void) const;
+    bool    isSelected(void) const;
+    s8      GetIndexFromCoord(const Point &);
+    s8      Selected(void) const;
 
-    bool	ChangeMode(void) const;
-    bool	ReadOnly(void) const;
-    bool	SaveLastTroop(void) const;
-    bool	isValid(void) const;
+    bool    ChangeMode(void) const;
+    bool    ReadOnly(void) const;
+    bool    SaveLastTroop(void) const;
+    bool    isValid(void) const;
 
-    void 	SetArmy(Army::army_t&);
-    void 	ResetArmy(void);
-    void 	SetPos(const Point &);
-    void 	SetPos(s16, s16);
-    void 	SetBackgroundSprite(const Surface &);
-    void	SetCursorSprite(const Surface &);
-    void 	SetInterval(u8);
-    void	SetCastle(const Castle &);
+    void    SetArmy(Army::army_t&);
+    void    ResetArmy(void);
+    void    SetPos(const Point &);
+    void    SetPos(s16, s16);
+    void    SetBackgroundSprite(const Surface &);
+    void    SetCursorSprite(const Surface &);
+    void    SetInterval(u8);
+    void    SetCastle(const Castle &);
 
-    void	SetChangeMode(void);
-    void	SetReadOnly(void);
-    void	SetSaveLastTroop(void);
-    void 	SetUseMons32Sprite(void);	// second variant: for small sprite ICN::MONS32
-    void	SetCount2Sprite(void);
+    void    SetChangeMode(void);
+    void    SetReadOnly(void);
+    void    SetSaveLastTroop(void);
+    void    SetUseMons32Sprite(void);   // second variant: for small sprite ICN::MONS32
+    void    SetCount2Sprite(void);
 
-    void 	Redraw(Surface & display = Display::Get());
-    void 	Reset(void);
-    void	Select(u8);
+    void    Redraw(Surface & display = Display::Get());
+    void    Reset(void);
+    void    Select(u8);
 
     static bool QueueEventProcessing(SelectArmyBar &, std::string* msg = NULL);
     static bool QueueEventProcessing(SelectArmyBar &, SelectArmyBar &, std::string* msg = NULL);
 
-private:
+  private:
     static void StatusMessageEvent1(const SelectArmyBar &, u8, const Army::Troop &, std::string &);
     static void StatusMessageEvent2(u8, u8, const Army::Troop &, const Army::Troop &, bool, std::string &);
 
-    Army::army_t *	army;
-    Rect		pos;
-    u8			interval;
-    s8			selected;
-    u8			flags;
-    Point		offset;
+    Army::army_t *  army;
+    Rect        pos;
+    u8          interval;
+    s8          selected;
+    u8          flags;
+    Point       offset;
 
-    const Surface *	background;
-    SpriteCursor	spritecursor;
+    const Surface * background;
+    SpriteCursor    spritecursor;
 
-    const Castle *	castle;
+    const Castle *  castle;
 };
 
 #endif

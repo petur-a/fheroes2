@@ -27,49 +27,49 @@
 
 namespace BarrierColor
 {
-    enum
-    {
-	NONE	= 0x00,
-        AQUA	= 0x01,
-        BLUE	= 0x02,
-        BROWN	= 0x04,
-        GOLD	= 0x08,
-        GREEN	= 0x10,
-        ORANGE	= 0x20,
-        PURPLE	= 0x40,
-        RED	= 0x80
-    };
+  enum
+  {
+    NONE    = 0x00,
+    AQUA    = 0x01,
+    BLUE    = 0x02,
+    BROWN   = 0x04,
+    GOLD    = 0x08,
+    GREEN   = 0x10,
+    ORANGE  = 0x20,
+    PURPLE  = 0x40,
+    RED = 0x80
+  };
 
-    const char* String(u8);
-    u8 FromMP2(u8);
+  const char* String(u8);
+  u8 FromMP2(u8);
 }
 
 namespace Color
 {
-    enum color_t
-    {
-	NONE	= 0x00,
-        BLUE    = 0x01,
-        GREEN   = 0x02,
-        RED     = 0x04,
-        YELLOW  = 0x08,
-        ORANGE  = 0x10,
-        PURPLE  = 0x20,
-	UNUSED	= 0x80,
-	ALL	= BLUE | GREEN | RED | YELLOW | ORANGE | PURPLE
-    };
+  enum color_t
+  {
+    NONE    = 0x00,
+    BLUE    = 0x01,
+    GREEN   = 0x02,
+    RED     = 0x04,
+    YELLOW  = 0x08,
+    ORANGE  = 0x10,
+    PURPLE  = 0x20,
+    UNUSED  = 0x80,
+    ALL = BLUE | GREEN | RED | YELLOW | ORANGE | PURPLE
+  };
 
-    const char* String(u8);
+  const char* String(u8);
 
-    u8 Count(u8);
-    u8 GetIndex(u8);
-    color_t GetFirst(u8);
-    color_t Get(u8);
+  u8 Count(u8);
+  u8 GetIndex(u8);
+  color_t GetFirst(u8);
+  color_t Get(u8);
 }
 
 class Colors : public std::vector<Color::color_t>
 {
-public:
+  public:
     Colors(u8 = Color::ALL);
 
     std::string String(void) const;

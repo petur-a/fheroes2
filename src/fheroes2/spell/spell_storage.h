@@ -33,18 +33,18 @@ class BagArtifacts;
 
 class SpellStorage : public std::vector<Spell>
 {
-public:
-	SpellStorage();
+  public:
+    SpellStorage();
 
-	u8 Size(u8 lvl = 0) const;
+    u8 Size(u8 lvl = 0) const;
 
-	SpellStorage GetSpells(u8) const;
-	void Append(const SpellStorage &);
-	void Append(const Spell &);
-	void Append(const BagArtifacts &);
-	void Append(const Artifact &);
-	bool isPresentSpell(const Spell &) const;
-	std::string String(void) const;
+    SpellStorage GetSpells(u8) const;
+    void Append(const SpellStorage &);
+    void Append(const Spell &);
+    void Append(const BagArtifacts &);
+    void Append(const Artifact &);
+    bool isPresentSpell(const Spell &) const;
+    std::string String(void) const;
 };
 
 #endif

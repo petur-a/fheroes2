@@ -28,7 +28,7 @@
 
 class ScenarioListBox : public Interface::ListBox<Maps::FileInfo>
 {
-public:
+  public:
     ScenarioListBox(const Point & pt) : Interface::ListBox<Maps::FileInfo>(pt), selectOk(false) {};
 
     void RedrawItem(const Maps::FileInfo &, s16, s16, bool);
@@ -45,7 +45,7 @@ public:
 
 namespace Dialog
 {
-    const Maps::FileInfo* SelectScenario(const MapsFileInfoList &);
+  const Maps::FileInfo* SelectScenario(const MapsFileInfoList &);
 }
 
 #endif

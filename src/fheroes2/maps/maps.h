@@ -34,52 +34,52 @@ typedef std::vector<s32> MapsIndexes;
 
 namespace Maps
 {
-    enum mapsize_t
-    {
-	ZERO	= 0,
-        SMALL	= 36,
-        MEDIUM	= 72,
-        LARGE	= 108,
-        XLARGE	= 144,
-	XLARGE2 = 252,
-	XLARGE3	= 324
-    };
+  enum mapsize_t
+  {
+    ZERO    = 0,
+    SMALL   = 36,
+    MEDIUM  = 72,
+    LARGE   = 108,
+    XLARGE  = 144,
+    XLARGE2 = 252,
+    XLARGE3 = 324
+  };
 
-    const char* SizeString(u16);
-    const char* GetMinesName(u8);
+  const char* SizeString(u16);
+  const char* GetMinesName(u8);
 
-    s32 GetDirectionIndex(const s32 & from, u16 direct);
-    bool isValidDirection(const s32 & from, u16 direct);
+  s32 GetDirectionIndex(const s32 & from, u16 direct);
+  bool isValidDirection(const s32 & from, u16 direct);
 
-    bool isValidAbsIndex(const s32 &);
-    bool isValidAbsPoint(const Point & pt);
-    bool isValidAbsPoint(s16 x, s16 y);
+  bool isValidAbsIndex(const s32 &);
+  bool isValidAbsPoint(const Point & pt);
+  bool isValidAbsPoint(s16 x, s16 y);
 
-    s32 GetIndexFromAbsPoint(const Point & mp);
-    s32 GetIndexFromAbsPoint(s16 px, s16 py);
+  s32 GetIndexFromAbsPoint(const Point & mp);
+  s32 GetIndexFromAbsPoint(s16 px, s16 py);
 
-    MapsIndexes GetAllIndexes(void);
-    MapsIndexes GetAroundIndexes(const s32 &, u16 filter = DIRECTION_ALL);
-    MapsIndexes GetDistanceIndexes(const s32 &, u16 dist, bool sort = false);
-    MapsIndexes ScanAroundObject(const s32 &, u8 obj);
-    MapsIndexes ScanAroundObjects(const s32 &, const u8* objs);
-    MapsIndexes GetTilesUnderProtection(const s32 &);
-    bool	TileIsUnderProtection(const s32 &);
-    MapsIndexes ScanDistanceObject(const s32 &, u8 obj, u16 dist);
-    MapsIndexes ScanDistanceObjects(const s32 &, const u8* objs, u16 dist);
-    MapsIndexes GetObjectPositions(u8 obj, bool check_hero);
-    MapsIndexes GetObjectPositions(const s32 &, u8 obj, bool check_hero); // sorting distance
-    MapsIndexes GetObjectsPositions(const u8* objs);
+  MapsIndexes GetAllIndexes(void);
+  MapsIndexes GetAroundIndexes(const s32 &, u16 filter = DIRECTION_ALL);
+  MapsIndexes GetDistanceIndexes(const s32 &, u16 dist, bool sort = false);
+  MapsIndexes ScanAroundObject(const s32 &, u8 obj);
+  MapsIndexes ScanAroundObjects(const s32 &, const u8* objs);
+  MapsIndexes GetTilesUnderProtection(const s32 &);
+  bool    TileIsUnderProtection(const s32 &);
+  MapsIndexes ScanDistanceObject(const s32 &, u8 obj, u16 dist);
+  MapsIndexes ScanDistanceObjects(const s32 &, const u8* objs, u16 dist);
+  MapsIndexes GetObjectPositions(u8 obj, bool check_hero);
+  MapsIndexes GetObjectPositions(const s32 &, u8 obj, bool check_hero); // sorting distance
+  MapsIndexes GetObjectsPositions(const u8* objs);
 
-    u16 TileIsCoast(const s32 &, u16 direct = DIRECTION_ALL);
+  u16 TileIsCoast(const s32 &, u16 direct = DIRECTION_ALL);
 
-    void ClearFog(const s32 &, u8 scoute, u8 color);
-    u16 GetApproximateDistance(const s32 &, const s32 &);
+  void ClearFog(const s32 &, u8 scoute, u8 color);
+  u16 GetApproximateDistance(const s32 &, const s32 &);
 
 
-    void UpdateRNDSpriteForCastle(const Point & center, u8 race, bool castle);
-    void UpdateSpritesFromTownToCastle(const Point & center);
-    void MinimizeAreaForCastle(const Point & center);
+  void UpdateRNDSpriteForCastle(const Point & center, u8 race, bool castle);
+  void UpdateSpritesFromTownToCastle(const Point & center);
+  void MinimizeAreaForCastle(const Point & center);
 }
 
 #endif

@@ -28,34 +28,34 @@
 
 namespace Battle2
 {
-    class Stats;
+  class Stats;
 
-    class Bridge
-    {
+  class Bridge
+  {
     public:
-	Bridge(Arena & a);
+      Bridge(Arena & a);
 
-	bool NeedAction(const Stats &, u16) const;
-	void Action(const Stats &, u16);
+      bool NeedAction(const Stats &, u16) const;
+      void Action(const Stats &, u16);
 
-	void SetDestroy(void);
-	void SetDown(bool);
-	void SetPassable(const Stats &);
+      void SetDestroy(void);
+      void SetDown(bool);
+      void SetPassable(const Stats &);
 
-	bool AllowUp(void) const;
-	bool NeedDown(const Stats &, u16) const;
-	bool isPassable(u8) const;
-	bool isValid(void) const;
-	bool isDestroy(void) const;
-	bool isDown(void) const;
+      bool AllowUp(void) const;
+      bool NeedDown(const Stats &, u16) const;
+      bool isPassable(u8) const;
+      bool isValid(void) const;
+      bool isDestroy(void) const;
+      bool isDown(void) const;
 
-	static bool isIndex(u16);
+      static bool isIndex(u16);
 
     private:
-	Arena & arena;
-	bool destroy;
-	bool down;
-    };
+      Arena & arena;
+      bool destroy;
+      bool down;
+  };
 }
 
 #endif

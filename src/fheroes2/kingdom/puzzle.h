@@ -26,11 +26,11 @@
 #include <bitset>
 #include "gamedefs.h"
 
-#define PUZZLETILES	48
+#define PUZZLETILES 48
 
 class Puzzle : public std::bitset<PUZZLETILES>
 {
-public:
+  public:
     Puzzle();
     Puzzle & operator= (const char*);
 

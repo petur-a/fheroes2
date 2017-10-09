@@ -29,51 +29,51 @@
 
 u16 Dialog::ResourceInfo(const std::string &header, const std::string &message, const Funds & rs, u16 buttons)
 {
-    Display & display = Display::Get();
-    const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
+  Display & display = Display::Get();
+  const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
 
-    // preload
-    AGG::PreloadObject(system);
+  // preload
+  AGG::PreloadObject(system);
 
-    // cursor
-    Cursor & cursor = Cursor::Get();
+  // cursor
+  Cursor & cursor = Cursor::Get();
 
-    cursor.Hide();
-    cursor.SetThemes(cursor.POINTER);
+  cursor.Hide();
+  cursor.SetThemes(cursor.POINTER);
 
-    TextBox box1(header, Font::YELLOW_BIG, BOXAREA_WIDTH);
-    TextBox box2(message, Font::BIG, BOXAREA_WIDTH);
-    Resource::BoxSprite rbs(rs, BOXAREA_WIDTH);
+  TextBox box1(header, Font::YELLOW_BIG, BOXAREA_WIDTH);
+  TextBox box2(message, Font::BIG, BOXAREA_WIDTH);
+  Resource::BoxSprite rbs(rs, BOXAREA_WIDTH);
 
-    const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
+  const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
 
-    Box box(box1.h() + spacer + box2.h() + spacer + rbs.GetArea().h, true);
-    Point pos = box.GetArea();
+  Box box(box1.h() + spacer + box2.h() + spacer + rbs.GetArea().h, true);
+  Point pos = box.GetArea();
 
-    if(header.size()) box1.Blit(pos);
-    pos.y += box1.h() + spacer;
+  if(header.size()) box1.Blit(pos);
+  pos.y += box1.h() + spacer;
 
-    if(message.size()) box2.Blit(pos);
-    pos.y += box2.h() + spacer;
+  if(message.size()) box2.Blit(pos);
+  pos.y += box2.h() + spacer;
 
-    rbs.SetPos(pos.x, pos.y);
-    rbs.Redraw();
+  rbs.SetPos(pos.x, pos.y);
+  rbs.Redraw();
 
-    LocalEvent & le = LocalEvent::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    ButtonGroups btnGroups(box.GetArea(), buttons);
-    btnGroups.Draw();
+  ButtonGroups btnGroups(box.GetArea(), buttons);
+  btnGroups.Draw();
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    u16 result = Dialog::ZERO;
+  u16 result = Dialog::ZERO;
 
-    while(result == Dialog::ZERO && le.HandleEvents())
-    {
-        if(!buttons && !le.MousePressRight()) break;
-        result = btnGroups.QueueEventProcessing();
-    }
+  while(result == Dialog::ZERO && le.HandleEvents())
+  {
+    if(!buttons && !le.MousePressRight()) break;
+    result = btnGroups.QueueEventProcessing();
+  }
 
-    return result;
+  return result;
 }

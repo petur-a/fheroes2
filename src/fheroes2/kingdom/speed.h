@@ -27,27 +27,27 @@
 
 namespace Speed
 {
-    enum speed_t
-    {
-	STANDING	= 0,
-	CRAWLING	= 1,
-        VERYSLOW	= 2,
-        SLOW		= 3,
-        AVERAGE		= 4,
-        FAST		= 5,
-        VERYFAST	= 6,
-        ULTRAFAST	= 7,
-        BLAZING		= 8,
-        INSTANT		= 9
-    };
+  enum speed_t
+  {
+    STANDING    = 0,
+    CRAWLING    = 1,
+    VERYSLOW    = 2,
+    SLOW        = 3,
+    AVERAGE     = 4,
+    FAST        = 5,
+    VERYFAST    = 6,
+    ULTRAFAST   = 7,
+    BLAZING     = 8,
+    INSTANT     = 9
+  };
 
-    const char* String(u8 speed);
-    
-    speed_t GetOriginalSlow(u8);
-    speed_t GetOriginalFast(u8);
+  const char* String(u8 speed);
 
-    inline speed_t& operator++ (speed_t& speed){ return speed = ( INSTANT == speed ? INSTANT : speed_t(speed + 1)); }
-    inline speed_t& operator-- (speed_t& speed){ return speed = ( CRAWLING == speed ? CRAWLING : speed_t(speed - 1)); }
+  speed_t GetOriginalSlow(u8);
+  speed_t GetOriginalFast(u8);
+
+  inline speed_t& operator++ (speed_t& speed){ return speed = ( INSTANT == speed ? INSTANT : speed_t(speed + 1)); }
+  inline speed_t& operator-- (speed_t& speed){ return speed = ( CRAWLING == speed ? CRAWLING : speed_t(speed - 1)); }
 }
 
 #endif

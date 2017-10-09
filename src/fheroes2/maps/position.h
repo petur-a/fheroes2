@@ -27,25 +27,25 @@
 
 namespace Maps
 {
-    class Position
-    {
+  class Position
+  {
     public:
-	Position() {};
-	Position(const Point &);
+      Position() {};
+      Position(const Point &);
 
-	bool operator== (s32) const;
+      bool operator== (s32) const;
 
-	const Point & GetCenter(void) const;
-	s32 GetIndex(void) const;
+      const Point & GetCenter(void) const;
+      s32 GetIndex(void) const;
 
-	void SetCenter(const Point &);
-	void SetIndex(s32);
+      void SetCenter(const Point &);
+      void SetIndex(s32);
 
-	bool isPosition(s32) const;
+      bool isPosition(s32) const;
 
     protected:
-	Point center;
-    };
+      Point center;
+  };
 }
 
 #endif

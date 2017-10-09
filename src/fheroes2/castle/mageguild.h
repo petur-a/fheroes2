@@ -32,29 +32,29 @@ class HeroBase;
 
 class MageGuild
 {
-    public:
-	MageGuild() {};
+  public:
+    MageGuild() {};
 
-	void Builds(u8 race, bool libraryCap);
-	void EducateHero(HeroBase &, u8 lvlmage, bool isLibraryBuild) const;
+    void Builds(u8 race, bool libraryCap);
+    void EducateHero(HeroBase &, u8 lvlmage, bool isLibraryBuild) const;
 
-	SpellStorage GetSpells(u8 lvlmage, bool islibrary, u8) const;
+    SpellStorage GetSpells(u8 lvlmage, bool islibrary, u8) const;
 
-    private:
-	friend class Game::IO;
+  private:
+    friend class Game::IO;
 
-	SpellStorage general;
-	SpellStorage library;
+    SpellStorage general;
+    SpellStorage library;
 };
 
 class RowSpells
 {
-public:
+  public:
     RowSpells(const Point &, const Castle &, u8);
     void Redraw(void);
     bool QueueEventProcessing(void);
 
-private:
+  private:
     Rects coords;
     SpellStorage spells;
 };

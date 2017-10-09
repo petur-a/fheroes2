@@ -37,74 +37,74 @@ Background::Background(const Point &pt, u16 w, u16 h) : Surface(), Rect(pt, w, h
 
 bool Background::isValid(void) const
 {
-    return Surface::isValid();
+  return Surface::isValid();
 }
 
 void Background::Save(void)
 {
-    Display & display = Display::Get();
+  Display & display = Display::Get();
 
-    // resize background
-    if(Surface::isValid() && (Size::w != Surface::w() || Size::h != Surface::h())) FreeSurface(*this);
+  // resize background
+  if(Surface::isValid() && (Size::w != Surface::w() || Size::h != Surface::h())) FreeSurface(*this);
 
-    if(0 == Rect::w || 0 == Rect::h) return;
+  if(0 == Rect::w || 0 == Rect::h) return;
 
-    if(! Surface::isValid())
-    {
-	Set(Rect::w, Rect::h, false);
-	SetDisplayFormat();
-    }
-    display.Blit(*this, 0, 0, *this);
+  if(! Surface::isValid())
+  {
+    Set(Rect::w, Rect::h, false);
+    SetDisplayFormat();
+  }
+  display.Blit(*this, 0, 0, *this);
 }
 
 void Background::Save(s16 ax, s16 ay)
 {
-    x = ax;
-    y = ay;
+  x = ax;
+  y = ay;
 
-    Save();
+  Save();
 }
 
 void Background::Save(s16 ax, s16 ay, u16 aw, u16 ah)
 {
-    x = ax;
-    y = ay;
-    Size::w = aw;
-    Size::h = ah;
+  x = ax;
+  y = ay;
+  Size::w = aw;
+  Size::h = ah;
 
-    Save();
+  Save();
 }
 
 void Background::Save(const Point &pt)
 {
-    x = pt.x;
-    y = pt.y;
+  x = pt.x;
+  y = pt.y;
 
-    Save();
+  Save();
 }
 
 void Background::Save(const Rect &rt)
 {
-    Save(rt.x, rt.y, rt.w, rt.h);
+  Save(rt.x, rt.y, rt.w, rt.h);
 }
 
 void Background::Restore(void)
 {
-    Display & display = Display::Get();
-    if(Surface::isValid()) Blit(x, y, display);
+  Display & display = Display::Get();
+  if(Surface::isValid()) Blit(x, y, display);
 }
 
 const Rect & Background::GetRect(void) const
 {
-    return *this;
+  return *this;
 }
 
 const Point & Background::GetPos(void) const
 {
-    return *this;
+  return *this;
 }
 
 const Size & Background::GetSize(void) const
 {
-    return *this;
+  return *this;
 }

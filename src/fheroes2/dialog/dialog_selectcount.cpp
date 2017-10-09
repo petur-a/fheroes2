@@ -29,232 +29,232 @@
 
 bool Dialog::SelectCount(const std::string &header, u32 min, u32 max, u32 & cur, u8 step)
 {
-    Display & display = Display::Get();
+  Display & display = Display::Get();
 
-    if(min >= max) min = 0;
-    if(cur > max || cur < min) cur = min;
+  if(min >= max) min = 0;
+  if(cur > max || cur < min) cur = min;
 
-    const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
+  const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
 
-    // preload
-    AGG::PreloadObject(system);
+  // preload
+  AGG::PreloadObject(system);
 
-    // cursor
-    Cursor & cursor = Cursor::Get();
-    cursor.Hide();
+  // cursor
+  Cursor & cursor = Cursor::Get();
+  cursor.Hide();
 
-    Text text(header, Font::BIG);
-    const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
+  Text text(header, Font::BIG);
+  const u8 spacer = Settings::Get().QVGA() ? 5 : 10;
 
-    Box box(text.h() + spacer + 30, true);
+  Box box(text.h() + spacer + 30, true);
 
-    const Rect & pos = box.GetArea();
-    Point pt;
+  const Rect & pos = box.GetArea();
+  Point pt;
 
-    // text
-    pt.x = pos.x + (pos.w - text.w()) / 2;
-    pt.y = pos.y;
-    text.Blit(pt);
+  // text
+  pt.x = pos.x + (pos.w - text.w()) / 2;
+  pt.y = pos.y;
+  text.Blit(pt);
 
-    // sprite edit
-    const Surface & sprite_edit = AGG::GetICN(ICN::TOWNWIND, 4);
-    pt.x = pos.x + 80;
-    pt.y = pos.y + 35;
-    sprite_edit.Blit(pt, display);
+  // sprite edit
+  const Surface & sprite_edit = AGG::GetICN(ICN::TOWNWIND, 4);
+  pt.x = pos.x + 80;
+  pt.y = pos.y + 35;
+  sprite_edit.Blit(pt, display);
 
-    text.Set(GetString(cur));
-    pt.x = pos.x + 80 + (sprite_edit.w() - text.w()) / 2;
-    pt.y = pos.y + 36;
-    text.Blit(pt);
+  text.Set(GetString(cur));
+  pt.x = pos.x + 80 + (sprite_edit.w() - text.w()) / 2;
+  pt.y = pos.y + 36;
+  text.Blit(pt);
 
-    // buttons
-    pt.x = pos.x + 150;
-    pt.y = pos.y + 31;
-    Button buttonUp(pt, ICN::TOWNWIND, 5, 6);
+  // buttons
+  pt.x = pos.x + 150;
+  pt.y = pos.y + 31;
+  Button buttonUp(pt, ICN::TOWNWIND, 5, 6);
 
-    pt.x = pos.x + 150;
-    pt.y = pos.y + 47;
-    Button buttonDn(pt, ICN::TOWNWIND, 7, 8);
+  pt.x = pos.x + 150;
+  pt.y = pos.y + 47;
+  Button buttonDn(pt, ICN::TOWNWIND, 7, 8);
 
-    pt.x = pos.x;
-    pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 1).h();
-    Button buttonOk(pt, system, 1, 2);
+  pt.x = pos.x;
+  pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 1).h();
+  Button buttonOk(pt, system, 1, 2);
 
-    pt.x = pos.x + pos.w - AGG::GetICN(system, 3).w();
-    pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 3).h();
-    Button buttonCancel(pt, system, 3, 4);
+  pt.x = pos.x + pos.w - AGG::GetICN(system, 3).w();
+  pt.y = box.GetArea().y + box.GetArea().h - AGG::GetICN(system, 3).h();
+  Button buttonCancel(pt, system, 3, 4);
 
-    text.Set("MAX", Font::SMALL);
-    const Rect rectMax(pos.x + 173, pos.y + 38, text.w(), text.h());
-    text.Blit(rectMax.x, rectMax.y);
+  text.Set("MAX", Font::SMALL);
+  const Rect rectMax(pos.x + 173, pos.y + 38, text.w(), text.h());
+  text.Blit(rectMax.x, rectMax.y);
 
-    LocalEvent & le = LocalEvent::Get();
+  LocalEvent & le = LocalEvent::Get();
 
-    buttonUp.Draw();
-    buttonDn.Draw();
-    buttonOk.Draw();
-    buttonCancel.Draw();
+  buttonUp.Draw();
+  buttonDn.Draw();
+  buttonOk.Draw();
+  buttonCancel.Draw();
 
-    bool redraw_count = false;
-    cursor.Show();
-    display.Flip();
+  bool redraw_count = false;
+  cursor.Show();
+  display.Flip();
 
-    // message loop
-    while(le.HandleEvents())
+  // message loop
+  while(le.HandleEvents())
+  {
+    le.MousePressLeft(buttonOk) ? buttonOk.PressDraw() : buttonOk.ReleaseDraw();
+    le.MousePressLeft(buttonCancel) ? buttonCancel.PressDraw() : buttonCancel.ReleaseDraw();
+    le.MousePressLeft(buttonUp) ? buttonUp.PressDraw() : buttonUp.ReleaseDraw();
+    le.MousePressLeft(buttonDn) ? buttonDn.PressDraw() : buttonDn.ReleaseDraw();
+
+    if(PressIntKey(min, max, cur))
+      redraw_count = true;
+
+    // max
+    if(le.MouseClickLeft(rectMax))
     {
-	le.MousePressLeft(buttonOk) ? buttonOk.PressDraw() : buttonOk.ReleaseDraw();
-        le.MousePressLeft(buttonCancel) ? buttonCancel.PressDraw() : buttonCancel.ReleaseDraw();
-	le.MousePressLeft(buttonUp) ? buttonUp.PressDraw() : buttonUp.ReleaseDraw();
-	le.MousePressLeft(buttonDn) ? buttonDn.PressDraw() : buttonDn.ReleaseDraw();
-
-	if(PressIntKey(min, max, cur))
-	    redraw_count = true;
-
-        // max
-        if(le.MouseClickLeft(rectMax))
-        {
-    	    cur = max;
-    	    redraw_count = true;
-        }
-	else
-	// up
-	if((le.MouseWheelUp(pos) ||
+      cur = max;
+      redraw_count = true;
+    }
+    else
+      // up
+      if((le.MouseWheelUp(pos) ||
             le.MouseClickLeft(buttonUp)) && cur < max)
-	{
-	    cur += cur + step <= max ? step : max - cur;
-    	    redraw_count = true;
-	}
-	else
-	// down
-	if((le.MouseWheelDn(pos) ||
-            le.MouseClickLeft(buttonDn)) && min < cur)
-	{
-	    cur -= min + cur >= step ? step : cur;
-    	    redraw_count = true;
-	}
+      {
+        cur += cur + step <= max ? step : max - cur;
+        redraw_count = true;
+      }
+      else
+        // down
+        if((le.MouseWheelDn(pos) ||
+              le.MouseClickLeft(buttonDn)) && min < cur)
+        {
+          cur -= min + cur >= step ? step : cur;
+          redraw_count = true;
+        }
 
-	if(redraw_count)
-	{
-	    cursor.Hide();
-	    pt.x = pos.x + 80;
-	    pt.y = pos.y + 35;
-	    sprite_edit.Blit(pt, display);
+    if(redraw_count)
+    {
+      cursor.Hide();
+      pt.x = pos.x + 80;
+      pt.y = pos.y + 35;
+      sprite_edit.Blit(pt, display);
 
-	    text.Set(GetString(cur), Font::BIG);
-	    pt.x = pos.x + 80 + (sprite_edit.w() - text.w()) / 2;
-	    pt.y = pos.y + 36;
-	    text.Blit(pt);
-	    cursor.Show();
-	    display.Flip();
+      text.Set(GetString(cur), Font::BIG);
+      pt.x = pos.x + 80 + (sprite_edit.w() - text.w()) / 2;
+      pt.y = pos.y + 36;
+      text.Blit(pt);
+      cursor.Show();
+      display.Flip();
 
-	    redraw_count = false;
-	}
-
-        if(Game::HotKeyPress(Game::EVENT_DEFAULT_READY) || le.MouseClickLeft(buttonOk)){ return true; }
-	else
-	if(Game::HotKeyPress(Game::EVENT_DEFAULT_EXIT) || le.MouseClickLeft(buttonCancel)){ cur = 0;  break; }
+      redraw_count = false;
     }
 
-    return false;
+    if(Game::HotKeyPress(Game::EVENT_DEFAULT_READY) || le.MouseClickLeft(buttonOk)){ return true; }
+    else
+      if(Game::HotKeyPress(Game::EVENT_DEFAULT_EXIT) || le.MouseClickLeft(buttonCancel)){ cur = 0;  break; }
+  }
+
+  return false;
 }
 
 bool Dialog::InputString(const std::string &header, std::string &res)
 {
-    const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
+  const ICN::icn_t system = Settings::Get().ExtGameEvilInterface() ? ICN::SYSTEME : ICN::SYSTEM;
 
-    Display & display = Display::Get();
-    Cursor & cursor = Cursor::Get();
-    cursor.Hide();
-    Cursor::themes_t oldcursor = cursor.Themes();
-    cursor.SetThemes(cursor.POINTER);
+  Display & display = Display::Get();
+  Cursor & cursor = Cursor::Get();
+  cursor.Hide();
+  Cursor::themes_t oldcursor = cursor.Themes();
+  cursor.SetThemes(cursor.POINTER);
 
-    //const bool pda = Settings::Get().PocketPC();
-    if(res.size()) res.clear();
-    res.reserve(48);
-    size_t charInsertPos = 0;
+  //const bool pda = Settings::Get().PocketPC();
+  if(res.size()) res.clear();
+  res.reserve(48);
+  size_t charInsertPos = 0;
 
-    TextBox textbox(header, Font::BIG, BOXAREA_WIDTH);
-    Point dst_pt;
-    const Surface & sprite = AGG::GetICN((Settings::Get().ExtGameEvilInterface() ? ICN::BUYBUILD : ICN::BUYBUILE), 3);
+  TextBox textbox(header, Font::BIG, BOXAREA_WIDTH);
+  Point dst_pt;
+  const Surface & sprite = AGG::GetICN((Settings::Get().ExtGameEvilInterface() ? ICN::BUYBUILD : ICN::BUYBUILE), 3);
 
-    Box box(10 + textbox.h() + 10 + sprite.h(), OK|CANCEL);
-    const Rect & box_rt = box.GetArea();
+  Box box(10 + textbox.h() + 10 + sprite.h(), OK|CANCEL);
+  const Rect & box_rt = box.GetArea();
 
-    // text
-    dst_pt.x = box_rt.x + (box_rt.w - textbox.w()) / 2;
-    dst_pt.y = box_rt.y + 10;
-    textbox.Blit(dst_pt);
+  // text
+  dst_pt.x = box_rt.x + (box_rt.w - textbox.w()) / 2;
+  dst_pt.y = box_rt.y + 10;
+  textbox.Blit(dst_pt);
 
-    dst_pt.y = box_rt.y + 10 + textbox.h() + 10;
-    dst_pt.x = box_rt.x + (box_rt.w - sprite.w()) / 2;
-    sprite.Blit(dst_pt, display);
-    const Rect text_rt(dst_pt.x, dst_pt.y, sprite.w(), sprite.h());
+  dst_pt.y = box_rt.y + 10 + textbox.h() + 10;
+  dst_pt.x = box_rt.x + (box_rt.w - sprite.w()) / 2;
+  sprite.Blit(dst_pt, display);
+  const Rect text_rt(dst_pt.x, dst_pt.y, sprite.w(), sprite.h());
 
-    Text text("_", Font::BIG);
-    sprite.Blit(text_rt, display);
-    text.Blit(dst_pt.x + (sprite.w() - text.w()) / 2, dst_pt.y - 1);
+  Text text("_", Font::BIG);
+  sprite.Blit(text_rt, display);
+  text.Blit(dst_pt.x + (sprite.w() - text.w()) / 2, dst_pt.y - 1);
 
-    dst_pt.x = box_rt.x;
-    dst_pt.y = box_rt.y + box_rt.h - AGG::GetICN(system, 1).h();
-    Button buttonOk(dst_pt, system, 1, 2);
+  dst_pt.x = box_rt.x;
+  dst_pt.y = box_rt.y + box_rt.h - AGG::GetICN(system, 1).h();
+  Button buttonOk(dst_pt, system, 1, 2);
 
-    dst_pt.x = box_rt.x + box_rt.w - AGG::GetICN(system, 3).w();
-    dst_pt.y = box_rt.y + box_rt.h - AGG::GetICN(system, 3).h();
-    Button buttonCancel(dst_pt, system, 3, 4);
+  dst_pt.x = box_rt.x + box_rt.w - AGG::GetICN(system, 3).w();
+  dst_pt.y = box_rt.y + box_rt.h - AGG::GetICN(system, 3).h();
+  Button buttonCancel(dst_pt, system, 3, 4);
 
-    buttonOk.SetDisable(res.empty());
-    buttonOk.Draw();
-    buttonCancel.Draw();
+  buttonOk.SetDisable(res.empty());
+  buttonOk.Draw();
+  buttonCancel.Draw();
 
-    cursor.Show();
-    display.Flip();
+  cursor.Show();
+  display.Flip();
 
-    LocalEvent & le = LocalEvent::Get();
-    bool redraw = true;
+  LocalEvent & le = LocalEvent::Get();
+  bool redraw = true;
 
-    // message loop
-    while(le.HandleEvents())
+  // message loop
+  while(le.HandleEvents())
+  {
+    buttonOk.isEnable() && le.MousePressLeft(buttonOk) ? buttonOk.PressDraw() : buttonOk.ReleaseDraw();
+    le.MousePressLeft(buttonCancel) ? buttonCancel.PressDraw() : buttonCancel.ReleaseDraw();
+
+    if(Settings::Get().PocketPC() && le.MousePressLeft(text_rt))
     {
-	buttonOk.isEnable() && le.MousePressLeft(buttonOk) ? buttonOk.PressDraw() : buttonOk.ReleaseDraw();
-        le.MousePressLeft(buttonCancel) ? buttonCancel.PressDraw() : buttonCancel.ReleaseDraw();
-
-	if(Settings::Get().PocketPC() && le.MousePressLeft(text_rt))
-	{
-	    PocketPC::KeyboardDialog(res);
-	    redraw = true;
-	}
-
-        if(Game::HotKeyPress(Game::EVENT_DEFAULT_READY) || (buttonOk.isEnable() && le.MouseClickLeft(buttonOk))) break;
-	else
-	if(Game::HotKeyPress(Game::EVENT_DEFAULT_EXIT) || le.MouseClickLeft(buttonCancel)){ res.clear(); break; }
-	else
-	if(le.KeyPress())
-	{
-	    charInsertPos = String::InsertKeySym(res, charInsertPos, le.KeyValue(), le.KeyMod());
-	    redraw = true;
-	}
-
-	if(redraw)
-	{
-	    buttonOk.SetDisable(res.empty());
-	    buttonOk.Draw();
-
-	    text.Set(String::InsertString(res, charInsertPos, "_"));
-
-	    if(text.w() < sprite.w() - 24)
-	    {
-		cursor.Hide();
-		sprite.Blit(text_rt, display);
-		text.Blit(text_rt.x + (text_rt.w - text.w()) / 2, text_rt.y - 1);
-		cursor.Show();
-		display.Flip();
-	    }
-	    redraw = false;
-	}
+      PocketPC::KeyboardDialog(res);
+      redraw = true;
     }
 
-    cursor.SetThemes(oldcursor);
-    cursor.Hide();
+    if(Game::HotKeyPress(Game::EVENT_DEFAULT_READY) || (buttonOk.isEnable() && le.MouseClickLeft(buttonOk))) break;
+    else
+      if(Game::HotKeyPress(Game::EVENT_DEFAULT_EXIT) || le.MouseClickLeft(buttonCancel)){ res.clear(); break; }
+      else
+        if(le.KeyPress())
+        {
+          charInsertPos = String::InsertKeySym(res, charInsertPos, le.KeyValue(), le.KeyMod());
+          redraw = true;
+        }
 
-    return res.size();
+    if(redraw)
+    {
+      buttonOk.SetDisable(res.empty());
+      buttonOk.Draw();
+
+      text.Set(String::InsertString(res, charInsertPos, "_"));
+
+      if(text.w() < sprite.w() - 24)
+      {
+        cursor.Hide();
+        sprite.Blit(text_rt, display);
+        text.Blit(text_rt.x + (text_rt.w - text.w()) / 2, text_rt.y - 1);
+        cursor.Show();
+        display.Flip();
+      }
+      redraw = false;
+    }
+  }
+
+  cursor.SetThemes(oldcursor);
+  cursor.Hide();
+
+  return res.size();
 }

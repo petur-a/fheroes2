@@ -1,24 +1,24 @@
-/*************************************************************************** 
+/***************************************************************************
  *   Copyright (C) 2008 by Andrey Afletdinov <fheroes2@gmail.com>          *
  *   Copyright (C) 2009 by Josh Matthews  <josh@joshmatthews.net>          *
  *                                                                         *
  *   Part of the Free Heroes2 Engine:                                      *
  *   http://sourceforge.net/projects/fheroes2                              *
- *                                                                         * 
- *   This program is free software; you can redistribute it and/or modify  * 
- *   it under the terms of the GNU General Public License as published by  * 
- *   the Free Software Foundation; either version 2 of the License, or     * 
- *   (at your option) any later version.                                   * 
- *                                                                         * 
- *   This program is distributed in the hope that it will be useful,       * 
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         * 
- *   GNU General Public License for more details.                          * 
- *                                                                         * 
- *   You should have received a copy of the GNU General Public License     * 
- *   along with this program; if not, write to the                         * 
- *   Free Software Foundation, Inc.,                                       * 
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             * 
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
 #ifndef H2HEROESBASE_H
@@ -42,7 +42,7 @@ enum { MDF_NONE, MDF_ATTACK, MDF_DEFENSE, MDF_POWER, MDF_KNOWLEDGE, MDF_MORALE, 
 
 class HeroBase : public Skill::Primary, public Maps::Position, public BitModes
 {
-public:
+  public:
     HeroBase(u8 type, u8 race);
     HeroBase();
 
@@ -94,7 +94,7 @@ public:
     u8   HasArtifact(const Artifact &) const;
     bool PickupArtifact(const Artifact &);
 
-protected:
+  protected:
     friend class Game::IO;
 #ifdef BUILD_BATTLEONLY
     friend struct BattleOnly;
@@ -109,10 +109,10 @@ protected:
 
 struct HeroHasArtifact : public std::binary_function <const HeroBase*, Artifact, bool>
 {
-    bool operator() (const HeroBase* hero, Artifact art) const
-    {
-        return hero->HasArtifact(art);
-    }
+  bool operator() (const HeroBase* hero, Artifact art) const
+  {
+    return hero->HasArtifact(art);
+  }
 };
 
 #endif

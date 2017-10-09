@@ -27,23 +27,23 @@
 
 namespace Luck
 {
-    enum luck_t
-    {
-	UNKNOWN    = -4,
-        CURSED     = -3,
-        AWFUL      = -2,
-        BAD        = -1,
-        NORMAL     = 0,
-        GOOD       = 1,
-        GREAT      = 2,
-        IRISH      = 3
-    };
+  enum luck_t
+  {
+    UNKNOWN    = -4,
+    CURSED     = -3,
+    AWFUL      = -2,
+    BAD        = -1,
+    NORMAL     = 0,
+    GOOD       = 1,
+    GREAT      = 2,
+    IRISH      = 3
+  };
 
-    const char* String(s8);
-    const char* Description(s8);
+  const char* String(s8);
+  const char* Description(s8);
 
-    inline luck_t & operator++ (luck_t & luck){ return luck = IRISH == luck ? IRISH : luck_t(luck + 1); }
-    inline luck_t & operator-- (luck_t & luck){ return luck = CURSED == luck ? CURSED : luck_t(luck - 1); }
+  inline luck_t & operator++ (luck_t & luck){ return luck = IRISH == luck ? IRISH : luck_t(luck + 1); }
+  inline luck_t & operator-- (luck_t & luck){ return luck = CURSED == luck ? CURSED : luck_t(luck - 1); }
 }
 
 #endif

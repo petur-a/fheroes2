@@ -27,23 +27,23 @@
 
 namespace Morale
 {
-    enum morale_t
-    {
-	UNKNOWN  = -4,
-	TREASON  = -3,
-        AWFUL    = -2,
-        POOR     = -1,
-        NORMAL   = 0,
-        GOOD     = 1,
-        GREAT    = 2,
-        BLOOD    = 3
-    };
+  enum morale_t
+  {
+    UNKNOWN  = -4,
+    TREASON  = -3,
+    AWFUL    = -2,
+    POOR     = -1,
+    NORMAL   = 0,
+    GOOD     = 1,
+    GREAT    = 2,
+    BLOOD    = 3
+  };
 
-    const char* String(s8);
-    const char* Description(s8);
+  const char* String(s8);
+  const char* Description(s8);
 
-    inline morale_t & operator++ (morale_t & morale){ return morale = BLOOD == morale ? BLOOD : morale_t(morale + 1); }
-    inline morale_t & operator-- (morale_t & morale){ return morale = TREASON == morale ? TREASON : morale_t(morale - 1); }
+  inline morale_t & operator++ (morale_t & morale){ return morale = BLOOD == morale ? BLOOD : morale_t(morale + 1); }
+  inline morale_t & operator-- (morale_t & morale){ return morale = TREASON == morale ? TREASON : morale_t(morale - 1); }
 }
 
 #endif

@@ -31,95 +31,95 @@ enum icons_t { ICON_HEROES = 0x01, ICON_CASTLES = 0x02, ICON_ANY = ICON_HEROES|I
 
 namespace Interface
 {
-    typedef Heroes* HEROES;
-    typedef Castle* CASTLE;
+  typedef Heroes* HEROES;
+  typedef Castle* CASTLE;
 
-    class IconsBar
-    {
+  class IconsBar
+  {
     public:
-	IconsBar(const u8 & count, const Surface & sf) : icons(count), marker(sf), show(true){};
+      IconsBar(const u8 & count, const Surface & sf) : icons(count), marker(sf), show(true){};
 
-	void SetShow(bool f) { show = f; };
-	bool IsShow(void) const { return show; };
+      void SetShow(bool f) { show = f; };
+      bool IsShow(void) const { return show; };
 
-	void RedrawBackground(const Point &);
+      void RedrawBackground(const Point &);
 
     protected:
-	const u8 & icons;
-        const Surface & marker;
-	bool show;
-    };
+      const u8 & icons;
+      const Surface & marker;
+      bool show;
+  };
 
-    class HeroesIcons : public Interface::ListBox<HEROES>, public IconsBar
-    {
+  class HeroesIcons : public Interface::ListBox<HEROES>, public IconsBar
+  {
     public:
-	HeroesIcons(const u8 & count, const Surface & sf) : IconsBar(count, sf) {};
+      HeroesIcons(const u8 & count, const Surface & sf) : IconsBar(count, sf) {};
 
-	void SetPos(s16, s16);
-	void SetShow(bool);
+      void SetPos(s16, s16);
+      void SetShow(bool);
 
     protected:
-	void ActionCurrentUp(void);
-	void ActionCurrentDn(void);
-	void ActionListDoubleClick(HEROES &);
-	void ActionListSingleClick(HEROES &);
-	void ActionListPressRight(HEROES &);
-	void RedrawItem(const HEROES &, s16 ox, s16 oy, bool current);
-	void RedrawBackground(const Point &);
-    };
+      void ActionCurrentUp(void);
+      void ActionCurrentDn(void);
+      void ActionListDoubleClick(HEROES &);
+      void ActionListSingleClick(HEROES &);
+      void ActionListPressRight(HEROES &);
+      void RedrawItem(const HEROES &, s16 ox, s16 oy, bool current);
+      void RedrawBackground(const Point &);
+  };
 
-    class CastleIcons : public Interface::ListBox<CASTLE>, public IconsBar
-    {
+  class CastleIcons : public Interface::ListBox<CASTLE>, public IconsBar
+  {
     public:
-	CastleIcons(const u8 & count, const Surface & sf) : IconsBar(count, sf) {};
+      CastleIcons(const u8 & count, const Surface & sf) : IconsBar(count, sf) {};
 
-	void SetPos(s16, s16);
-	void SetShow(bool);
+      void SetPos(s16, s16);
+      void SetShow(bool);
 
     protected:
-	void ActionCurrentUp(void);
-	void ActionCurrentDn(void);
-	void ActionListDoubleClick(CASTLE &);
-	void ActionListSingleClick(CASTLE &);
-	void ActionListPressRight(CASTLE &);
-	void RedrawItem(const CASTLE &, s16 ox, s16 oy, bool current);
-	void RedrawBackground(const Point &);
-    };
+      void ActionCurrentUp(void);
+      void ActionCurrentDn(void);
+      void ActionListDoubleClick(CASTLE &);
+      void ActionListSingleClick(CASTLE &);
+      void ActionListPressRight(CASTLE &);
+      void RedrawItem(const CASTLE &, s16 ox, s16 oy, bool current);
+      void RedrawBackground(const Point &);
+  };
 
-    class IconsPanel : protected Rect
-    {
+  class IconsPanel : protected Rect
+  {
     public:
-	static IconsPanel & Get(void);
-    
-	void SetPos(s16, s16);
-	void SetCount(u8);
-	void Redraw(void);
-	void QueueEventProcessing(void);
+      static IconsPanel & Get(void);
 
-        const Rect & GetArea(void) const;
-        u8           CountIcons(void) const;
+      void SetPos(s16, s16);
+      void SetCount(u8);
+      void Redraw(void);
+      void QueueEventProcessing(void);
 
-	void Select(const Heroes &);
-	void Select(const Castle &);
+      const Rect & GetArea(void) const;
+      u8           CountIcons(void) const;
 
-	bool IsSelected(icons_t) const;
-	void ResetIcons(icons_t = ICON_ANY);
-	void HideIcons(icons_t = ICON_ANY);
-	void ShowIcons(icons_t = ICON_ANY);
-	void RedrawIcons(icons_t = ICON_ANY);
-	void SetCurrentVisible(void);
+      void Select(const Heroes &);
+      void Select(const Castle &);
+
+      bool IsSelected(icons_t) const;
+      void ResetIcons(icons_t = ICON_ANY);
+      void HideIcons(icons_t = ICON_ANY);
+      void ShowIcons(icons_t = ICON_ANY);
+      void RedrawIcons(icons_t = ICON_ANY);
+      void SetCurrentVisible(void);
 
     private:
-	IconsPanel();
+      IconsPanel();
 
-	u8 icons;
-	Dialog::FrameBorder border;
+      u8 icons;
+      Dialog::FrameBorder border;
 
-        Surface sfMarker;
+      Surface sfMarker;
 
-	CastleIcons castleIcons;
-	HeroesIcons heroesIcons;
-    };
+      CastleIcons castleIcons;
+      HeroesIcons heroesIcons;
+  };
 }
 
 #endif

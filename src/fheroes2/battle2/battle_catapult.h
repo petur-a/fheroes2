@@ -29,24 +29,24 @@ class HeroBase;
 
 namespace Battle2
 {
-    class Catapult
-    {
+  class Catapult
+  {
     public:
-	Catapult(const HeroBase &, bool, Arena &);
+      Catapult(const HeroBase &, bool, Arena &);
 
-	Point GetTargetPosition(u8) const;
-	u8 GetShots(void) const;
-	u8 GetTarget(const std::vector<u8> &) const;
-	u8 GetDamage(u8);
-	void Action(void);
+      Point GetTargetPosition(u8) const;
+      u8 GetShots(void) const;
+      u8 GetTarget(const std::vector<u8> &) const;
+      u8 GetDamage(u8);
+      void Action(void);
 
     private:
-	Arena & arena;
-	u8 cat_shots;
-	u8 cat_first;
-	bool cat_miss;
-	bool cat_fort;
-    };
+      Arena & arena;
+      u8 cat_shots;
+      u8 cat_first;
+      bool cat_miss;
+      bool cat_fort;
+  };
 }
 
 #endif

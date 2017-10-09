@@ -33,114 +33,114 @@ Event::Event() : delta(0), status(0), sp(0)
 
 Event::Event(const u32 dl, const u8 st,  const u32 sz, const u8 *p) : delta(dl), status(st), data(NULL)
 {
-    if(sz)
-    {
-	data = new u8 [sz];
-	size = sz;
-	memcpy(data, p, size);
-    }
+  if(sz)
+  {
+    data = new u8 [sz];
+    size = sz;
+    memcpy(data, p, size);
+  }
 
-    SetDelta(dl);
+  SetDelta(dl);
 }
 
 Event::Event(const Event & e)
 {
-    delta = e.delta;
-    status = e.status;
+  delta = e.delta;
+  status = e.status;
 
-    data = NULL;
-    size = e.size;
+  data = NULL;
+  size = e.size;
 
-    if(size)
-    {
-	data = new u8 [size];
-	memcpy(data, e.data, size);
-    }
+  if(size)
+  {
+    data = new u8 [size];
+    memcpy(data, e.data, size);
+  }
 
-    memcpy(pack, e.pack, 4);
-    sp = e.sp;
+  memcpy(pack, e.pack, 4);
+  sp = e.sp;
 }
 
 Event::~Event()
 {
-    if(data) delete [] data;
+  if(data) delete [] data;
 }
 
 Event & Event::operator= (const Event & e)
 {
-    if(data) delete [] data;
+  if(data) delete [] data;
 
-    delta = e.delta;
-    status = e.status;
+  delta = e.delta;
+  status = e.status;
 
-    data = NULL;
-    size = e.size;
+  data = NULL;
+  size = e.size;
 
-    if(size)
-    {
-	data = new u8 [size];
-	memcpy(data, e.data, size);
-    }
+  if(size)
+  {
+    data = new u8 [size];
+    memcpy(data, e.data, size);
+  }
 
-    memcpy(pack, e.pack, 4);
-    sp = e.sp;
+  memcpy(pack, e.pack, 4);
+  sp = e.sp;
 
-    return *this;
+  return *this;
 }
 
 void Event::SetDelta(const u32 dl)
 {
-    sp = MIDI::PackDelta(pack, dl);
+  sp = MIDI::PackDelta(pack, dl);
 }
 
 u32 Event::Size(void) const
 {
-    return 1 + sp + size;
+  return 1 + sp + size;
 }
 
 bool Event::Write(u8 *p) const
 {
-    if(NULL == p) return false;
+  if(NULL == p) return false;
 
-    memcpy(p, pack, sp);
-    p+= sp;
+  memcpy(p, pack, sp);
+  p+= sp;
 
-    *p = status;
+  *p = status;
 
-    if(size) memcpy(p + 1, data, size);
+  if(size) memcpy(p + 1, data, size);
 
-    return true;
+  return true;
 }
 
 bool Event::Write(std::ostream & o) const
 {
-    if(o.fail()) return false;
+  if(o.fail()) return false;
 
-    o.write(reinterpret_cast<const char*>(pack), sp);
-    o.write(&status, 1);
-    if(size) o.write(reinterpret_cast<const char*>(data), size);
+  o.write(reinterpret_cast<const char*>(pack), sp);
+  o.write(&status, 1);
+  if(size) o.write(reinterpret_cast<const char*>(data), size);
 
-    return true;
+  return true;
 }
 
 void Event::Dump(void) const
 {
-   std::cerr << std::hex << std::setfill('0') \
-	<< "[dl:0x" << std::setw(4) << delta \
-	<< ":st:0x" << std::setw(2) << static_cast<u16>(static_cast<u8>(status)) << ":dt";
+  std::cerr << std::hex << std::setfill('0') \
+    << "[dl:0x" << std::setw(4) << delta \
+    << ":st:0x" << std::setw(2) << static_cast<u16>(static_cast<u8>(status)) << ":dt";
 
-    u8 endline = 0;
-    for(u32 ii = 0; ii < size; ++ii)
+  u8 endline = 0;
+  for(u32 ii = 0; ii < size; ++ii)
+  {
+    std::cerr << " 0x" << std::setw(2) << std::setfill('0') << std::hex << static_cast<u32>(static_cast<u8>(data[ii])) << ":";
+    ++endline;
+
+    if(endline > 15)
     {
-        std::cerr << " 0x" << std::setw(2) << std::setfill('0') << std::hex << static_cast<u32>(static_cast<u8>(data[ii])) << ":";
-        ++endline;
-
-        if(endline > 15)
-        {
-            endline = 0;
-            std::cerr << std::endl;
-        }
+      endline = 0;
+      std::cerr << std::endl;
     }
+  }
 
-    std::cerr << "]" << std::endl;
+  std::cerr << "]" << std::endl;
 }

@@ -30,31 +30,31 @@ namespace Army { class Troop; }
 
 namespace Battle2
 {
-    class Cell
-    {
+  class Cell
+  {
     public:
-	Cell(u16, const Rect*, Arena &);
-	void ResetQuality(void);
-	void ResetDirection(void);
-	void SetEnemyQuality(const Stats &);
-	void SetPositionQuality(const Stats &);
-	bool isPassable(const Stats &, const Cell &) const;
-	bool isPassable(const Stats &, bool check_reflect) const;
-	bool isPassable(bool check = true) const;
-	bool isPositionIncludePoint(const Point &) const;
-	const u16 &  GetIndex(void) const;
-	const u8 &   GetDirection(void) const;
-	const Rect & GetPos(void) const;
+      Cell(u16, const Rect*, Arena &);
+      void ResetQuality(void);
+      void ResetDirection(void);
+      void SetEnemyQuality(const Stats &);
+      void SetPositionQuality(const Stats &);
+      bool isPassable(const Stats &, const Cell &) const;
+      bool isPassable(const Stats &, bool check_reflect) const;
+      bool isPassable(bool check = true) const;
+      bool isPositionIncludePoint(const Point &) const;
+      const u16 &  GetIndex(void) const;
+      const u8 &   GetDirection(void) const;
+      const Rect & GetPos(void) const;
 
-	void SetPassabilityAbroad(const Stats & b, std::vector<u16> &);
+      void SetPassabilityAbroad(const Stats & b, std::vector<u16> &);
 
-	u16 index;
-	Rect pos;
-	u8 object;
-	u8 direction;
-	s32 quality;
-	Arena* arena;
-    };
+      u16 index;
+      Rect pos;
+      u8 object;
+      u8 direction;
+      s32 quality;
+      Arena* arena;
+  };
 }
 
 #endif

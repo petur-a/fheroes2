@@ -30,12 +30,12 @@
 
 const char* AI::Type(void)
 {
-    return "empty";
+  return "empty";
 }
 
 const char* AI::License(void)
 {
-    return "GPL";
+  return "GPL";
 }
 
 void AI::AddCastle(const Castle &)
@@ -64,7 +64,7 @@ void AI::HeroesAction(Heroes &, s32)
 
 std::string AI::HeroesString(const Heroes &)
 {
-    return "";
+  return "";
 }
 
 void AI::HeroesLevelUp(Heroes &)
@@ -77,7 +77,7 @@ void AI::KingdomTurn(Kingdom &)
 
 void AI::BattleTurn(Battle2::Arena &, const Battle2::Stats & b, Battle2::Actions & a)
 {
-    a.AddedEndAction(b);
+  a.AddedEndAction(b);
 }
 
 void AI::BattleMagicTurn(Battle2::Arena &, const Battle2::Stats &, Battle2::Actions &, const Battle2::Stats*)
