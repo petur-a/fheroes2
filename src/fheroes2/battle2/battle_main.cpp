@@ -313,11 +313,11 @@ u8 Battle2::Result::AttackerResult(void) const
 {
   if(RESULT_SURRENDER & army1) return RESULT_SURRENDER;
   else
-    if(RESULT_RETREAT & army1) return RESULT_RETREAT;
-    else
-      if(RESULT_LOSS & army1) return RESULT_LOSS;
-      else
-        if(RESULT_WINS & army1) return RESULT_WINS;
+  if(RESULT_RETREAT & army1) return RESULT_RETREAT;
+  else
+  if(RESULT_LOSS & army1) return RESULT_LOSS;
+  else
+  if(RESULT_WINS & army1) return RESULT_WINS;
 
   return 0;
 }
@@ -326,11 +326,11 @@ u8 Battle2::Result::DefenderResult(void) const
 {
   if(RESULT_SURRENDER & army2) return RESULT_SURRENDER;
   else
-    if(RESULT_RETREAT & army2) return RESULT_RETREAT;
-    else
-      if(RESULT_LOSS & army2) return RESULT_LOSS;
-      else
-        if(RESULT_WINS & army2) return RESULT_WINS;
+  if(RESULT_RETREAT & army2) return RESULT_RETREAT;
+  else
+  if(RESULT_LOSS & army2) return RESULT_LOSS;
+  else
+  if(RESULT_WINS & army2) return RESULT_WINS;
 
   return 0;
 }

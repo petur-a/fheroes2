@@ -27,12 +27,12 @@
 #include <sys/types.h>
 #include "SDL.h"
 
-typedef Sint8		s8;
-typedef Uint8		u8;
-typedef Sint16		s16;
-typedef Uint16		u16;
-typedef Sint32		s32;
-typedef Uint32		u32;
+typedef Sint8     s8;
+typedef Uint8     u8;
+typedef Sint16    s16;
+typedef Uint16    u16;
+typedef Sint32    s32;
+typedef Uint32    u32;
 
 typedef SDL_Color RGBColor;
 
@@ -54,14 +54,14 @@ typedef SDL_Color RGBColor;
 #define SEPARATOR       '/'
 #endif
 
-#define DELAY(X)	SDL_Delay(X)
+#define DELAY(X)  SDL_Delay(X)
 
-#define Swap16(X)	X=SDL_Swap16(X)
-#define Swap32(X)	X=SDL_Swap32(X)
-#define SwapLE16(X)	X=SDL_SwapLE16(X)
-#define SwapLE32(X)	X=SDL_SwapLE32(X)
-#define SwapBE16(X)	X=SDL_SwapBE16(X)
-#define SwapBE32(X)	X=SDL_SwapBE32(X)
+#define Swap16(X)   X=SDL_Swap16(X)
+#define Swap32(X)   X=SDL_Swap32(X)
+#define SwapLE16(X) X=SDL_SwapLE16(X)
+#define SwapLE32(X) X=SDL_SwapLE32(X)
+#define SwapBE16(X) X=SDL_SwapBE16(X)
+#define SwapBE32(X) X=SDL_SwapBE32(X)
 
 u32 ReadBE32(const u8 *p);
 u32 ReadLE32(const u8 *p);

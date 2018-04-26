@@ -38,149 +38,154 @@
 #include "font.h"
 
 namespace AGG
-{	
+{
     class FAT
     {
     public:
-	FAT() : crc(0), offset(0), size(0) {}
+      FAT() : crc(0), offset(0), size(0) {}
 
-	u32 crc;
-	u32 offset;
-	u32 size;
+      u32 crc;
+      u32 offset;
+      u32 size;
 
-	std::string Info(void) const;
+      std::string Info(void) const;
     };
 
     class File
     {
     public:
-	File();
-	~File();
+      File();
+      ~File();
 
-	bool Open(const std::string &);
-	bool isGood(void) const;
-	const std::string & Name(void) const;
-	const FAT & Fat(const std::string & key);
-	u16 CountItems(void);
+      bool Open(const std::string &);
+      bool isGood(void) const;
+      const std::string & Name(void) const;
+      const FAT & Fat(const std::string & key);
+      u16 CountItems(void);
 
-	bool Read(const std::string & key, std::vector<u8> & body);
+      bool Read(const std::string & key, std::vector<u8> & body);
 
     private:
-	std::string filename;
-	std::map<std::string, FAT> fat;
-	u16 count_items;
-	std::ifstream* stream;
-	std::string last_key;
-	std::vector<u8> last_body;
+      std::string filename;
+      std::map<std::string, FAT> fat;
+      u16 count_items;
+      std::ifstream* stream;
+      std::string last_key;
+      std::vector<u8> last_body;
     };
 
     struct icn_cache_t
     {
-	icn_cache_t() : sprites(NULL), reflect(NULL), count(0) {}
-	Sprite *sprites;
-	Sprite *reflect;
-	u16 count;
+      icn_cache_t() : sprites(NULL), reflect(NULL), count(0) {}
+      Sprite *sprites;
+      Sprite *reflect;
+      u16 count;
     };
 
     struct til_cache_t
     {
-	til_cache_t() : sprites(NULL),  count(0) {}
-	Surface *sprites;
-	u16 count;
+      til_cache_t() : sprites(NULL),  count(0) {}
+      Surface *sprites;
+      u16 count;
     };
 
     struct fnt_cache_t
     {
-	fnt_cache_t() : medium_white(NULL), medium_yellow(NULL), small_white(NULL), small_yellow(NULL) {}
-	Surface medium_white;
-	Surface medium_yellow;
-	Surface small_white;
-	Surface small_yellow;
+      fnt_cache_t() :
+         medium_white(NULL),
+         medium_yellow(NULL),
+         small_white(NULL),
+         small_yellow(NULL) {}
+
+      Surface medium_white;
+      Surface medium_yellow;
+      Surface small_white;
+      Surface small_yellow;
     };
 
     struct loop_sound_t
     {
-	loop_sound_t(M82::m82_t w, int c) : sound(w), channel(c) {}
-	bool isM82(const M82::m82_t wav) const{ return wav == sound; }
+      loop_sound_t(M82::m82_t w, int c) : sound(w), channel(c) {}
+      bool isM82(const M82::m82_t wav) const{ return wav == sound; }
 
-	M82::m82_t sound;
-	int        channel;
+      M82::m82_t sound;
+      int        channel;
     };
 
     class Cache
     {
     public:
-	~Cache();
+      ~Cache();
 
-	static Cache & Get(void);
+      static Cache & Get(void);
 
-	bool ReadDataDir(void);
-	bool ReadChunk(const std::string & key, std::vector<u8> & body);
+      bool ReadDataDir(void);
+      bool ReadChunk(const std::string & key, std::vector<u8> & body);
 
-	int GetICNCount(const ICN::icn_t icn);
-	const Sprite & GetICN(const ICN::icn_t icn, u16 index, bool reflect = false);
-	const Surface & GetTIL(const TIL::til_t til, u16 index, u8 shape);
-	const std::vector<u8> & GetWAV(const M82::m82_t m82);
-	const std::vector<u8> & GetMID(const XMI::xmi_t xmi);
+      int GetICNCount(const ICN::icn_t icn);
+      const Sprite & GetICN(const ICN::icn_t icn, u16 index, bool reflect = false);
+      const Surface & GetTIL(const TIL::til_t til, u16 index, u8 shape);
+      const std::vector<u8> & GetWAV(const M82::m82_t m82);
+      const std::vector<u8> & GetMID(const XMI::xmi_t xmi);
 #ifdef WITH_TTF
-	const Surface & GetFNT(u16, u8);
-	const SDL::Font & GetMediumFont(void) const;
-	const SDL::Font & GetSmallFont(void) const;
-	void LoadFNT(u16);
+      const Surface & GetFNT(u16, u8);
+      const SDL::Font & GetMediumFont(void) const;
+      const SDL::Font & GetSmallFont(void) const;
+      void LoadFNT(u16);
 #endif
 
-	void LoadExtICN(icn_cache_t &, const ICN::icn_t, const u16, bool);
-	bool LoadAltICN(icn_cache_t &, const std::string &, const u16, bool);
-	void LoadOrgICN(Sprite &, const ICN::icn_t, const u16, bool);
-	void LoadOrgICN(icn_cache_t &, const ICN::icn_t, const u16, bool);
-	void LoadICN(const ICN::icn_t icn, u16 index, bool reflect = false);
-	bool LoadAltTIL(til_cache_t &, const std::string &, u16 max);
-	void LoadOrgTIL(til_cache_t &, const TIL::til_t, u16 max);
-	void LoadTIL(const TIL::til_t);
-	void LoadWAV(const M82::m82_t m82);
-	void LoadMID(const XMI::xmi_t xmi);
+      void LoadExtICN(icn_cache_t &, const ICN::icn_t, const u16, bool);
+      bool LoadAltICN(icn_cache_t &, const std::string &, const u16, bool);
+      void LoadOrgICN(Sprite &, const ICN::icn_t, const u16, bool);
+      void LoadOrgICN(icn_cache_t &, const ICN::icn_t, const u16, bool);
+      void LoadICN(const ICN::icn_t icn, u16 index, bool reflect = false);
+      bool LoadAltTIL(til_cache_t &, const std::string &, u16 max);
+      void LoadOrgTIL(til_cache_t &, const TIL::til_t, u16 max);
+      void LoadTIL(const TIL::til_t);
+      void LoadWAV(const M82::m82_t m82);
+      void LoadMID(const XMI::xmi_t xmi);
 
-	void LoadLOOPXXSounds(const u16*);
-	void ResetMixer(void);
-	
-	void LoadPAL(void);
-	void LoadFNT(void);
-	bool isValidFonts(void) const;
+      void LoadLOOPXXSounds(const u16*);
+      void ResetMixer(void);
 
-	void FreeICN(const ICN::icn_t icn);
-	void FreeTIL(const TIL::til_t til);
-	void FreeWAV(const M82::m82_t m82);
-	void FreeMID(const XMI::xmi_t xmi);
+      void LoadPAL(void);
+      void LoadFNT(void);
+      bool isValidFonts(void) const;
 
-	void ClearAllICN(void);
-	void ClearAllWAV(void);
-	void ClearAllMID(void);
+      void FreeICN(const ICN::icn_t icn);
+      void FreeTIL(const TIL::til_t til);
+      void FreeWAV(const M82::m82_t m82);
+      void FreeMID(const XMI::xmi_t xmi);
 
-	void ICNRegistryEnable(bool);
-	void ICNRegistryFreeObjects(void);
+      void ClearAllICN(void);
+      void ClearAllWAV(void);
+      void ClearAllMID(void);
 
-	void Dump(void) const;
+      void ICNRegistryEnable(bool);
+      void ICNRegistryFreeObjects(void);
+
+      void Dump(void) const;
 
     private:
-	Cache();
+      Cache();
 
-	File heroes2_agg;
-	File heroes2x_agg;
+      File heroes2_agg;
+      File heroes2x_agg;
 
-	icn_cache_t* icn_cache;
-	til_cache_t* til_cache;
+      icn_cache_t* icn_cache;
+      til_cache_t* til_cache;
 
-	std::vector<loop_sound_t> loop_sounds;
-	std::map<M82::m82_t, std::vector<u8> > wav_cache;
-	std::map<XMI::xmi_t, std::vector<u8> > mid_cache;
+      std::vector<loop_sound_t> loop_sounds;
+      std::map<M82::m82_t, std::vector<u8> > wav_cache;
+      std::map<XMI::xmi_t, std::vector<u8> > mid_cache;
 
 #ifdef WITH_TTF
-	std::map<u16, fnt_cache_t> fnt_cache;
-	SDL::Font font_medium;
-	SDL::Font font_small;
+      std::map<u16, fnt_cache_t> fnt_cache;
+      SDL::Font font_medium;
+      SDL::Font font_small;
 #endif
-	std::vector<ICN::icn_t> icn_registry;
-	bool icn_registry_enable;
+      std::vector<ICN::icn_t> icn_registry;
+      bool icn_registry_enable;
     };
 
     // wrapper AGG::PreloadObject

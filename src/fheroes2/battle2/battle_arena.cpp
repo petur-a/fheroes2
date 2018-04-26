@@ -208,13 +208,12 @@ Battle2::direction_t Battle2::Board::GetReflectDirection(u8 d)
   {
     case TOP_LEFT:      return BOTTOM_RIGHT;
     case TOP_RIGHT:     return BOTTOM_LEFT;
-    case LEFT:      return RIGHT;
-    case RIGHT:     return LEFT;
+    case LEFT:          return RIGHT;
+    case RIGHT:         return LEFT;
     case BOTTOM_LEFT:   return TOP_RIGHT;
     case BOTTOM_RIGHT:  return TOP_LEFT;
-    default:        break;
+    default:            break;
   }
-
   return UNKNOWN;
 }
 
@@ -225,7 +224,7 @@ bool Battle2::Board::isReflectDirection(u8 d)
     case TOP_LEFT:
     case LEFT:
     case BOTTOM_LEFT:   return true;
-    default:        break;
+    default:            break;
   }
 
   return false;
@@ -241,11 +240,11 @@ bool Battle2::Board::isValidDirection(u16 i, u8 d)
     case CENTER:        break;
     case TOP_LEFT:      if(0 == y || (0 == x && (y % 2))) return false; break;
     case TOP_RIGHT:     if(0 == y || ((ARENAW - 1) == x && !(y % 2))) return false; break;
-    case LEFT:      if(0 == x) return false; break;
-    case RIGHT:     if((ARENAW - 1) == x) return false; break;
+    case LEFT:          if(0 == x) return false; break;
+    case RIGHT:         if((ARENAW - 1) == x) return false; break;
     case BOTTOM_LEFT:   if((ARENAH - 1) == y || (0 == x && (y % 2))) return false; break;
     case BOTTOM_RIGHT:  if((ARENAH - 1) == y || ((ARENAW - 1) == x && !(y % 2))) return false; break;
-    default:        return false;
+    default:            return false;
   }
 
   return true;
