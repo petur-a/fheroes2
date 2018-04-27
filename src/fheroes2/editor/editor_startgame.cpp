@@ -254,6 +254,7 @@ Game::menu_t Game::Editor::StartGame()
   display.Flip();
 
   //u32 ticket = 0;
+
   // startgame loop
   while(le.HandleEvents())
   {
@@ -295,133 +296,136 @@ Game::menu_t Game::Editor::StartGame()
         display.Flip();
       }
     }
-    else
-      // pointer cursor on left panel
-      if (le.MouseCursor(areaLeftPanel))
+    // pointer cursor on left panel
+    else if (le.MouseCursor(areaLeftPanel))
+    {
+      cursor.Hide();
+      cursor.SetThemes(cursor.POINTER);
+      sizeCursor.Hide();
+      cursor.Show();
+      display.Flip();
+    }
+    // cursor over game area
+    else if (le.MouseCursor(areaPos) &&
+             Maps::isValidAbsIndex(gameArea.GetIndexFromMousePoint(le.GetMouseCursor())))
+    {
+      const Point & mouse_coord = le.GetMouseCursor();
+      const s32 index_maps = gameArea.GetIndexFromMousePoint(mouse_coord);
+      Maps::Tiles & tile = world.GetTiles(index_maps);
+      const Rect tile_pos(BORDERWIDTH + ((u16) (mouse_coord.x - BORDERWIDTH) / TILEWIDTH) * TILEWIDTH,
+                          BORDERWIDTH + ((u16) (mouse_coord.y - BORDERWIDTH) / TILEWIDTH) * TILEWIDTH,
+                          TILEWIDTH,
+                          TILEWIDTH);
+      //u8 object = tile.GetObject();
+
+      cursor.SetThemes(cursor.POINTER);
+
+      const u16 div_x = mouse_coord.x < BORDERWIDTH + TILEWIDTH * (gameArea.GetRectMaps().w - sizeCursor.w()) ?
+        (u16) ((mouse_coord.x - BORDERWIDTH) / TILEWIDTH) * TILEWIDTH + BORDERWIDTH :
+        BORDERWIDTH + (gameArea.GetRectMaps().w - sizeCursor.w()) * TILEWIDTH;
+
+      const u16 div_y = mouse_coord.y < BORDERWIDTH + TILEWIDTH * (gameArea.GetRectMaps().h - sizeCursor.h()) ?
+        (u16) ((mouse_coord.y - BORDERWIDTH) / TILEWIDTH) * TILEWIDTH + BORDERWIDTH :
+        BORDERWIDTH + (gameArea.GetRectMaps().h - sizeCursor.h()) * TILEWIDTH;
+
+      if (!sizeCursor.isVisible() ||
+          sizeCursor.GetPos().x != div_x ||
+          sizeCursor.GetPos().y != div_y)
       {
         cursor.Hide();
-        cursor.SetThemes(cursor.POINTER);
         sizeCursor.Hide();
+        sizeCursor.Show(div_x, div_y);
         cursor.Show();
         display.Flip();
       }
-      else
-        // cursor over game area
-        if (le.MouseCursor(areaPos) &&
-            Maps::isValidAbsIndex(gameArea.GetIndexFromMousePoint(le.GetMouseCursor())))
+
+      if (le.MousePressLeft())
+      {
+        cursor.Hide();
+        sizeCursor.Hide();
+
+        const Point topleft(gameArea.GetRectMaps().x + (div_x - BORDERWIDTH) / 32,
+                            gameArea.GetRectMaps().y + (div_y - BORDERWIDTH) / 32);
+
+        for (u8 iy = 0; iy < sizeCursor.h(); ++iy)
         {
-          const Point & mouse_coord = le.GetMouseCursor();
-          const s32 index_maps = gameArea.GetIndexFromMousePoint(mouse_coord);
-          Maps::Tiles & tile = world.GetTiles(index_maps);
-          const Rect tile_pos(BORDERWIDTH + ((u16) (mouse_coord.x - BORDERWIDTH) / TILEWIDTH) * TILEWIDTH, BORDERWIDTH + ((u16) (mouse_coord.y - BORDERWIDTH) / TILEWIDTH) * TILEWIDTH, TILEWIDTH, TILEWIDTH);
-          //u8 object = tile.GetObject();
-
-          cursor.SetThemes(cursor.POINTER);
-
-          const u16 div_x = mouse_coord.x < BORDERWIDTH + TILEWIDTH * (gameArea.GetRectMaps().w - sizeCursor.w()) ?
-            (u16) ((mouse_coord.x - BORDERWIDTH) / TILEWIDTH) * TILEWIDTH + BORDERWIDTH :
-            BORDERWIDTH + (gameArea.GetRectMaps().w - sizeCursor.w()) * TILEWIDTH;
-          const u16 div_y = mouse_coord.y < BORDERWIDTH + TILEWIDTH * (gameArea.GetRectMaps().h - sizeCursor.h()) ?
-            (u16) ((mouse_coord.y - BORDERWIDTH) / TILEWIDTH) * TILEWIDTH + BORDERWIDTH :
-            BORDERWIDTH + (gameArea.GetRectMaps().h - sizeCursor.h()) * TILEWIDTH;
-
-          if (! sizeCursor.isVisible() || sizeCursor.GetPos().x != div_x || sizeCursor.GetPos().y != div_y)
+          for (u8 ix = 0; ix < sizeCursor.w(); ++ix)
           {
-            cursor.Hide();
-            sizeCursor.Hide();
-            sizeCursor.Show(div_x, div_y);
-            cursor.Show();
-            display.Flip();
-          }
+            Maps::Tiles & newtile = world.GetTiles(topleft.x + ix, topleft.y + iy);
 
-          if (le.MousePressLeft())
-          {
-            cursor.Hide();
-            sizeCursor.Hide();
-
-
-            const Point topleft(gameArea.GetRectMaps().x + (div_x - BORDERWIDTH) / 32,
-                gameArea.GetRectMaps().y + (div_y - BORDERWIDTH) / 32);
-
-            for (u8 iy = 0; iy < sizeCursor.h(); ++iy)
+            switch(selectTerrain)
             {
-              for (u8 ix = 0; ix < sizeCursor.w(); ++ix)
-              {
-                Maps::Tiles & newtile = world.GetTiles(topleft.x + ix, topleft.y + iy);
+              case 0: SetGroundToTile(newtile, Maps::Ground::WATER);  break;
+              case 1: SetGroundToTile(newtile, Maps::Ground::GRASS);  break;
+              case 2: SetGroundToTile(newtile, Maps::Ground::SNOW);   break;
+              case 3: SetGroundToTile(newtile, Maps::Ground::SWAMP);  break;
+              case 4: SetGroundToTile(newtile, Maps::Ground::LAVA);   break;
+              case 5: SetGroundToTile(newtile, Maps::Ground::DESERT); break;
+              case 6: SetGroundToTile(newtile, Maps::Ground::DIRT);   break;
+              case 7: SetGroundToTile(newtile, Maps::Ground::WASTELAND);  break;
+              case 8: SetGroundToTile(newtile, Maps::Ground::BEACH);  break;
 
-                switch(selectTerrain)
-                {
-                  case 0: SetGroundToTile(newtile, Maps::Ground::WATER);  break;
-                  case 1: SetGroundToTile(newtile, Maps::Ground::GRASS);  break;
-                  case 2: SetGroundToTile(newtile, Maps::Ground::SNOW);   break;
-                  case 3: SetGroundToTile(newtile, Maps::Ground::SWAMP);  break;
-                  case 4: SetGroundToTile(newtile, Maps::Ground::LAVA);   break;
-                  case 5: SetGroundToTile(newtile, Maps::Ground::DESERT); break;
-                  case 6: SetGroundToTile(newtile, Maps::Ground::DIRT);   break;
-                  case 7: SetGroundToTile(newtile, Maps::Ground::WASTELAND);  break;
-                  case 8: SetGroundToTile(newtile, Maps::Ground::BEACH);  break;
-
-                  default: break;
-                }
-
-                newtile.RedrawTile(display);
-                newtile.RedrawBottom(display);
-                newtile.RedrawTop(display);
-              }
+              default: break;
             }
 
-            // modify single tiles
-            for (int ii = 0; ii < world.w() * world.h(); ++ii) ModifySingleTile(world.GetTiles(ii));
-
-            // modify all tiles abroad
-            for (int ii = 0; ii < world.w() * world.h(); ++ii) ModifyTileAbroad(world.GetTiles(ii));
-
-            sizeCursor.Show();
-            cursor.Show();
-
-            display.Flip();
-
-            // wait
-            while(le.HandleEvents() && le.MousePressLeft());
-
-            radar.Generate();
-            radar.RedrawArea();
-            radar.RedrawCursor();
-            display.Flip();
+            newtile.RedrawTile(display);
+            newtile.RedrawBottom(display);
+            newtile.RedrawTop(display);
           }
-          else
-            if (le.MousePressRight())
-            {
-              if (btnSelectInfo.isPressed())
-              {
-                if (IS_DEVEL())
-                {
-                  DEBUG(DBG_GAME, DBG_INFO, tile.String());
-
-                  const u16 around = Maps::GetDirectionAroundGround(tile.GetIndex(), tile.GetGround());
-                  if (Direction::TOP_LEFT & around) VERBOSE("TOP_LEFT");
-                  if (Direction::TOP & around) VERBOSE("TOP");
-                  if (Direction::TOP_RIGHT & around) VERBOSE("TOP_RIGHT");
-                  if (Direction::RIGHT & around) VERBOSE("RIGHT");
-                  if (Direction::BOTTOM_RIGHT & around) VERBOSE("BOTTOM_RIGHT");
-                  if (Direction::BOTTOM & around) VERBOSE("BOTTOM");
-                  if (Direction::BOTTOM_LEFT & around) VERBOSE("BOTTOM_LEFT");
-                  if (Direction::LEFT & around) VERBOSE("LEFT");
-
-                  // wait
-                  while(le.HandleEvents() && le.MousePressRight());
-                }
-                else
-                {
-                  //const std::string & info = (MP2::OBJ_ZERO == object || MP2::OBJ_EVENT == object ?
-                  //Maps::Ground::String(tile.GetGround()) : MP2::StringObject(object));
-
-                  //Dialog::QuickInfo(info);
-                }
-              }
-            }
-          // end cursor over game area
         }
+
+        // modify single tiles
+        for (int ii = 0; ii < world.w() * world.h(); ++ii) ModifySingleTile(world.GetTiles(ii));
+
+        // modify all tiles abroad
+        for (int ii = 0; ii < world.w() * world.h(); ++ii) ModifyTileAbroad(world.GetTiles(ii));
+
+        sizeCursor.Show();
+        cursor.Show();
+
+        display.Flip();
+
+        // wait
+        while(le.HandleEvents() && le.MousePressLeft());
+
+        radar.Generate();
+        radar.RedrawArea();
+        radar.RedrawCursor();
+        display.Flip();
+      }
+      else
+        if (le.MousePressRight())
+        {
+          if (btnSelectInfo.isPressed())
+          {
+            if (IS_DEVEL())
+            {
+              DEBUG(DBG_GAME, DBG_INFO, tile.String());
+
+              const u16 around = Maps::GetDirectionAroundGround(tile.GetIndex(), tile.GetGround());
+              if (Direction::TOP_LEFT & around) VERBOSE("TOP_LEFT");
+              if (Direction::TOP & around) VERBOSE("TOP");
+              if (Direction::TOP_RIGHT & around) VERBOSE("TOP_RIGHT");
+              if (Direction::RIGHT & around) VERBOSE("RIGHT");
+              if (Direction::BOTTOM_RIGHT & around) VERBOSE("BOTTOM_RIGHT");
+              if (Direction::BOTTOM & around) VERBOSE("BOTTOM");
+              if (Direction::BOTTOM_LEFT & around) VERBOSE("BOTTOM_LEFT");
+              if (Direction::LEFT & around) VERBOSE("LEFT");
+
+              // wait
+              while(le.HandleEvents() && le.MousePressRight());
+            }
+            else
+            {
+              //const std::string & info = (MP2::OBJ_ZERO == object || MP2::OBJ_EVENT == object ?
+              //Maps::Ground::String(tile.GetGround()) : MP2::StringObject(object));
+
+              //Dialog::QuickInfo(info);
+            }
+          }
+        }
+      // end cursor over game area
+    }
 
 
     // draw push buttons
@@ -1091,15 +1095,15 @@ void Game::Editor::ModifyTileAbroad(Maps::Tiles & tile)
       { fix = true; index += 8; revert = 0; }
     else if (around & (DIRECTION_CENTER_COL | DIRECTION_RIGHT_COL) && !(around & (Direction::LEFT)))
       { fix = true; index += 8; revert = 2; }
-    if (around & (Direction::CENTER | Direction::LEFT | Direction::BOTTOM_LEFT | Direction::BOTTOM) &&
-        !(around & (Direction::TOP | Direction::TOP_RIGHT | Direction::RIGHT)))
+    else if (around & (Direction::CENTER | Direction::LEFT | Direction::BOTTOM_LEFT | Direction::BOTTOM) &&
+           !(around & (Direction::TOP | Direction::TOP_RIGHT | Direction::RIGHT)))
     // sprite small corner
       { fix = true; index += 4; revert = 0; }
     else if (around & (Direction::CENTER | Direction::RIGHT | Direction::BOTTOM_RIGHT | Direction::BOTTOM) &&
-          !(around & (Direction::TOP | Direction::TOP_LEFT | Direction::LEFT)))
+           !(around & (Direction::TOP | Direction::TOP_LEFT | Direction::LEFT)))
       { fix = true; index += 4; revert = 2; }
     else if (around & (Direction::CENTER | Direction::LEFT | Direction::TOP_LEFT | Direction::TOP) &&
-          !(around & (Direction::BOTTOM | Direction::BOTTOM_RIGHT | Direction::RIGHT)))
+           !(around & (Direction::BOTTOM | Direction::BOTTOM_RIGHT | Direction::RIGHT)))
       { fix = true; index += 4; revert = 1; }
     else if (around & (Direction::CENTER | Direction::RIGHT | Direction::TOP_RIGHT | Direction::TOP) &&
           !(around & (Direction::BOTTOM | Direction::BOTTOM_LEFT | Direction::LEFT)))
@@ -1121,6 +1125,9 @@ void Game::Editor::SetGroundToTile(Maps::Tiles & tile, const Maps::Ground::groun
 {
   const u16 around = Maps::GetDirectionAroundGround(tile.GetIndex(), ground);
 
+  DEBUG(DBG_GAME, DBG_INFO, "Going to set ground tile: " + std::to_string(ground));
+  DEBUG(DBG_GAME, DBG_INFO, "What is around?: " + std::to_string(around));
+
   // simply set
   if (ground == around)
   {
@@ -1140,6 +1147,8 @@ void Game::Editor::SetGroundToTile(Maps::Tiles & tile, const Maps::Ground::groun
       default: break;
     }
 
+    DEBUG(DBG_GAME, DBG_INFO, "Ground: " + std::to_string(index_ground));
+
     switch(Rand::Get(1, 7))
     {
       // 85% simple ground
@@ -1158,9 +1167,6 @@ void Game::Editor::SetGroundToTile(Maps::Tiles & tile, const Maps::Ground::groun
         break;
     }
   }
-  else
-  {
-  }
 }
 
 GroundIndexAndRotate Game::Editor::GetTileWithCorner(u16 around, const Maps::Ground::ground_t ground)
@@ -1172,7 +1178,6 @@ GroundIndexAndRotate Game::Editor::GetTileWithCorner(u16 around, const Maps::Gro
     case Maps::Ground::WATER:
     default: break;
   }
-
   return result;
 }
 

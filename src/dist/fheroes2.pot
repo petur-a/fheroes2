@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-27 15:44+0200\n"
+"POT-Creation-Date: 2018-04-27 22:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -872,7 +872,7 @@ msgid "Fenced Meadow"
 msgstr ""
 
 #: ../fheroes2/castle/castle.cpp:504 ../fheroes2/castle/castle.cpp:511
-#: ../fheroes2/editor/editor_startgame.cpp:919 ../fheroes2/maps/ground.cpp:30
+#: ../fheroes2/editor/editor_startgame.cpp:923 ../fheroes2/maps/ground.cpp:30
 msgid "Swamp"
 msgstr ""
 
@@ -1847,288 +1847,288 @@ msgstr ""
 msgid "No maps available!"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:261
+#: ../fheroes2/editor/editor_startgame.cpp:262
 #: ../fheroes2/game/game_startgame.cpp:1363
 msgid "Are you sure you want to quit?"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:874
+#: ../fheroes2/editor/editor_startgame.cpp:878
 msgid "Magnify"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:874
+#: ../fheroes2/editor/editor_startgame.cpp:878
 msgid "Change between zoom and normal view."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:877
+#: ../fheroes2/editor/editor_startgame.cpp:881
 msgid "Undo"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:877
+#: ../fheroes2/editor/editor_startgame.cpp:881
 msgid "Undo your last action. Press againt to redo the action."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:880
+#: ../fheroes2/editor/editor_startgame.cpp:884
 msgid "New"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:880
+#: ../fheroes2/editor/editor_startgame.cpp:884
 msgid "Start a new map from scratch."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:883
+#: ../fheroes2/editor/editor_startgame.cpp:887
 msgid "Specifications"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:883
+#: ../fheroes2/editor/editor_startgame.cpp:887
 msgid "Edit maps title, description, and other general information."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:886
+#: ../fheroes2/editor/editor_startgame.cpp:890
 #: ../fheroes2/gui/interface_buttons.cpp:232
 msgid "File Options"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:886
+#: ../fheroes2/editor/editor_startgame.cpp:890
 msgid ""
 "Open the file options menu, where you can save or load maps, or quit out of "
 "the editor."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:889
+#: ../fheroes2/editor/editor_startgame.cpp:893
 #: ../fheroes2/gui/interface_buttons.cpp:234
 msgid "System Options"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:889
+#: ../fheroes2/editor/editor_startgame.cpp:893
 msgid "View the editor system options, which let you customize the editor."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:892
+#: ../fheroes2/editor/editor_startgame.cpp:896
 msgid "Terrain Mode"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:892
+#: ../fheroes2/editor/editor_startgame.cpp:896
 msgid "Used to draw the underlying grass, dirt, water, etc. on the map."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:895
+#: ../fheroes2/editor/editor_startgame.cpp:899
 msgid "Object Mode"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:895
+#: ../fheroes2/editor/editor_startgame.cpp:899
 msgid "Used to place objects (mountains, trees, treasure, etc.) on the map."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:898
+#: ../fheroes2/editor/editor_startgame.cpp:902
 msgid "Detail Mode"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:898
+#: ../fheroes2/editor/editor_startgame.cpp:902
 msgid "Used for special editing of monsters, heroes and towns."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:901
+#: ../fheroes2/editor/editor_startgame.cpp:905
 msgid "Stream Mode"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:901
+#: ../fheroes2/editor/editor_startgame.cpp:905
 msgid "Allows you to draw streams by clicking and dragging."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:904
+#: ../fheroes2/editor/editor_startgame.cpp:908
 msgid "Road Mode"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:904
+#: ../fheroes2/editor/editor_startgame.cpp:908
 msgid "Allows you to draw roads by clicking and dragging."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:907
+#: ../fheroes2/editor/editor_startgame.cpp:911
 msgid "Erase Mode"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:907
+#: ../fheroes2/editor/editor_startgame.cpp:911
 msgid "Used to erase objects of the map."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:910 ../fheroes2/maps/ground.cpp:31
+#: ../fheroes2/editor/editor_startgame.cpp:914 ../fheroes2/maps/ground.cpp:31
 msgid "Water"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:910
+#: ../fheroes2/editor/editor_startgame.cpp:914
 msgid "Traversable only by boat."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:913 ../fheroes2/maps/ground.cpp:31
+#: ../fheroes2/editor/editor_startgame.cpp:917 ../fheroes2/maps/ground.cpp:31
 msgid "Grass"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:913
-#: ../fheroes2/editor/editor_startgame.cpp:922
-#: ../fheroes2/editor/editor_startgame.cpp:928
+#: ../fheroes2/editor/editor_startgame.cpp:917
+#: ../fheroes2/editor/editor_startgame.cpp:926
+#: ../fheroes2/editor/editor_startgame.cpp:932
 msgid "No special modifiers."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:916 ../fheroes2/maps/ground.cpp:30
+#: ../fheroes2/editor/editor_startgame.cpp:920 ../fheroes2/maps/ground.cpp:30
 msgid "Snow"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:916
+#: ../fheroes2/editor/editor_startgame.cpp:920
 msgid ""
 "Cost 1.5 times normal movement for all heroes. (Pathfinding reduces or "
 "eliminates the penalty.)"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:919
+#: ../fheroes2/editor/editor_startgame.cpp:923
 msgid ""
 "Cost 1.75 times normal movement for all heroes. (Pathfinding reduces or "
 "eliminates the penalty.)"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:922 ../fheroes2/maps/ground.cpp:31
+#: ../fheroes2/editor/editor_startgame.cpp:926 ../fheroes2/maps/ground.cpp:31
 msgid "Lava"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:925 ../fheroes2/maps/ground.cpp:30
+#: ../fheroes2/editor/editor_startgame.cpp:929 ../fheroes2/maps/ground.cpp:30
 msgid "Beach"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:925
-#: ../fheroes2/editor/editor_startgame.cpp:931
+#: ../fheroes2/editor/editor_startgame.cpp:929
+#: ../fheroes2/editor/editor_startgame.cpp:935
 msgid ""
 "Cost 1.25 times normal movement for all heroes. (Pathfinding reduces or "
 "eliminates the penalty.)"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:928 ../fheroes2/maps/ground.cpp:31
+#: ../fheroes2/editor/editor_startgame.cpp:932 ../fheroes2/maps/ground.cpp:31
 #: ../fheroes2/resource/maps_text.cpp:210
 msgid "Dirt"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:931 ../fheroes2/maps/ground.cpp:30
+#: ../fheroes2/editor/editor_startgame.cpp:935 ../fheroes2/maps/ground.cpp:30
 msgid "Wasteland"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:934 ../fheroes2/maps/ground.cpp:30
+#: ../fheroes2/editor/editor_startgame.cpp:938 ../fheroes2/maps/ground.cpp:30
 msgid "Desert"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:934
+#: ../fheroes2/editor/editor_startgame.cpp:938
 msgid ""
 "Cost 2 times normal movement for all heroes. (Pathfinding reduces or "
 "eliminates the penalty.)"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:937
+#: ../fheroes2/editor/editor_startgame.cpp:941
 msgid "Water Objects"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:937
+#: ../fheroes2/editor/editor_startgame.cpp:941
 msgid "Used to select objects most appropriate for use on water."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:940
+#: ../fheroes2/editor/editor_startgame.cpp:944
 msgid "Grass Objects"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:940
+#: ../fheroes2/editor/editor_startgame.cpp:944
 msgid "Used to select objects most appropriate for use on grass."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:943
+#: ../fheroes2/editor/editor_startgame.cpp:947
 msgid "Snow Objects"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:943
+#: ../fheroes2/editor/editor_startgame.cpp:947
 msgid "Used to select objects most appropriate for use on snow."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:946
+#: ../fheroes2/editor/editor_startgame.cpp:950
 msgid "Swamp Objects"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:946
+#: ../fheroes2/editor/editor_startgame.cpp:950
 msgid "Used to select objects most appropriate for use on swamp."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:949
+#: ../fheroes2/editor/editor_startgame.cpp:953
 msgid "Lava Objects"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:949
+#: ../fheroes2/editor/editor_startgame.cpp:953
 msgid "Used to select objects most appropriate for use on lava."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:952
+#: ../fheroes2/editor/editor_startgame.cpp:956
 msgid "Desert Objects"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:952
+#: ../fheroes2/editor/editor_startgame.cpp:956
 msgid "Used to select objects most appropriate for use on desert."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:955
+#: ../fheroes2/editor/editor_startgame.cpp:959
 msgid "Dirt Objects"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:955
+#: ../fheroes2/editor/editor_startgame.cpp:959
 msgid "Used to select objects most appropriate for use on dirt."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:958
+#: ../fheroes2/editor/editor_startgame.cpp:962
 msgid "Wasteland Objects"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:958
+#: ../fheroes2/editor/editor_startgame.cpp:962
 msgid "Used to select objects most appropriate for use on wasteland."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:961
+#: ../fheroes2/editor/editor_startgame.cpp:965
 msgid "Beach Objects"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:961
+#: ../fheroes2/editor/editor_startgame.cpp:965
 msgid "Used to select objects most appropriate for use on beach."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:964
+#: ../fheroes2/editor/editor_startgame.cpp:968
 msgid "Towns"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:964
+#: ../fheroes2/editor/editor_startgame.cpp:968
 msgid "Used to place a town or castle."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:967
+#: ../fheroes2/editor/editor_startgame.cpp:971
 msgid "Monsters"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:967
+#: ../fheroes2/editor/editor_startgame.cpp:971
 msgid "Used to place a monster group."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:970 ../fheroes2/maps/mp2.cpp:467
+#: ../fheroes2/editor/editor_startgame.cpp:974 ../fheroes2/maps/mp2.cpp:467
 msgid "Heroes"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:970
+#: ../fheroes2/editor/editor_startgame.cpp:974
 msgid "Used to place a hero."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:973 ../fheroes2/maps/mp2.cpp:501
+#: ../fheroes2/editor/editor_startgame.cpp:977 ../fheroes2/maps/mp2.cpp:501
 msgid "Artifact"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:973
+#: ../fheroes2/editor/editor_startgame.cpp:977
 msgid "Used to place an artifact."
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:976
+#: ../fheroes2/editor/editor_startgame.cpp:980
 msgid "Treasures"
 msgstr ""
 
-#: ../fheroes2/editor/editor_startgame.cpp:976
+#: ../fheroes2/editor/editor_startgame.cpp:980
 msgid "Used to place a resource or treasure."
 msgstr ""
 
