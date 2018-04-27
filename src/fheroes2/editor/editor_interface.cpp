@@ -27,8 +27,8 @@
 #include "world.h"
 #include "editor_interface.h"
 
-EditorInterface::EditorInterface() :
-  gameArea(Interface::GameArea::Get()), radar(Interface::Radar::Get())
+EditorInterface::EditorInterface() : gameArea(Interface::GameArea::Get())
+                                   , radar(Interface::Radar::Get())
 {
 }
 
@@ -78,14 +78,14 @@ void EditorInterface::Build(void)
   split_v.SetSprite(AGG::GetICN(ICN::ESCROLL, 3));
 }
 
-EditorInterface & EditorInterface::Get(void)
+EditorInterface & EditorInterface::Get()
 {
-  static EditorInterface einterface;
+  static EditorInterface interface;
 
-  return einterface;
+  return interface;
 }
 
-void EditorInterface::Draw(void)
+void EditorInterface::Draw()
 {
   Display & display = Display::Get();
   Interface::GameArea & gamearea = Interface::GameArea::Get();
@@ -149,6 +149,7 @@ void EditorInterface::Draw(void)
   dst_pt.x = 2 * BORDERWIDTH + areaPos.w;
   dst_pt.y = 0;
   spriteAdv.Blit(src_rt, dst_pt);
+
   // left bottom static border
   src_rt.x = spriteAdv.w() - BORDERWIDTH - RADARWIDTH;
   src_rt.y = spriteAdv.h() - BORDERWIDTH;
@@ -166,11 +167,11 @@ void EditorInterface::Draw(void)
   dst_pt.x = display.w() - BORDERWIDTH;
   dst_pt.y = 0;
   spriteAdv.Blit(src_rt, dst_pt);
-  //
+
   src_rt.y = 250;
   src_rt.h = TILEWIDTH;
   dst_pt.y = 250;
-  //
+
   u8 var1 = 4 + (display.h() - 480) / TILEWIDTH;
 
   for(u8 ii = 0; ii < var1; ++ii)
@@ -178,16 +179,14 @@ void EditorInterface::Draw(void)
     spriteAdv.Blit(src_rt, dst_pt);
     dst_pt.y += TILEWIDTH;
   }
-  //
+
   src_rt.y = spriteAdv.h() - 102;
   src_rt.h = 102;
   dst_pt.y = display.h() - 102;
   spriteAdv.Blit(src_rt, dst_pt);
 
-
   Point pt_rts, pt_tsc, pt_lbs, pt_lsc, pt_rsc, pt_rbs, pt_bsc, pt_sgr, pt_sob, pt_sin, pt_sri, pt_sro, pt_scl;
   Point pt_ssm, pt_sme, pt_sla, pt_smn, pt_zoo, pt_und, pt_new, pt_spe, pt_fil, pt_sys;
-
 
   // btn right top scroll
   pt_rts.x = BORDERWIDTH + areaPos.w;
@@ -306,15 +305,16 @@ void EditorInterface::Draw(void)
     src_rt.y = spriteBac.h() - TILEWIDTH;
     if(var1) spriteBac.Blit(src_rt, dst_pt);
   }
+
   /*
-     const Point dstPanel(btnSelectRiver.x, btnSelectRiver.y + btnSelectRiver.h);
-     const Sprite & spritePanelGround = AGG::GetICN(ICN::EDITPANL, 0);
-     const Sprite & spritePanelObject = AGG::GetICN(ICN::EDITPANL, 1);
-     const Sprite & spritePanelInfo = AGG::GetICN(ICN::EDITPANL, 2);
-     const Sprite & spritePanelRiver = AGG::GetICN(ICN::EDITPANL, 3);
-     const Sprite & spritePanelRoad = AGG::GetICN(ICN::EDITPANL, 4);
-     const Sprite & spritePanelClear = AGG::GetICN(ICN::EDITPANL, 5);
-     */
+    const Point dstPanel(btnSelectRiver.x, btnSelectRiver.y + btnSelectRiver.h);
+    const Sprite & spritePanelGround = AGG::GetICN(ICN::EDITPANL, 0);
+    const Sprite & spritePanelObject = AGG::GetICN(ICN::EDITPANL, 1);
+    const Sprite & spritePanelInfo = AGG::GetICN(ICN::EDITPANL, 2);
+    const Sprite & spritePanelRiver = AGG::GetICN(ICN::EDITPANL, 3);
+    const Sprite & spritePanelRoad = AGG::GetICN(ICN::EDITPANL, 4);
+    const Sprite & spritePanelClear = AGG::GetICN(ICN::EDITPANL, 5);
+  */
 
   btnLeftTopScroll.Draw();
   btnRightTopScroll.Draw();

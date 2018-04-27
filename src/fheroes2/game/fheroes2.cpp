@@ -227,23 +227,23 @@ int main(int argc, char **argv)
 #ifdef WITH_EDITOR
           case Game::EDITMAINMENU:   rs = Game::Editor::MainMenu();   break;
           case Game::EDITNEWMAP:     rs = Game::Editor::NewMaps();    break;
-          case Game::EDITLOADMAP:    rs = Game::Editor::LoadMaps();       break;
-          case Game::EDITSTART:      rs = Game::Editor::StartGame();      break;
+          case Game::EDITLOADMAP:    rs = Game::Editor::LoadMaps();   break;
+          case Game::EDITSTART:      rs = Game::Editor::StartGame();  break;
 #endif
-          case Game::MAINMENU:       rs = Game::MainMenu();       break;
-          case Game::NEWGAME:        rs = Game::NewGame();        break;
-          case Game::LOADGAME:       rs = Game::LoadGame();       break;
-          case Game::HIGHSCORES:     rs = Game::HighScores();     break;
-          case Game::CREDITS:        rs = Game::Credits();        break;
+          case Game::MAINMENU:       rs = Game::MainMenu();           break;
+          case Game::NEWGAME:        rs = Game::NewGame();            break;
+          case Game::LOADGAME:       rs = Game::LoadGame();           break;
+          case Game::HIGHSCORES:     rs = Game::HighScores();         break;
+          case Game::CREDITS:        rs = Game::Credits();            break;
           case Game::NEWSTANDARD:    rs = Game::NewStandard();        break;
-          case Game::NEWCAMPAIN:     rs = Game::NewCampain();     break;
-          case Game::NEWMULTI:       rs = Game::NewMulti();       break;
-          case Game::NEWHOTSEAT:     rs = Game::NewHotSeat();     break;
-          case Game::NEWNETWORK:     rs = Game::NewNetwork();     break;
+          case Game::NEWCAMPAIN:     rs = Game::NewCampain();         break;
+          case Game::NEWMULTI:       rs = Game::NewMulti();           break;
+          case Game::NEWHOTSEAT:     rs = Game::NewHotSeat();         break;
+          case Game::NEWNETWORK:     rs = Game::NewNetwork();         break;
           case Game::NEWBATTLEONLY:  rs = Game::NewBattleOnly();      break;
           case Game::LOADSTANDARD:   rs = Game::LoadStandard();       break;
           case Game::LOADCAMPAIN:    rs = Game::LoadCampain();        break;
-          case Game::LOADMULTI:      rs = Game::LoadMulti();      break;
+          case Game::LOADMULTI:      rs = Game::LoadMulti();          break;
           case Game::SCENARIOINFO:   rs = Game::ScenarioInfo();       break;
           case Game::SELECTSCENARIO: rs = Game::SelectScenario();     break;
           case Game::STARTGAME:      rs = Game::StartGame();          break;

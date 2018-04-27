@@ -20,14 +20,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "gamedefs.h"
 #include "agg.h"
+#include "button.h"
 #include "cursor.h"
 #include "dialog.h"
-#include "button.h"
-#include "settings.h"
-#include "pocketpc.h"
 #include "game.h"
+#include "gamedefs.h"
+#include "pocketpc.h"
+#include "settings.h"
 
 #define NEWGAME_DEFAULT 1
 #define LOADGAME_DEFAULT 5
@@ -35,7 +35,7 @@
 #define CREDITS_DEFAULT 13
 #define QUIT_DEFAULT 17
 
-Game::menu_t Game::MainMenu(void)
+Game::menu_t Game::MainMenu()
 {
   Mixer::Pause();
   AGG::PlayMusic(MUS::MAINMENU);
@@ -43,7 +43,7 @@ Game::menu_t Game::MainMenu(void)
   Settings & conf = Settings::Get();
 
   conf.SetGameType(TYPE_MENU);
-  if(conf.QVGA()) return PocketPC::MainMenu();
+  if (conf.QVGA()) return PocketPC::MainMenu();
 
   // preload
   AGG::PreloadObject(ICN::HEROES);
@@ -71,11 +71,16 @@ Game::menu_t Game::MainMenu(void)
   const Sprite & s4 = AGG::GetICN(ICN::BTNSHNGL, CREDITS_DEFAULT);
   const Sprite & s5 = AGG::GetICN(ICN::BTNSHNGL, QUIT_DEFAULT);
 
-  Button buttonNewGame(top.x + s1.x(), top.y + s1.y(), ICN::BTNSHNGL, NEWGAME_DEFAULT, NEWGAME_DEFAULT + 2);
-  Button buttonLoadGame(top.x + s2.x(), top.y + s2.y(), ICN::BTNSHNGL, LOADGAME_DEFAULT, LOADGAME_DEFAULT + 2);
-  Button buttonHighScores(top.x + s3.x(), top.y + s3.y(), ICN::BTNSHNGL, HIGHSCORES_DEFAULT, HIGHSCORES_DEFAULT + 2);
-  Button buttonCredits(top.x + s4.x(), top.y + s4.y(), ICN::BTNSHNGL, CREDITS_DEFAULT, CREDITS_DEFAULT + 2);
-  Button buttonQuit(top.x + s5.x(), top.y + s5.y(), ICN::BTNSHNGL, QUIT_DEFAULT, QUIT_DEFAULT + 2);
+  Button buttonNewGame(top.x + s1.x(), top.y + s1.y(), ICN::BTNSHNGL,
+      NEWGAME_DEFAULT, NEWGAME_DEFAULT + 2);
+  Button buttonLoadGame(top.x + s2.x(), top.y + s2.y(), ICN::BTNSHNGL,
+      LOADGAME_DEFAULT, LOADGAME_DEFAULT + 2);
+  Button buttonHighScores(top.x + s3.x(), top.y + s3.y(), ICN::BTNSHNGL,
+      HIGHSCORES_DEFAULT, HIGHSCORES_DEFAULT + 2);
+  Button buttonCredits(top.x + s4.x(), top.y + s4.y(), ICN::BTNSHNGL,
+      CREDITS_DEFAULT, CREDITS_DEFAULT + 2);
+  Button buttonQuit(top.x + s5.x(), top.y + s5.y(), ICN::BTNSHNGL,
+      QUIT_DEFAULT, QUIT_DEFAULT + 2);
 
   const Point lt_pt(0, 0);
 
@@ -125,18 +130,18 @@ Game::menu_t Game::MainMenu(void)
     {
       buttons[i].wasOver = buttons[i].isOver;
 
-      if(le.MousePressLeft(buttons[i].button))
+      if (le.MousePressLeft(buttons[i].button))
         buttons[i].button.PressDraw();
       else buttons[i].button.ReleaseDraw();
 
       buttons[i].isOver = le.MouseCursor(buttons[i].button);
 
-      if((!buttons[i].isOver && buttons[i].wasOver) ||
+      if ((!buttons[i].isOver && buttons[i].wasOver) ||
           (buttons[i].isOver && !buttons[i].wasOver))
       {
         u16 frame = buttons[i].frame;
 
-        if(buttons[i].isOver && !buttons[i].wasOver)
+        if (buttons[i].isOver && !buttons[i].wasOver)
           frame++;
 
         cursor.Hide();
@@ -146,29 +151,29 @@ Game::menu_t Game::MainMenu(void)
       }
     }
 
-    if(HotKeyPress(EVENT_BUTTON_NEWGAME) || le.MouseClickLeft(buttonNewGame)) return NEWGAME;
+    if (HotKeyPress(EVENT_BUTTON_NEWGAME) || le.MouseClickLeft(buttonNewGame)) return NEWGAME;
     else
-      if(HotKeyPress(EVENT_BUTTON_LOADGAME) || le.MouseClickLeft(buttonLoadGame)) return LOADGAME;
+      if (HotKeyPress(EVENT_BUTTON_LOADGAME) || le.MouseClickLeft(buttonLoadGame)) return LOADGAME;
       else
-        if(HotKeyPress(EVENT_BUTTON_HIGHSCORES) || le.MouseClickLeft(buttonHighScores)) return HIGHSCORES;
+        if (HotKeyPress(EVENT_BUTTON_HIGHSCORES) || le.MouseClickLeft(buttonHighScores)) return HIGHSCORES;
         else
-          if(HotKeyPress(EVENT_BUTTON_CREDITS) || le.MouseClickLeft(buttonCredits)) return CREDITS;
+          if (HotKeyPress(EVENT_BUTTON_CREDITS) || le.MouseClickLeft(buttonCredits)) return CREDITS;
           else
-            if(HotKeyPress(EVENT_DEFAULT_EXIT) || le.MouseClickLeft(buttonQuit))
-            { if(conf.ExtGameUseFade()) display.Fade(); return QUITGAME; }
+            if (HotKeyPress(EVENT_DEFAULT_EXIT) || le.MouseClickLeft(buttonQuit))
+            { if (conf.ExtGameUseFade()) display.Fade(); return QUITGAME; }
 
     // right info
-    if(le.MousePressRight(buttonQuit)) Dialog::Message(_("Quit"), _("Quit Heroes of Might and Magic and return to the operating system."), Font::BIG);
+    if (le.MousePressRight(buttonQuit)) Dialog::Message(_("Quit"), _("Quit Heroes of Might and Magic and return to the operating system."), Font::BIG);
     else
-      if(le.MousePressRight(buttonLoadGame)) Dialog::Message(_("Load Game"), _("Load a previously saved game."), Font::BIG);
+      if (le.MousePressRight(buttonLoadGame)) Dialog::Message(_("Load Game"), _("Load a previously saved game."), Font::BIG);
       else
-        if(le.MousePressRight(buttonCredits)) Dialog::Message(_("Credits"), _("View the credits screen."), Font::BIG);
+        if (le.MousePressRight(buttonCredits)) Dialog::Message(_("Credits"), _("View the credits screen."), Font::BIG);
         else
-          if(le.MousePressRight(buttonHighScores)) Dialog::Message(_("High Scores"), _("View the high score screen."), Font::BIG);
+          if (le.MousePressRight(buttonHighScores)) Dialog::Message(_("High Scores"), _("View the high score screen."), Font::BIG);
           else
-            if(le.MousePressRight(buttonNewGame)) Dialog::Message(_("New Game"), _("Start a single or multi-player game."), Font::BIG);
+            if (le.MousePressRight(buttonNewGame)) Dialog::Message(_("New Game"), _("Start a single or multi-player game."), Font::BIG);
 
-    if(AnimateInfrequent(MAIN_MENU_DELAY))
+    if (AnimateInfrequent(MAIN_MENU_DELAY))
     {
       cursor.Hide();
       const Sprite & lantern12 = AGG::GetICN(ICN::SHNGANIM, ICN::AnimationFrame(ICN::SHNGANIM, 0, lantern_frame++));

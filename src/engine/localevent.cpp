@@ -20,10 +20,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "error.h"
-#include "display.h"
 #include "audio_music.h"
 #include "audio_mixer.h"
+#include "display.h"
+#include "error.h"
 #include "localevent.h"
 
 #define TAP_DELAY_EMULATE 1050
@@ -44,32 +44,32 @@ LocalEvent::LocalEvent() : modes(0), key_value(KEY_NONE), mouse_state(0),
 #endif
 }
 
-const Point & LocalEvent::GetMousePressLeft(void) const
+const Point & LocalEvent::GetMousePressLeft() const
 {
   return mouse_pl;
 }
 
-const Point & LocalEvent::GetMousePressMiddle(void) const
+const Point & LocalEvent::GetMousePressMiddle() const
 {
   return mouse_pm;
 }
 
-const Point & LocalEvent::GetMousePressRight(void) const
+const Point & LocalEvent::GetMousePressRight() const
 {
   return mouse_pr;
 }
 
-const Point & LocalEvent::GetMouseReleaseLeft(void) const
+const Point & LocalEvent::GetMouseReleaseLeft() const
 {
   return mouse_rl;
 }
 
-const Point & LocalEvent::GetMouseReleaseMiddle(void) const
+const Point & LocalEvent::GetMouseReleaseMiddle() const
 {
   return mouse_rm;
 }
 
-const Point & LocalEvent::GetMouseReleaseRight(void) const
+const Point & LocalEvent::GetMouseReleaseRight() const
 {
   return mouse_rr;
 }
@@ -264,7 +264,7 @@ KeySym GetKeySym(int key)
   return KEY_NONE;
 }
 
-LocalEvent & LocalEvent::Get(void)
+LocalEvent & LocalEvent::Get()
 {
   static LocalEvent le;
 

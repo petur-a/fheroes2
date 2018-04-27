@@ -49,7 +49,7 @@ bool AGG::File::Open(const std::string & fname)
   filename = fname;
   stream = new std::ifstream(filename.c_str(), std::ios::binary);
 
-  if(!stream || !stream->is_open())
+  if (!stream || !stream->is_open())
   {
     DEBUG(DBG_ENGINE, DBG_WARN, "error read file: " << filename << ", skipping...");
     return false;
@@ -90,7 +90,7 @@ bool AGG::File::Open(const std::string & fname)
 
 AGG::File::~File()
 {
-  if(stream)
+  if (stream)
   {
     stream->close();
     delete stream;
@@ -134,9 +134,9 @@ bool AGG::File::Read(const std::string & key, std::vector<u8> & body)
 {
   const FAT & f = fat[key];
 
-  if(f.size)
+  if (f.size)
   {
-    if(last_key != key)
+    if (last_key != key)
     {
       DEBUG(DBG_ENGINE, DBG_TRACE, key << ":\t" << f.Info());
 
@@ -164,9 +164,9 @@ AGG::Cache::Cache()
   const std::string font1 = Settings::GetLastFile(prefix_fonts, conf.FontsNormal());
   const std::string font2 = Settings::GetLastFile(prefix_fonts, conf.FontsSmall());
 
-  if(conf.Unicode())
+  if (conf.Unicode())
   {
-    if(!font_medium.Open(font1, conf.FontsNormalSize()) ||
+    if (!font_medium.Open(font1, conf.FontsNormalSize()) ||
         !font_small.Open(font2, conf.FontsSmallSize())) conf.SetUnicode(false);
   }
 #endif
@@ -183,21 +183,21 @@ AGG::Cache::Cache()
 
 AGG::Cache::~Cache()
 {
-  if(icn_cache)
+  if (icn_cache)
   {
     for(u16 ii = 0; ii < ICN::UNKNOWN + 1; ++ii)
     {
-      if(icn_cache[ii].sprites) delete [] icn_cache[ii].sprites;
-      if(icn_cache[ii].reflect) delete [] icn_cache[ii].reflect;
+      if (icn_cache[ii].sprites) delete [] icn_cache[ii].sprites;
+      if (icn_cache[ii].reflect) delete [] icn_cache[ii].reflect;
     }
     delete [] icn_cache;
   }
 
-  if(til_cache)
+  if (til_cache)
   {
     for(u16 ii = 0; ii < TIL::UNKNOWN + 1; ++ii)
     {
-      if(til_cache[ii].sprites) delete [] til_cache[ii].sprites;
+      if (til_cache[ii].sprites) delete [] til_cache[ii].sprites;
     }
     delete [] til_cache;
   }
@@ -205,13 +205,13 @@ AGG::Cache::~Cache()
 
 void AGG::Cache::ClearAllICN(void)
 {
-  if(icn_cache)
+  if (icn_cache)
   {
     for(u16 ii = 0; ii < ICN::UNKNOWN; ++ii)
     {
-      if(icn_cache[ii].sprites) delete [] icn_cache[ii].sprites;
+      if (icn_cache[ii].sprites) delete [] icn_cache[ii].sprites;
       icn_cache[ii].sprites = NULL;
-      if(icn_cache[ii].reflect) delete [] icn_cache[ii].reflect;
+      if (icn_cache[ii].reflect) delete [] icn_cache[ii].reflect;
       icn_cache[ii].reflect = NULL;
     }
   }
@@ -224,7 +224,7 @@ void AGG::Cache::ClearAllWAV(void)
   std::map<M82::m82_t, std::vector<u8> >::iterator it1 = wav_cache.begin();
   std::map<M82::m82_t, std::vector<u8> >::iterator it2 = wav_cache.end();
 
-  for(; it1 != it2; ++it1) if((*it1).second.size()) (*it1).second.clear();
+  for(; it1 != it2; ++it1) if ((*it1).second.size()) (*it1).second.clear();
 }
 
 void AGG::Cache::ClearAllMID(void)
@@ -232,7 +232,7 @@ void AGG::Cache::ClearAllMID(void)
   std::map<XMI::xmi_t, std::vector<u8> >::iterator it1 = mid_cache.begin();
   std::map<XMI::xmi_t, std::vector<u8> >::iterator it2 = mid_cache.end();
 
-  for(; it1 != it2; ++it1) if((*it1).second.size()) (*it1).second.clear();
+  for(; it1 != it2; ++it1) if ((*it1).second.size()) (*it1).second.clear();
 }
 
 /* get AGG::Cache object */
@@ -250,29 +250,29 @@ bool AGG::Cache::ReadDataDir(void)
   ListFiles aggs = conf.GetListFiles("data", ".agg");
   const std::string & other_data = conf.GetDataParams();
 
-  if(other_data.size() && other_data != "data")
+  if (other_data.size() && other_data != "data")
     aggs.Append(conf.GetListFiles(other_data, ".agg"));
 
   // not found agg, exit
-  if(0 == aggs.size()) return false;
+  if (0 == aggs.size()) return false;
 
   // attach agg files
   for(ListFiles::const_iterator
       it = aggs.begin(); it != aggs.end(); ++it)
   {
     std::string lower = String::Lower(*it);
-    if(std::string::npos != lower.find("heroes2.agg") && !heroes2_agg.isGood()) heroes2_agg.Open(*it);
-    if(std::string::npos != lower.find("heroes2x.agg") && !heroes2x_agg.isGood()) heroes2x_agg.Open(*it);
+    if (std::string::npos != lower.find("heroes2.agg") && !heroes2_agg.isGood()) heroes2_agg.Open(*it);
+    if (std::string::npos != lower.find("heroes2x.agg") && !heroes2x_agg.isGood()) heroes2x_agg.Open(*it);
   }
 
-  if(heroes2x_agg.isGood()) conf.SetPriceLoyaltyVersion();
+  if (heroes2x_agg.isGood()) conf.SetPriceLoyaltyVersion();
 
   return heroes2_agg.isGood();
 }
 
 bool AGG::Cache::ReadChunk(const std::string & key, std::vector<u8> & body)
 {
-  if(heroes2x_agg.isGood() && heroes2x_agg.Read(key, body)) return true;
+  if (heroes2x_agg.isGood() && heroes2x_agg.Read(key, body)) return true;
 
   return heroes2_agg.isGood() && heroes2_agg.Read(key, body);
 }
@@ -305,7 +305,7 @@ void AGG::Cache::LoadExtICN(icn_cache_t & v, const ICN::icn_t icn, const u16 ind
     default: break;
   }
 
-  if(NULL == v.sprites)
+  if (NULL == v.sprites)
   {
     v.sprites = new Sprite [count];
     v.reflect = new Sprite [count];
@@ -316,7 +316,7 @@ void AGG::Cache::LoadExtICN(icn_cache_t & v, const ICN::icn_t icn, const u16 ind
   switch(icn)
   {
     case ICN::BTNBATTLEONLY:
-      if(index < count)
+      if (index < count)
       {
         Sprite & sprite = reflect ? v.reflect[index] : v.sprites[index];
         LoadOrgICN(sprite, ICN::BTNNEWGM, 2 + index, false);
@@ -341,7 +341,7 @@ void AGG::Cache::LoadExtICN(icn_cache_t & v, const ICN::icn_t icn, const u16 ind
       break;
 
     case ICN::BTNCONFIG:
-      if(index < count)
+      if (index < count)
       {
         Sprite & sprite = reflect ? v.reflect[index] : v.sprites[index];
         LoadOrgICN(sprite, ICN::SYSTEM, 11 + index, false);
@@ -351,7 +351,7 @@ void AGG::Cache::LoadExtICN(icn_cache_t & v, const ICN::icn_t icn, const u16 ind
       break;
 
     case ICN::BTNGIFT:
-      if(index < count)
+      if (index < count)
       {
         Sprite & sprite = reflect ? v.reflect[index] : v.sprites[index];
         LoadOrgICN(sprite,
@@ -371,7 +371,7 @@ void AGG::Cache::LoadExtICN(icn_cache_t & v, const ICN::icn_t icn, const u16 ind
       break;
 
     case ICN::BUYMAX:
-      if(index < count)
+      if (index < count)
       {
         Sprite & sprite = reflect ? v.reflect[index] : v.sprites[index];
         LoadOrgICN(sprite, ICN::WELLXTRA, index, false);
@@ -383,7 +383,7 @@ void AGG::Cache::LoadExtICN(icn_cache_t & v, const ICN::icn_t icn, const u16 ind
       break;
 
     case ICN::BATTLESKIP:
-      if(index < count)
+      if (index < count)
       {
         Sprite & sprite = reflect ? v.reflect[index] : v.sprites[index];
         LoadOrgICN(sprite, ICN::TEXTBAR, 4 + index, false);
@@ -395,7 +395,7 @@ void AGG::Cache::LoadExtICN(icn_cache_t & v, const ICN::icn_t icn, const u16 ind
       break;
 
     case ICN::BATTLEWAIT:
-      if(index < count)
+      if (index < count)
       {
         Sprite & sprite = reflect ? v.reflect[index] : v.sprites[index];
         LoadOrgICN(sprite, ICN::TEXTBAR, 4 + index, false);
@@ -411,7 +411,7 @@ void AGG::Cache::LoadExtICN(icn_cache_t & v, const ICN::icn_t icn, const u16 ind
       break;
 
     case ICN::BOAT12:
-      if(index < count)
+      if (index < count)
       {
         Sprite & sprite = reflect ? v.reflect[index] : v.sprites[index];
         LoadOrgICN(sprite, ICN::ADVMCO, 28 + index, false);
@@ -513,13 +513,13 @@ bool AGG::Cache::LoadAltICN(icn_cache_t & v, const std::string & spec, const u16
   TiXmlDocument doc;
   const TiXmlElement* xml_icn = NULL;
 
-  if(doc.LoadFile(spec.c_str()) &&
+  if (doc.LoadFile(spec.c_str()) &&
       NULL != (xml_icn = doc.FirstChildElement("icn")))
   {
     int count, ox, oy;
     xml_icn->Attribute("count", &count);
 
-    if(NULL == v.sprites)
+    if (NULL == v.sprites)
     {
       v.count = count;
       v.sprites = new Sprite [v.count];
@@ -531,7 +531,7 @@ bool AGG::Cache::LoadAltICN(icn_cache_t & v, const std::string & spec, const u16
     u16 ii = 0;
     for(; ii != index && xml_sprite; xml_sprite = xml_sprite->NextSiblingElement("sprite"), ++ii);
 
-    if(xml_sprite && ii == index)
+    if (xml_sprite && ii == index)
     {
       xml_sprite->Attribute("ox", &ox);
       xml_sprite->Attribute("oy", &oy);
@@ -539,7 +539,7 @@ bool AGG::Cache::LoadAltICN(icn_cache_t & v, const std::string & spec, const u16
       String::Replace(name, "spec.xml", xml_sprite->Attribute("name"));
       Sprite & sp = reflect ? v.reflect[index] : v.sprites[index];
       // good load
-      if(sp.Load(name.c_str()) && sp.isValid())
+      if (sp.Load(name.c_str()) && sp.isValid())
       {
         sp.SetOffset(ox, oy);
         DEBUG(DBG_ENGINE, DBG_TRACE, spec << ", " << index);
@@ -558,10 +558,10 @@ void AGG::Cache::LoadOrgICN(Sprite & sp, const ICN::icn_t icn, const u16 index, 
 {
   std::vector<u8> body;
 
-  if(ReadChunk(ICN::GetString(icn), body))
+  if (ReadChunk(ICN::GetString(icn), body))
   {
     // hard fix artifact "ultimate stuff" sprite for loyalty version
-    if(Settings::Get().PriceLoyaltyVersion() &&
+    if (Settings::Get().PriceLoyaltyVersion() &&
         ICN::ARTIFACT == icn &&
         Artifact(Artifact::ULTIMATE_STAFF).IndexSprite64() == index)
     {
@@ -576,7 +576,7 @@ void AGG::Cache::LoadOrgICN(Sprite & sp, const ICN::icn_t icn, const u16 index, 
     ICN::Header header1, header2;
 
     header1.Load(&body[6 + index * ICN::Header::SizeOf()]);
-    if(index + 1 != count) header2.Load(&body[6 + (index + 1) * ICN::Header::SizeOf()]);
+    if (index + 1 != count) header2.Load(&body[6 + (index + 1) * ICN::Header::SizeOf()]);
 
     const u32 size_data = (index + 1 != count ? header2.OffsetData() - header1.OffsetData() :
         // total size
@@ -596,7 +596,7 @@ void AGG::Cache::LoadOrgICN(Sprite & sp, const ICN::icn_t icn, const u16 index, 
 
 void AGG::Cache::LoadOrgICN(icn_cache_t & v, const ICN::icn_t icn, const u16 index, bool reflect)
 {
-  if(NULL == v.sprites)
+  if (NULL == v.sprites)
   {
     std::vector<u8> body;
     ReadChunk(ICN::GetString(icn), body);
@@ -616,47 +616,47 @@ void AGG::Cache::LoadICN(const ICN::icn_t icn, u16 index, bool reflect)
 {
   icn_cache_t & v = icn_cache[icn];
 
-  if(reflect)
+  if (reflect)
   {
-    if(v.reflect && (index >= v.count || v.reflect[index].isValid())) return;
+    if (v.reflect && (index >= v.count || v.reflect[index].isValid())) return;
   }
   else
   {
-    if(v.sprites && (index >= v.count || v.sprites[index].isValid())) return;
+    if (v.sprites && (index >= v.count || v.sprites[index].isValid())) return;
   }
 
   const Settings & conf = Settings::Get();
   bool skip_origin = false;
 
   // load modify sprite
-  if(ICN::isModifiedSprite(icn))
+  if (ICN::isModifiedSprite(icn))
   {
     LoadExtICN(v, icn, index, reflect);
     skip_origin = true;
   }
   else
     // load from images dir
-    if(conf.UseAltResource())
+    if (conf.UseAltResource())
     {
       const std::string prefix_images_icn = std::string("files") + SEPARATOR + std::string("images") + SEPARATOR + String::Lower(ICN::GetString(icn));
       const std::string xml_spec = Settings::GetLastFile(prefix_images_icn, "spec.xml");
 
-      if(IsFile(xml_spec) &&
+      if (IsFile(xml_spec) &&
           LoadAltICN(v, xml_spec, index, reflect)) skip_origin = true;
     }
 
   //load origin sprite
-  if(!skip_origin) LoadOrgICN(v, icn, index, reflect);
+  if (!skip_origin) LoadOrgICN(v, icn, index, reflect);
 
   // pocketpc: scale sprites
-  if(Settings::Get().QVGA() && ICN::NeedMinify4PocketPC(icn, index))
+  if (Settings::Get().QVGA() && ICN::NeedMinify4PocketPC(icn, index))
   {
     Sprite & sp = reflect ? v.reflect[index] : v.sprites[index];
     sp.ScaleMinifyByTwo();
   }
 
   // registry icn
-  if(icn_registry_enable &&
+  if (icn_registry_enable &&
       icn_registry.end() == std::find(icn_registry.begin(), icn_registry.end(), icn))
     icn_registry.push_back(icn);
 }
@@ -668,13 +668,13 @@ bool AGG::Cache::LoadAltTIL(til_cache_t & v, const std::string & spec, u16 max)
   TiXmlDocument doc;
   const TiXmlElement* xml_til = NULL;
 
-  if(doc.LoadFile(spec.c_str()) &&
+  if (doc.LoadFile(spec.c_str()) &&
       NULL != (xml_til = doc.FirstChildElement("til")))
   {
     int count, index;
     xml_til->Attribute("count", &count);
 
-    if(NULL == v.sprites)
+    if (NULL == v.sprites)
     {
       v.count = count;
       v.sprites = new Surface [v.count];
@@ -688,7 +688,7 @@ bool AGG::Cache::LoadAltTIL(til_cache_t & v, const std::string & spec, u16 max)
       std::string name(spec);
       String::Replace(name, "spec.xml", xml_sprite->Attribute("name"));
 
-      if(sf.Load(name.c_str()) && sf.isValid())
+      if (sf.Load(name.c_str()) && sf.isValid())
       {
         DEBUG(DBG_ENGINE, DBG_TRACE, spec << ", " << index);
       }
@@ -706,7 +706,7 @@ void AGG::Cache::LoadOrgTIL(til_cache_t & v, const TIL::til_t til, u16 max)
 {
   std::vector<u8> body;
 
-  if(ReadChunk(TIL::GetString(til), body))
+  if (ReadChunk(TIL::GetString(til), body))
   {
     const u16 count = ReadLE16(&body.at(0));
     const u16 width = ReadLE16(&body.at(2));
@@ -716,7 +716,7 @@ void AGG::Cache::LoadOrgTIL(til_cache_t & v, const TIL::til_t til, u16 max)
     const u32 body_size = 6 + count * tile_size;
 
     // check size
-    if(body.size() == body_size && count <= max)
+    if (body.size() == body_size && count <= max)
     {
       for(u16 ii = 0; ii < count; ++ii)
         v.sprites[ii].Set(&body[6 + ii * tile_size], width, height, 1, false);
@@ -731,7 +731,7 @@ void AGG::Cache::LoadTIL(const TIL::til_t til)
 {
   til_cache_t & v = til_cache[til];
 
-  if(v.sprites) return;
+  if (v.sprites) return;
 
   DEBUG(DBG_ENGINE, DBG_INFO, TIL::GetString(til));
   u16 max = 0;
@@ -751,16 +751,16 @@ void AGG::Cache::LoadTIL(const TIL::til_t til)
   bool skip_orig = false;
 
   // load from images dir
-  if(conf.UseAltResource())
+  if (conf.UseAltResource())
   {
     const std::string prefix_images_til = std::string("files") + SEPARATOR + std::string("images") + SEPARATOR + String::Lower(TIL::GetString(til));
     const std::string xml_spec = Settings::GetLastFile(prefix_images_til, "spec.xml");
 
-    if(IsFile(xml_spec) &&
+    if (IsFile(xml_spec) &&
         LoadAltTIL(v, xml_spec, max)) skip_orig = true;
   }
 
-  if(!skip_orig)
+  if (!skip_orig)
     LoadOrgTIL(v, til, max);
 }
 
@@ -769,12 +769,12 @@ void AGG::Cache::LoadWAV(const M82::m82_t m82)
 {
   std::vector<u8> & v = wav_cache[m82];
 
-  if(v.size() || !Mixer::isValid()) return;
+  if (v.size() || !Mixer::isValid()) return;
 
 #ifdef WITH_MIXER
   const Settings & conf = Settings::Get();
 
-  if(conf.UseAltResource())
+  if (conf.UseAltResource())
   {
     std::string name = String::Lower(M82::GetString(m82));
     const std::string prefix_sounds = std::string("files") + SEPARATOR + std::string("sounds");
@@ -782,7 +782,7 @@ void AGG::Cache::LoadWAV(const M82::m82_t m82)
     String::Replace(name, ".82m", ".ogg");
     std::string sound = Settings::GetLastFile(prefix_sounds, name);
 
-    if(! LoadFileToMem(v, sound))
+    if (! LoadFileToMem(v, sound))
     {
       // find mp3
       String::Replace(name, ".82m", ".mp3");
@@ -791,7 +791,7 @@ void AGG::Cache::LoadWAV(const M82::m82_t m82)
       LoadFileToMem(v, sound);
     }
 
-    if(v.size())
+    if (v.size())
     {
       DEBUG(DBG_ENGINE, DBG_INFO, sound);
       return;
@@ -803,7 +803,7 @@ void AGG::Cache::LoadWAV(const M82::m82_t m82)
   std::vector<u8> body;
 
 #ifdef WITH_MIXER
-  if(ReadChunk(M82::GetString(m82), body))
+  if (ReadChunk(M82::GetString(m82), body))
   {
     // create WAV format
     v.resize(body.size() + 44);
@@ -834,7 +834,7 @@ void AGG::Cache::LoadWAV(const M82::m82_t m82)
 
   Audio::CVT cvt;
 
-  if(cvt.Build(wav_spec, hardware) &&
+  if (cvt.Build(wav_spec, hardware) &&
       ReadChunk(M82::GetString(m82), body))
   {
     const u32 size = cvt.len_mult * body.size();
@@ -859,15 +859,15 @@ void AGG::Cache::LoadMID(const XMI::xmi_t xmi)
 {
   std::vector<u8> & v = mid_cache[xmi];
 
-  if(v.size()) return;
+  if (v.size()) return;
 
   DEBUG(DBG_ENGINE, DBG_INFO, XMI::GetString(xmi));
 
-  if(! Mixer::isValid()) return;
+  if (! Mixer::isValid()) return;
 
   std::vector<u8> body;
 
-  if(ReadChunk(XMI::GetString(xmi), body))
+  if (ReadChunk(XMI::GetString(xmi), body))
   {
     MIDI::Xmi x;
     MIDI::Mid m;
@@ -892,9 +892,9 @@ void AGG::Cache::LoadFNT(void)
 #ifdef WITH_TTF
   const Settings & conf = Settings::Get();
 
-  if(conf.Unicode())
+  if (conf.Unicode())
   {
-    if(fnt_cache.size()) return;
+    if (fnt_cache.size()) return;
 
     const std::string letters = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
     std::vector<u16> unicode = String::UTF8_to_UNICODE(letters);
@@ -903,7 +903,7 @@ void AGG::Cache::LoadFNT(void)
         it = unicode.begin(); it != unicode.end(); ++it)
       LoadFNT(*it);
 
-    if(fnt_cache.size())
+    if (fnt_cache.size())
     {
       DEBUG(DBG_ENGINE, DBG_INFO, "normal fonts " << conf.FontsNormal());
       DEBUG(DBG_ENGINE, DBG_INFO, "small fonts " << conf.FontsSmall());
@@ -927,7 +927,7 @@ void AGG::Cache::LoadFNT(u16 ch)
 {
   const Settings & conf = Settings::Get();
 
-  if(conf.Unicode())
+  if (conf.Unicode())
   {
     const RGBColor white = { 0xFF, 0xFF, 0xFF, 0x00 };
     const RGBColor yellow= { 0xFF, 0xFF, 0x00, 0x00 };
@@ -937,7 +937,7 @@ void AGG::Cache::LoadFNT(u16 ch)
     font_small.RenderUnicodeChar(fnt_cache[ch].small_yellow, ch, yellow, conf.FontSmallRenderBlended() ? SDL::Font::BLENDED : SDL::Font::SOLID);
 
     // medium
-    if(!(conf.QVGA() && !conf.Unicode()))
+    if (!(conf.QVGA() && !conf.Unicode()))
     {
       font_medium.RenderUnicodeChar(fnt_cache[ch].medium_white, ch, white, conf.FontNormalRenderBlended() ? SDL::Font::BLENDED : SDL::Font::SOLID);
       font_medium.RenderUnicodeChar(fnt_cache[ch].medium_yellow, ch, yellow, conf.FontNormalRenderBlended() ? SDL::Font::BLENDED : SDL::Font::SOLID);
@@ -952,15 +952,15 @@ void AGG::Cache::LoadFNT(u16 ch)
 void AGG::Cache::FreeICN(const ICN::icn_t icn)
 {
   DEBUG(DBG_ENGINE, DBG_TRACE, ICN::GetString(icn));
-  if(icn_cache[icn].sprites){ delete [] icn_cache[icn].sprites; icn_cache[icn].sprites = NULL; }
-  if(icn_cache[icn].reflect){ delete [] icn_cache[icn].reflect; icn_cache[icn].reflect = NULL; }
+  if (icn_cache[icn].sprites){ delete [] icn_cache[icn].sprites; icn_cache[icn].sprites = NULL; }
+  if (icn_cache[icn].reflect){ delete [] icn_cache[icn].reflect; icn_cache[icn].reflect = NULL; }
   icn_cache[icn].count = 0;
 }
 
 /* free TIL object in AGG::Cache */
 void AGG::Cache::FreeTIL(const TIL::til_t til)
 {
-  if(til_cache[til].sprites){ delete [] til_cache[til].sprites; til_cache[til].sprites = NULL; }
+  if (til_cache[til].sprites){ delete [] til_cache[til].sprites; til_cache[til].sprites = NULL; }
   til_cache[til].count = 0;
 }
 
@@ -969,7 +969,7 @@ void AGG::Cache::FreeWAV(const M82::m82_t m82)
 {
   std::vector<u8> & v = wav_cache[m82];
 
-  if(v.size()) v.clear();
+  if (v.size()) v.clear();
 }
 
 /* free XMI object in AGG::Cache */
@@ -977,7 +977,7 @@ void AGG::Cache::FreeMID(const XMI::xmi_t xmi)
 {
   std::vector<u8> & v = mid_cache[xmi];
 
-  if(v.size()) v.clear();
+  if (v.size()) v.clear();
 }
 
 /* return ICN sprite from AGG::Cache */
@@ -986,18 +986,20 @@ const Sprite & AGG::Cache::GetICN(const ICN::icn_t icn, u16 index, bool reflect)
   icn_cache_t & v = icn_cache[icn];
 
   // out of range?
-  if(v.count && index >= v.count)
+  if (v.count && index >= v.count)
   {
     DEBUG(DBG_ENGINE, DBG_WARN, ICN::GetString(icn) << ", " << "out of range: " << index);
     index = 0;
   }
 
   // need load?
-  if(0 == v.count || ((reflect && (!v.reflect || !v.reflect[index].isValid())) || (!v.sprites || !v.sprites[index].isValid())))
+  bool reflectInCache = (reflect && (!v.reflect || !v.reflect[index].isValid()));
+  bool spriteInCache  = (!v.sprites || !v.sprites[index].isValid());
+  if (0 == v.count || (reflectInCache || spriteInCache))
     LoadICN(icn, index, reflect);
 
   // invalid sprite?
-  if((reflect && !v.reflect[index].isValid()) || (!reflect && !v.sprites[index].isValid()))
+  if ((reflect && !v.reflect[index].isValid()) || (!reflect && !v.sprites[index].isValid()))
   {
     DEBUG(DBG_ENGINE, DBG_INFO, "invalid sprite: " << ICN::GetString(icn) << ", index: " << index << ", reflect: " << (reflect ? "true" : "false"));
   }
@@ -1008,7 +1010,7 @@ const Sprite & AGG::Cache::GetICN(const ICN::icn_t icn, u16 index, bool reflect)
 /* return count of sprites from specific ICN */
 int AGG::Cache::GetICNCount(const ICN::icn_t icn)
 {
-  if(icn_cache[icn].count == 0) AGG::GetICN(icn, 0);
+  if (icn_cache[icn].count == 0) AGG::GetICN(icn, 0);
   return icn_cache[icn].count;
 }
 
@@ -1017,11 +1019,11 @@ const Surface & AGG::Cache::GetTIL(const TIL::til_t til, u16 index, u8 shape)
 {
   til_cache_t & v = til_cache[til];
 
-  if(0 == v.count) LoadTIL(til);
+  if (0 == v.count) LoadTIL(til);
 
   u16 index2 = index;
 
-  if(shape)
+  if (shape)
   {
     switch(til)
     {
@@ -1032,7 +1034,7 @@ const Surface & AGG::Cache::GetTIL(const TIL::til_t til, u16 index, u8 shape)
     }
   }
 
-  if(index2 >= v.count)
+  if (index2 >= v.count)
   {
     DEBUG(DBG_ENGINE, DBG_WARN, TIL::GetString(til) << ", " << "out of range: " << index);
     index2 = 0;
@@ -1040,11 +1042,11 @@ const Surface & AGG::Cache::GetTIL(const TIL::til_t til, u16 index, u8 shape)
 
   Surface & surface = v.sprites[index2];
 
-  if(shape && ! surface.isValid())
+  if (shape && ! surface.isValid())
   {
     const Surface & src = v.sprites[index];
 
-    if(src.isValid())
+    if (src.isValid())
     {
       Surface::Reflect(surface, src, shape);
     }
@@ -1052,7 +1054,7 @@ const Surface & AGG::Cache::GetTIL(const TIL::til_t til, u16 index, u8 shape)
       DEBUG(DBG_ENGINE, DBG_WARN, "is NULL");
   }
 
-  if(! surface.isValid())
+  if (! surface.isValid())
   {
     DEBUG(DBG_ENGINE, DBG_WARN, "invalid sprite: " << TIL::GetString(til) << ", index: " << index);
   }
@@ -1065,7 +1067,7 @@ const std::vector<u8> & AGG::Cache::GetWAV(const M82::m82_t m82)
 {
   const std::vector<u8> & v = wav_cache[m82];
 
-  if(v.empty()) LoadWAV(m82);
+  if (v.empty()) LoadWAV(m82);
 
   return v;
 }
@@ -1075,7 +1077,7 @@ const std::vector<u8> & AGG::Cache::GetMID(const XMI::xmi_t xmi)
 {
   const std::vector<u8> & v = mid_cache[xmi];
 
-  if(v.empty()) LoadMID(xmi);
+  if (v.empty()) LoadMID(xmi);
 
   return v;
 }
@@ -1084,7 +1086,7 @@ const std::vector<u8> & AGG::Cache::GetMID(const XMI::xmi_t xmi)
 /* return FNT cache */
 const Surface & AGG::Cache::GetFNT(u16 c, u8 f)
 {
-  if(!fnt_cache[c].small_white.isValid()) LoadFNT(c);
+  if (!fnt_cache[c].small_white.isValid()) LoadFNT(c);
 
   switch(f)
   {
@@ -1108,7 +1110,7 @@ const SDL::Font & AGG::Cache::GetSmallFont(void) const
 }
 #endif
 
-bool AGG::Cache::isValidFonts(void) const
+bool AGG::Cache::isValidFonts() const
 {
 #ifdef WITH_TTF
   return Settings::Get().Unicode() ? font_small.isValid() && font_medium.isValid() : false;
@@ -1121,90 +1123,90 @@ void AGG::Cache::ICNRegistryEnable(bool f)
   icn_registry_enable = f;
 }
 
-void AGG::Cache::ICNRegistryFreeObjects(void)
+void AGG::Cache::ICNRegistryFreeObjects()
 {
   std::vector<ICN::icn_t>::const_iterator it1 = icn_registry.begin();
   std::vector<ICN::icn_t>::const_iterator it2 = icn_registry.end();
-  for(; it1 != it2; ++it1) if(!ICN::SkipRegistryFree(*it1)) FreeICN(*it1);
+  for(; it1 != it2; ++it1) if (!ICN::SkipRegistryFree(*it1)) FreeICN(*it1);
 }
 
-void AGG::Cache::Dump(void) const
+void AGG::Cache::Dump() const
 {
   u32 total1 = 0;
   u32 total2 = 0;
 
-  if(icn_cache)
+  if (icn_cache)
   {
     std::ostringstream os;
     total1 = 0;
     for(u16 ii = 0; ii < ICN::UNKNOWN; ++ii)
     {
       total2 = 0;
-      if(icn_cache[ii].sprites)
+      if (icn_cache[ii].sprites)
         for(u16 jj = 0; jj < icn_cache[ii].count; ++jj)
           total2 += (icn_cache[ii].sprites[jj].GetSize() + icn_cache[ii].reflect[jj].GetSize());
-      if(icn_cache[ii].count)
+      if (icn_cache[ii].count)
         os << ICN::GetString((ICN::icn_t) ii) << "(" << icn_cache[ii].count << ", " << total2 << "), ";
       total1 += total2;
     }
-    if(total1)
+    if (total1)
     {
       DEBUG(DBG_ENGINE, DBG_TRACE, os.str());
       DEBUG(DBG_ENGINE, DBG_INFO, "ICN" << " total: " << total1 << " bytes");
     }
   }
 
-  if(til_cache)
+  if (til_cache)
   {
     std::ostringstream os;
     total1 = 0;
     for(u16 ii = 0; ii < TIL::UNKNOWN; ++ii)
     {
       total2 = 0;
-      if(til_cache[ii].sprites)
+      if (til_cache[ii].sprites)
         for(u16 jj = 0; jj < til_cache[ii].count; ++jj)
           total2 += til_cache[ii].sprites[jj].GetSize();
-      if(til_cache[ii].count)
+      if (til_cache[ii].count)
         os << TIL::GetString((TIL::til_t) ii) << "(" << til_cache[ii].count << ", " << total2 << "), ";
       total1 += total2;
     }
-    if(total1)
+    if (total1)
     {
       DEBUG(DBG_ENGINE, DBG_TRACE, os.str());
       DEBUG(DBG_ENGINE, DBG_INFO, "TIL" << " total: " << total1 << " bytes");
     }
   }
 
-  if(wav_cache.size())
+  if (wav_cache.size())
   {
     std::ostringstream os;
     total1 = 0;
     for(std::map<M82::m82_t, std::vector<u8> >::const_iterator
         it = wav_cache.begin(); it != wav_cache.end(); ++it)
     {
-      if((*it).second.size())
+      if ((*it).second.size())
         os << M82::GetString((*it).first) << "(" << (*it).second.size() << ",) ";
       total1 += (*it).second.size();
     }
-    if(total1)
+    if (total1)
     {
       DEBUG(DBG_ENGINE, DBG_TRACE, os.str());
       DEBUG(DBG_ENGINE, DBG_INFO, "WAV" << " total: " << total1 << " bytes");
     }
   }
 
-  if(mid_cache.size())
+  if (mid_cache.size())
   {
     std::ostringstream os;
     total1 = 0;
     for(std::map<XMI::xmi_t, std::vector<u8> >::const_iterator
         it = mid_cache.begin(); it != mid_cache.end(); ++it)
     {
-      if((*it).second.size())
+      if ((*it).second.size())
         os << XMI::GetString((*it).first) << "(" << (*it).second.size() << "), ";
       total1 += (*it).second.size();
     }
-    if(total1)
+    if (total1)
     {
       DEBUG(DBG_ENGINE, DBG_TRACE, os.str());
       DEBUG(DBG_ENGINE, DBG_INFO, "MID" << " total: " << total1 << " bytes");
@@ -1212,7 +1214,7 @@ void AGG::Cache::Dump(void) const
   }
 
 #ifdef WITH_TTF
-  if(fnt_cache.size())
+  if (fnt_cache.size())
   {
     std::ostringstream os;
     total1 = 0;
@@ -1220,7 +1222,7 @@ void AGG::Cache::Dump(void) const
         it = fnt_cache.begin(); it != fnt_cache.end(); ++it)
       total1 += ((*it).second.medium_white.GetSize() + (*it).second.medium_yellow.GetSize() +
           (*it).second.small_white.GetSize() + (*it).second.small_yellow.GetSize());
-    if(total1)
+    if (total1)
     {
       DEBUG(DBG_ENGINE, DBG_INFO, "FNT" << " total: " << total1 << " bytes");
     }
@@ -1245,7 +1247,7 @@ void AGG::ICNRegistryEnable(bool f)
   AGG::Cache::Get().ICNRegistryEnable(f);
 }
 
-void AGG::ICNRegistryFreeObjects(void)
+void AGG::ICNRegistryFreeObjects()
 {
   AGG::Cache::Get().ICNRegistryFreeObjects();
 }
@@ -1277,7 +1279,7 @@ const Surface & AGG::GetTIL(const TIL::til_t til, const u16 index, const u8 shap
   return AGG::Cache::Get().GetTIL(til, index, shape);
 }
 
-void AGG::Cache::ResetMixer(void)
+void AGG::Cache::ResetMixer()
 {
   Mixer::Reset();
   loop_sounds.clear();
@@ -1288,25 +1290,25 @@ void AGG::Cache::LoadLOOPXXSounds(const u16* vols)
 {
   const Settings & conf = Settings::Get();
 
-  if(conf.Sound() && vols)
+  if (conf.Sound() && vols)
   {
     // set volume loop sounds
     for(u8 channel = 0; channel != LOOPXX_COUNT; ++channel)
     {
       u16 vol = vols[channel];
       M82::m82_t m82 = M82::GetLOOP00XX(channel);
-      if(M82::UNKNOWN == m82) continue;
+      if (M82::UNKNOWN == m82) continue;
 
       // find loops
-      std::vector<loop_sound_t>::iterator it = std::find_if(loop_sounds.begin(), loop_sounds.end(),
+      std::vector<loop_sound_t>::iterator it = std::find_if (loop_sounds.begin(), loop_sounds.end(),
           std::bind2nd(std::mem_fun_ref(&loop_sound_t::isM82), m82));
 
-      if(it != loop_sounds.end())
+      if (it != loop_sounds.end())
       {
         // unused and free
-        if(0 == vol)
+        if (0 == vol)
         {
-          if(Mixer::isPlaying((*it).channel))
+          if (Mixer::isPlaying((*it).channel))
           {
             Mixer::Pause((*it).channel);
             Mixer::Volume((*it).channel, Mixer::MaxVolume() * conf.SoundVolume() / 10);
@@ -1316,7 +1318,7 @@ void AGG::Cache::LoadLOOPXXSounds(const u16* vols)
         }
         // used and set vols
         else
-          if(Mixer::isPlaying((*it).channel))
+          if (Mixer::isPlaying((*it).channel))
           {
             Mixer::Pause((*it).channel);
             Mixer::Volume((*it).channel, vol * conf.SoundVolume() / 10);
@@ -1325,22 +1327,22 @@ void AGG::Cache::LoadLOOPXXSounds(const u16* vols)
       }
       else
         // new sound
-        if(0 != vol)
+        if (0 != vol)
         {
           const std::vector<u8> & v = AGG::Cache::Get().GetWAV(m82);
           int ch = Mixer::Play(&v[0], v.size(), -1, true);
 
-          if(0 <= ch)
+          if (0 <= ch)
           {
             Mixer::Pause(ch);
             Mixer::Volume(ch, vol * conf.SoundVolume() / 10);
             Mixer::Resume(ch);
 
             // find unused
-            std::vector<loop_sound_t>::iterator it = std::find_if(loop_sounds.begin(), loop_sounds.end(),
+            std::vector<loop_sound_t>::iterator it = std::find_if (loop_sounds.begin(), loop_sounds.end(),
                 std::bind2nd(std::mem_fun_ref(&loop_sound_t::isM82), M82::UNKNOWN));
 
-            if(it != loop_sounds.end())
+            if (it != loop_sounds.end())
             {
               (*it).sound = m82;
               (*it).channel = ch;
@@ -1360,7 +1362,7 @@ void AGG::PlaySound(const M82::m82_t m82)
 {
   const Settings & conf = Settings::Get();
 
-  if(conf.Sound())
+  if (conf.Sound())
   {
     DEBUG(DBG_ENGINE, DBG_INFO, M82::GetString(m82));
     const std::vector<u8> & v = AGG::Cache::Get().GetWAV(m82);
@@ -1376,12 +1378,15 @@ void AGG::PlayMusic(const MUS::mus_t mus, bool loop)
 {
   const Settings & conf = Settings::Get();
 
-  if(!conf.Music() || MUS::UNUSED == mus || MUS::UNKNOWN == mus || (Game::CurrentMusic() == mus && Music::isPlaying())) return;
+  if (!conf.Music()
+   || MUS::UNUSED == mus
+   || MUS::UNKNOWN == mus
+   || (Game::CurrentMusic() == mus && Music::isPlaying())) return;
 
   Game::SetCurrentMusic(mus);
   const std::string prefix_music = std::string("files") + SEPARATOR + std::string("music");
 
-  if(conf.MusicExt())
+  if (conf.MusicExt())
   {
     const std::string musname = Settings::GetLastFile(prefix_music, MUS::GetString(mus));
 
@@ -1389,20 +1394,20 @@ void AGG::PlayMusic(const MUS::mus_t mus, bool loop)
     std::string shortname = Settings::GetLastFile(prefix_music, MUS::GetString(mus, true));
     const char* filename = NULL;
 
-    if(IsFile(musname))   filename = musname.c_str();
+    if (IsFile(musname))   filename = musname.c_str();
     else
-      if(IsFile(shortname)) filename = shortname.c_str();
+      if (IsFile(shortname)) filename = shortname.c_str();
       else
       {
         String::Replace(shortname, ".ogg", ".mp3");
-        if(IsFile(shortname)) filename = shortname.c_str();
+        if (IsFile(shortname)) filename = shortname.c_str();
         else
           DEBUG(DBG_ENGINE, DBG_WARN, "error read file: " << musname << ", skipping...");
       }
 
-    if(filename) Music::Play(filename, loop);
+    if (filename) Music::Play(filename, loop);
 #else
-    if(IsFile(musname) && conf.PlayMusCommand().size())
+    if (IsFile(musname) && conf.PlayMusCommand().size())
     {
       const std::string run = conf.PlayMusCommand() + " " + musname;
       Music::Play(run.c_str(), loop);
@@ -1412,27 +1417,27 @@ void AGG::PlayMusic(const MUS::mus_t mus, bool loop)
   }
   else
 #ifdef WITH_AUDIOCD
-    if(conf.MusicCD() && Cdrom::isValid())
+    if (conf.MusicCD() && Cdrom::isValid())
     {
       Cdrom::Play(mus, loop);
       DEBUG(DBG_ENGINE, DBG_INFO, "cd track " << static_cast<int>(mus));
     }
     else
 #endif
-      if(conf.MusicMIDI())
+      if (conf.MusicMIDI())
       {
         XMI::xmi_t xmi = XMI::FromMUS(mus);
-        if(XMI::UNKNOWN != xmi)
+        if (XMI::UNKNOWN != xmi)
         {
 #ifdef WITH_MIXER
           const std::vector<u8> & v = AGG::Cache::Get().GetMID(xmi);
-          if(v.size()) Music::Play(&v[0], v.size(), loop);
+          if (v.size()) Music::Play(&v[0], v.size(), loop);
 #else
-          if(conf.PlayMusCommand().size())
+          if (conf.PlayMusCommand().size())
           {
             const std::string file = Settings::GetLastFile(prefix_music, XMI::GetString(xmi));
 
-            if(IsFile(file))
+            if (IsFile(file))
             {
               const std::string run = conf.PlayMusCommand() + " " + file;
               Music::Play(run.c_str(), loop);
@@ -1450,7 +1455,7 @@ void AGG::PlayMusic(const MUS::mus_t mus, bool loop)
 /* return letter sprite */
 const Surface & AGG::GetUnicodeLetter(u16 ch, u8 ft)
 {
-  if(AGG::Cache::Get().isValidFonts())
+  if (AGG::Cache::Get().isValidFonts())
     return AGG::Cache::Get().GetFNT(ch, ft);
   else
     return AGG::GetLetter(ch, ft);
@@ -1459,7 +1464,7 @@ const Surface & AGG::GetUnicodeLetter(u16 ch, u8 ft)
 
 const Surface & AGG::GetLetter(char ch, u8 ft)
 {
-  if(ch < 0x21) DEBUG(DBG_ENGINE, DBG_WARN, "unknown letter");
+  if (ch < 0x21) DEBUG(DBG_ENGINE, DBG_WARN, "unknown letter");
 
   switch(ft)
   {

@@ -34,7 +34,7 @@
 
 #include "error.h"
 
-Game::menu_t Game::Editor::NewMaps(void)
+Game::menu_t Game::Editor::NewMaps()
 {
   Display & display = Display::Get();
 
@@ -74,73 +74,66 @@ Game::menu_t Game::Editor::NewMaps(void)
   display.Flip();
 
   // NewMap loop
-  while(le.HandleEvents())
+  while (le.HandleEvents())
   {
-    le.MousePressLeft(buttonSmall) ? buttonSmall.PressDraw() : buttonSmall.ReleaseDraw();
+    le.MousePressLeft(buttonSmall)  ? buttonSmall.PressDraw()  : buttonSmall.ReleaseDraw();
     le.MousePressLeft(buttonMedium) ? buttonMedium.PressDraw() : buttonMedium.ReleaseDraw();
-    le.MousePressLeft(buttonLarge) ? buttonLarge.PressDraw() : buttonLarge.ReleaseDraw();
+    le.MousePressLeft(buttonLarge)  ? buttonLarge.PressDraw()  : buttonLarge.ReleaseDraw();
     le.MousePressLeft(buttonXLarge) ? buttonXLarge.PressDraw() : buttonXLarge.ReleaseDraw();
     le.MousePressLeft(buttonCancel) ? buttonCancel.PressDraw() : buttonCancel.ReleaseDraw();
 
-    if(le.MouseClickLeft(buttonSmall))
+    if (le.MouseClickLeft(buttonSmall))
     {
       Game::ShowLoadMapsText();
       world.NewMaps(Maps::SMALL, Maps::SMALL);
       return EDITSTART;
     }
-    else
-      if(le.MouseClickLeft(buttonMedium))
+    else if (le.MouseClickLeft(buttonMedium))
+    {
+      Game::ShowLoadMapsText();
+      world.NewMaps(Maps::MEDIUM, Maps::MEDIUM);
+      return EDITSTART;
+    }
+    else if (le.MouseClickLeft(buttonLarge))
       {
         Game::ShowLoadMapsText();
-        world.NewMaps(Maps::MEDIUM, Maps::MEDIUM);
+        world.NewMaps(Maps::LARGE, Maps::LARGE);
         return EDITSTART;
       }
-      else
-        if(le.MouseClickLeft(buttonLarge))
-        {
-          Game::ShowLoadMapsText();
-          world.NewMaps(Maps::LARGE, Maps::LARGE);
-          return EDITSTART;
+    else if (le.MouseClickLeft(buttonXLarge))
+      {
+        Game::ShowLoadMapsText();
+        world.NewMaps(Maps::XLARGE, Maps::XLARGE);
+        return EDITSTART;
         }
-        else
-          if(le.MouseClickLeft(buttonXLarge))
-          {
-            Game::ShowLoadMapsText();
-            world.NewMaps(Maps::XLARGE, Maps::XLARGE);
-            return EDITSTART;
-          }
-    if(le.MouseClickLeft(buttonCancel) || HotKeyPress(EVENT_DEFAULT_EXIT)) return EDITMAINMENU;
+    if (le.MouseClickLeft(buttonCancel) || HotKeyPress(EVENT_DEFAULT_EXIT)) return EDITMAINMENU;
 
     // right info
-    if(le.MousePressRight(buttonSmall))
+    if (le.MousePressRight(buttonSmall))
     {
       std::string str = _("Create a map that is %{size} squares wide by %{size} squares high.");
       String::Replace(str, "%{size}", Maps::SMALL);
       Dialog::Message("", str, Font::BIG);
     }
-    else
-      if(le.MousePressRight(buttonMedium))
-      {
-        std::string str = _("Create a map that is %{size} squares wide by %{size} squares high.");
-        String::Replace(str, "%{size}", Maps::MEDIUM);
-        Dialog::Message("", str, Font::BIG);
-      }
-      else
-        if(le.MousePressRight(buttonLarge))
-        {
-          std::string str = _("Create a map that is %{size} squares wide by %{size} squares high.");
-          String::Replace(str, "%{size}", Maps::LARGE);
-          Dialog::Message("", str, Font::BIG);
-        }
-        else
-          if(le.MousePressRight(buttonXLarge))
-          {
-            std::string str = _("Create a map that is %{size} squares wide by %{size} squares high.");
-            String::Replace(str, "%{size}", Maps::XLARGE);
-            Dialog::Message("", str, Font::BIG);
-          }
-          else
-            if(le.MousePressRight(buttonCancel)) Dialog::Message("", _("Cancel back to the main menu."), Font::BIG);
+    else if (le.MousePressRight(buttonMedium))
+    {
+      std::string str = _("Create a map that is %{size} squares wide by %{size} squares high.");
+      String::Replace(str, "%{size}", Maps::MEDIUM);
+      Dialog::Message("", str, Font::BIG);
+    }
+    else if (le.MousePressRight(buttonLarge))
+    {
+      std::string str = _("Create a map that is %{size} squares wide by %{size} squares high.");
+      String::Replace(str, "%{size}", Maps::LARGE);
+      Dialog::Message("", str, Font::BIG);
+    }
+    else if (le.MousePressRight(buttonXLarge))
+    {
+      std::string str = _("Create a map that is %{size} squares wide by %{size} squares high.");
+      String::Replace(str, "%{size}", Maps::XLARGE);
+      Dialog::Message("", str, Font::BIG);
+    }
+    else if (le.MousePressRight(buttonCancel)) Dialog::Message("", _("Cancel back to the main menu."), Font::BIG);
   }
 
   return EDITMAINMENU;

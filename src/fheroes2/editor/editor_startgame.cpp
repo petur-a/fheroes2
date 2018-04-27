@@ -65,37 +65,37 @@ namespace Maps
 
 u16 Maps::GetDirectionAroundGround(const s32 center, const u16 ground)
 {
-  if(0 == ground || !isValidAbsIndex(center)) return 0;
+  if (0 == ground || !isValidAbsIndex(center)) return 0;
 
   u16 result = 0;
 
   for(Direction::vector_t direct = Direction::TOP_LEFT; direct != Direction::CENTER; ++direct)
-    if(!isValidDirection(center, direct))
+    if (!isValidDirection(center, direct))
       result |= direct;
     else
-      if(ground & world.GetTiles(GetDirectionIndex(center, direct)).GetGround()) result |= direct;
+      if (ground & world.GetTiles(GetDirectionIndex(center, direct)).GetGround()) result |= direct;
 
   return result;
 }
 
 u8 Maps::GetCountAroundGround(const s32 center, const u16 ground)
 {
-  if(0 == ground || !isValidAbsIndex(center)) return 0;
+  if (0 == ground || !isValidAbsIndex(center)) return 0;
 
   u8 result = 0;
 
   for(Direction::vector_t direct = Direction::TOP_LEFT; direct != Direction::CENTER; ++direct)
-    if(!isValidDirection(center, direct))
+    if (!isValidDirection(center, direct))
       ++result;
     else
-      if(ground & world.GetTiles(GetDirectionIndex(center, direct)).GetGround()) ++result;
+      if (ground & world.GetTiles(GetDirectionIndex(center, direct)).GetGround()) ++result;
 
   return result;
 }
 
 u16 Maps::GetMaxGroundAround(const s32 center)
 {
-  if(!isValidAbsIndex(center)) return 0;
+  if (!isValidAbsIndex(center)) return 0;
 
   std::vector<u8> grounds(9, 0);
   u16 result = 0;
@@ -107,30 +107,30 @@ u16 Maps::GetMaxGroundAround(const s32 center)
 
     switch(tile.GetGround())
     {
-      case Maps::Ground::DESERT:  ++grounds[0]; break;
-      case Maps::Ground::SNOW:    ++grounds[1]; break;
-      case Maps::Ground::SWAMP:   ++grounds[2]; break;
-      case Maps::Ground::WASTELAND:++grounds[3]; break;
-      case Maps::Ground::BEACH:   ++grounds[4]; break;
-      case Maps::Ground::LAVA:    ++grounds[5]; break;
-      case Maps::Ground::DIRT:    ++grounds[6]; break;
-      case Maps::Ground::GRASS:   ++grounds[7]; break;
-      case Maps::Ground::WATER:   ++grounds[8]; break;
+      case Maps::Ground::DESERT:    ++grounds[0]; break;
+      case Maps::Ground::SNOW:      ++grounds[1]; break;
+      case Maps::Ground::SWAMP:     ++grounds[2]; break;
+      case Maps::Ground::WASTELAND: ++grounds[3]; break;
+      case Maps::Ground::BEACH:     ++grounds[4]; break;
+      case Maps::Ground::LAVA:      ++grounds[5]; break;
+      case Maps::Ground::DIRT:      ++grounds[6]; break;
+      case Maps::Ground::GRASS:     ++grounds[7]; break;
+      case Maps::Ground::WATER:     ++grounds[8]; break;
       default: break;
     }
   }
 
   const u8 max = *std::max_element(grounds.begin(), grounds.end());
 
-  if(max == grounds[0]) result |= Maps::Ground::DESERT;
-  if(max == grounds[1]) result |= Maps::Ground::SNOW;
-  if(max == grounds[2]) result |= Maps::Ground::SWAMP;
-  if(max == grounds[3]) result |= Maps::Ground::WASTELAND;
-  if(max == grounds[4]) result |= Maps::Ground::BEACH;
-  if(max == grounds[5]) result |= Maps::Ground::LAVA;
-  if(max == grounds[6]) result |= Maps::Ground::DIRT;
-  if(max == grounds[7]) result |= Maps::Ground::GRASS;
-  if(max == grounds[8]) result |= Maps::Ground::WATER;
+  if (max == grounds[0]) result |= Maps::Ground::DESERT;
+  if (max == grounds[1]) result |= Maps::Ground::SNOW;
+  if (max == grounds[2]) result |= Maps::Ground::SWAMP;
+  if (max == grounds[3]) result |= Maps::Ground::WASTELAND;
+  if (max == grounds[4]) result |= Maps::Ground::BEACH;
+  if (max == grounds[5]) result |= Maps::Ground::LAVA;
+  if (max == grounds[6]) result |= Maps::Ground::DIRT;
+  if (max == grounds[7]) result |= Maps::Ground::GRASS;
+  if (max == grounds[8]) result |= Maps::Ground::WATER;
 
   return result;
 }
@@ -258,29 +258,29 @@ Game::menu_t Game::Editor::StartGame()
   while(le.HandleEvents())
   {
     // ESC
-    if(HotKeyPress(EVENT_DEFAULT_EXIT) && (Dialog::YES & Dialog::Message("", _("Are you sure you want to quit?"), Font::BIG, Dialog::YES|Dialog::NO))) return QUITGAME;
+    if (HotKeyPress(EVENT_DEFAULT_EXIT) && (Dialog::YES & Dialog::Message("", _("Are you sure you want to quit?"), Font::BIG, Dialog::YES|Dialog::NO))) return QUITGAME;
 
     // scroll area maps left
-    if(le.MouseCursor(areaScrollLeft))  gameArea.SetScroll(SCROLL_LEFT);
-    else
-      // scroll area maps right
-      if(le.MouseCursor(areaScrollRight)) gameArea.SetScroll(SCROLL_RIGHT);
+    if (le.MouseCursor(areaScrollLeft)) gameArea.SetScroll(SCROLL_LEFT);
+
+    // scroll area maps right
+    if (le.MouseCursor(areaScrollRight)) gameArea.SetScroll(SCROLL_RIGHT);
 
     // scroll area maps top
-    if(le.MouseCursor(areaScrollTop))   gameArea.SetScroll(SCROLL_TOP);
-    else
-      // scroll area maps bottom
-      if(le.MouseCursor(areaScrollBottom))    gameArea.SetScroll(SCROLL_BOTTOM);
+    if (le.MouseCursor(areaScrollTop)) gameArea.SetScroll(SCROLL_TOP);
+
+    // scroll area maps bottom
+    if (le.MouseCursor(areaScrollBottom)) gameArea.SetScroll(SCROLL_BOTTOM);
 
     // point radar
-    if(le.MouseCursor(radar.GetArea()) &&
+    if (le.MouseCursor(radar.GetArea()) &&
         (le.MouseClickLeft(radar.GetArea()) ||
          le.MousePressLeft(radar.GetArea())))
     {
       const Point prev(gameArea.GetRectMaps());
       const Point & pt = le.GetMouseCursor();
       gameArea.SetCenter((pt.x - radar.GetArea().x) * world.w() / RADARWIDTH, (pt.y - radar.GetArea().y) * world.h() / RADARWIDTH);
-      if(prev != gameArea.GetRectMaps())
+      if (prev != gameArea.GetRectMaps())
       {
         cursor.Hide();
         cursor.SetThemes(cursor.POINTER);
@@ -297,7 +297,7 @@ Game::menu_t Game::Editor::StartGame()
     }
     else
       // pointer cursor on left panel
-      if(le.MouseCursor(areaLeftPanel))
+      if (le.MouseCursor(areaLeftPanel))
       {
         cursor.Hide();
         cursor.SetThemes(cursor.POINTER);
@@ -307,7 +307,7 @@ Game::menu_t Game::Editor::StartGame()
       }
       else
         // cursor over game area
-        if(le.MouseCursor(areaPos) &&
+        if (le.MouseCursor(areaPos) &&
             Maps::isValidAbsIndex(gameArea.GetIndexFromMousePoint(le.GetMouseCursor())))
         {
           const Point & mouse_coord = le.GetMouseCursor();
@@ -325,7 +325,7 @@ Game::menu_t Game::Editor::StartGame()
             (u16) ((mouse_coord.y - BORDERWIDTH) / TILEWIDTH) * TILEWIDTH + BORDERWIDTH :
             BORDERWIDTH + (gameArea.GetRectMaps().h - sizeCursor.h()) * TILEWIDTH;
 
-          if(! sizeCursor.isVisible() || sizeCursor.GetPos().x != div_x || sizeCursor.GetPos().y != div_y)
+          if (! sizeCursor.isVisible() || sizeCursor.GetPos().x != div_x || sizeCursor.GetPos().y != div_y)
           {
             cursor.Hide();
             sizeCursor.Hide();
@@ -334,7 +334,7 @@ Game::menu_t Game::Editor::StartGame()
             display.Flip();
           }
 
-          if(le.MousePressLeft())
+          if (le.MousePressLeft())
           {
             cursor.Hide();
             sizeCursor.Hide();
@@ -390,23 +390,23 @@ Game::menu_t Game::Editor::StartGame()
             display.Flip();
           }
           else
-            if(le.MousePressRight())
+            if (le.MousePressRight())
             {
-              if(btnSelectInfo.isPressed())
+              if (btnSelectInfo.isPressed())
               {
-                if(IS_DEVEL())
+                if (IS_DEVEL())
                 {
                   DEBUG(DBG_GAME, DBG_INFO, tile.String());
 
                   const u16 around = Maps::GetDirectionAroundGround(tile.GetIndex(), tile.GetGround());
-                  if(Direction::TOP_LEFT & around) VERBOSE("TOP_LEFT");
-                  if(Direction::TOP & around) VERBOSE("TOP");
-                  if(Direction::TOP_RIGHT & around) VERBOSE("TOP_RIGHT");
-                  if(Direction::RIGHT & around) VERBOSE("RIGHT");
-                  if(Direction::BOTTOM_RIGHT & around) VERBOSE("BOTTOM_RIGHT");
-                  if(Direction::BOTTOM & around) VERBOSE("BOTTOM");
-                  if(Direction::BOTTOM_LEFT & around) VERBOSE("BOTTOM_LEFT");
-                  if(Direction::LEFT & around) VERBOSE("LEFT");
+                  if (Direction::TOP_LEFT & around) VERBOSE("TOP_LEFT");
+                  if (Direction::TOP & around) VERBOSE("TOP");
+                  if (Direction::TOP_RIGHT & around) VERBOSE("TOP_RIGHT");
+                  if (Direction::RIGHT & around) VERBOSE("RIGHT");
+                  if (Direction::BOTTOM_RIGHT & around) VERBOSE("BOTTOM_RIGHT");
+                  if (Direction::BOTTOM & around) VERBOSE("BOTTOM");
+                  if (Direction::BOTTOM_LEFT & around) VERBOSE("BOTTOM_LEFT");
+                  if (Direction::LEFT & around) VERBOSE("LEFT");
 
                   // wait
                   while(le.HandleEvents() && le.MousePressRight());
@@ -425,25 +425,25 @@ Game::menu_t Game::Editor::StartGame()
 
 
     // draw push buttons
-    le.MousePressLeft(btnLeftTopScroll) ? btnLeftTopScroll.PressDraw() : btnLeftTopScroll.ReleaseDraw();
-    le.MousePressLeft(btnRightTopScroll) ? btnRightTopScroll.PressDraw() : btnRightTopScroll.ReleaseDraw();
-    le.MousePressLeft(btnTopScroll) ? btnTopScroll.PressDraw() : btnTopScroll.ReleaseDraw();
-    le.MousePressLeft(btnLeftBottomScroll) ? btnLeftBottomScroll.PressDraw() : btnLeftBottomScroll.ReleaseDraw();
-    le.MousePressLeft(btnLeftScroll) ? btnLeftScroll.PressDraw() : btnLeftScroll.ReleaseDraw();
-    le.MousePressLeft(btnRightScroll) ? btnRightScroll.PressDraw() : btnRightScroll.ReleaseDraw();
+    le.MousePressLeft(btnLeftTopScroll)     ? btnLeftTopScroll.PressDraw()     : btnLeftTopScroll.ReleaseDraw();
+    le.MousePressLeft(btnRightTopScroll)    ? btnRightTopScroll.PressDraw()    : btnRightTopScroll.ReleaseDraw();
+    le.MousePressLeft(btnTopScroll)         ? btnTopScroll.PressDraw()         : btnTopScroll.ReleaseDraw();
+    le.MousePressLeft(btnLeftBottomScroll)  ? btnLeftBottomScroll.PressDraw()  : btnLeftBottomScroll.ReleaseDraw();
+    le.MousePressLeft(btnLeftScroll)        ? btnLeftScroll.PressDraw()        : btnLeftScroll.ReleaseDraw();
+    le.MousePressLeft(btnRightScroll)       ? btnRightScroll.PressDraw()       : btnRightScroll.ReleaseDraw();
     le.MousePressLeft(btnRightBottomScroll) ? btnRightBottomScroll.PressDraw() : btnRightBottomScroll.ReleaseDraw();
-    le.MousePressLeft(btnBottomScroll) ? btnBottomScroll.PressDraw() : btnBottomScroll.ReleaseDraw();
+    le.MousePressLeft(btnBottomScroll)      ? btnBottomScroll.PressDraw()      : btnBottomScroll.ReleaseDraw();
 
-    le.MousePressLeft(btnZoom) ? btnZoom.PressDraw() : btnZoom.ReleaseDraw();
-    le.MousePressLeft(btnUndo) ? btnUndo.PressDraw() : btnUndo.ReleaseDraw();
-    le.MousePressLeft(btnNew) ? btnNew.PressDraw() : btnNew.ReleaseDraw();
-    le.MousePressLeft(btnSpec) ? btnSpec.PressDraw() : btnSpec.ReleaseDraw();
-    le.MousePressLeft(btnFile) ? btnFile.PressDraw() : btnFile.ReleaseDraw();
+    le.MousePressLeft(btnZoom)   ? btnZoom.PressDraw()   : btnZoom.ReleaseDraw();
+    le.MousePressLeft(btnUndo)   ? btnUndo.PressDraw()   : btnUndo.ReleaseDraw();
+    le.MousePressLeft(btnNew)    ? btnNew.PressDraw()    : btnNew.ReleaseDraw();
+    le.MousePressLeft(btnSpec)   ? btnSpec.PressDraw()   : btnSpec.ReleaseDraw();
+    le.MousePressLeft(btnFile)   ? btnFile.PressDraw()   : btnFile.ReleaseDraw();
     le.MousePressLeft(btnSystem) ? btnSystem.PressDraw() : btnSystem.ReleaseDraw();
 
 
     // click control button
-    if(le.MouseClickLeft(btnSelectGround) ||
+    if (le.MouseClickLeft(btnSelectGround) ||
         le.MouseClickLeft(btnSelectObject) ||
         le.MouseClickLeft(btnSelectInfo) ||
         le.MouseClickLeft(btnSelectRiver) ||
@@ -452,19 +452,32 @@ Game::menu_t Game::Editor::StartGame()
     {
       cursor.Hide();
 
-      if(btnSelectGround.isPressed()){ btnSelectGround.Release(); btnSelectGround.Draw(); }
-      else
-        if(btnSelectObject.isPressed()){ btnSelectObject.Release(); btnSelectObject.Draw(); }
-        else
-          if(btnSelectInfo.isPressed()){ btnSelectInfo.Release(); btnSelectInfo.Draw(); }
-          else
-            if(btnSelectRiver.isPressed()){ btnSelectRiver.Release(); btnSelectRiver.Draw(); }
-            else
-              if(btnSelectRoad.isPressed()){ btnSelectRoad.Release(); btnSelectRoad.Draw(); }
-              else
-                if(btnSelectClear.isPressed()){ btnSelectClear.Release(); btnSelectClear.Draw(); }
+      if (btnSelectGround.isPressed())
+      {
+        btnSelectGround.Release(); btnSelectGround.Draw();
+      }
+      else if (btnSelectObject.isPressed())
+      {
+        btnSelectObject.Release(); btnSelectObject.Draw();
+      }
+      else if (btnSelectInfo.isPressed())
+      {
+        btnSelectInfo.Release(); btnSelectInfo.Draw();
+      }
+      else if (btnSelectRiver.isPressed())
+      {
+        btnSelectRiver.Release(); btnSelectRiver.Draw();
+      }
+      else if (btnSelectRoad.isPressed())
+      {
+        btnSelectRoad.Release(); btnSelectRoad.Draw();
+      }
+      else if (btnSelectClear.isPressed())
+      {
+        btnSelectClear.Release(); btnSelectClear.Draw();
+      }
 
-      if(le.MouseCursor(btnSelectGround))
+      if (le.MouseCursor(btnSelectGround))
       {
         selectTerrain = 0;
 
@@ -480,105 +493,100 @@ Game::menu_t Game::Editor::StartGame()
         DEBUG(DBG_GAME, DBG_INFO, "select Terrain Mode");
         selectTerrainCursor.Move(rectTerrainWater.x - 1, rectTerrainWater.y - 1);
       }
-      else
-        if(le.MouseCursor(btnSelectObject))
-        {
-          selectObject = 0;
+      else if (le.MouseCursor(btnSelectObject))
+      {
+        selectObject = 0;
 
-          btnSizeSmall.SetDisable(true);
-          btnSizeMedium.SetDisable(true);
-          btnSizeLarge.SetDisable(true);
-          btnSizeManual.SetDisable(true);
+        btnSizeSmall.SetDisable(true);
+        btnSizeMedium.SetDisable(true);
+        btnSizeLarge.SetDisable(true);
+        btnSizeManual.SetDisable(true);
 
-          btnSelectObject.Press();
-          btnSelectObject.Draw();
+        btnSelectObject.Press();
+        btnSelectObject.Draw();
 
-          spritePanelObject.Blit(dstPanel);
-          DEBUG(DBG_GAME , DBG_INFO, "select Object Mode");
-          selectObjectCursor.Move(rectObjectWater.x - 1, rectObjectWater.y - 1);
-        }
-        else
-          if(le.MouseCursor(btnSelectInfo))
-          {
-            btnSizeSmall.Release();
-            btnSizeMedium.Release();
-            btnSizeLarge.Release();
-            btnSizeManual.Release();
+        spritePanelObject.Blit(dstPanel);
+        DEBUG(DBG_GAME , DBG_INFO, "select Object Mode");
+        selectObjectCursor.Move(rectObjectWater.x - 1, rectObjectWater.y - 1);
+      }
+      else if (le.MouseCursor(btnSelectInfo))
+      {
+        btnSizeSmall.Release();
+        btnSizeMedium.Release();
+        btnSizeLarge.Release();
+        btnSizeManual.Release();
 
-            btnSizeSmall.Press();
-            sizeCursor.ModifySize(1, 1);
+        btnSizeSmall.Press();
+        sizeCursor.ModifySize(1, 1);
 
-            btnSizeSmall.SetDisable(true);
-            btnSizeMedium.SetDisable(true);
-            btnSizeLarge.SetDisable(true);
-            btnSizeManual.SetDisable(true);
+        btnSizeSmall.SetDisable(true);
+        btnSizeMedium.SetDisable(true);
+        btnSizeLarge.SetDisable(true);
+        btnSizeManual.SetDisable(true);
 
-            btnSelectInfo.Press();
-            btnSelectInfo.Draw();
+        btnSelectInfo.Press();
+        btnSelectInfo.Draw();
 
-            spritePanelInfo.Blit(dstPanel);
-            DEBUG(DBG_GAME , DBG_INFO, "select Detail Mode");
-          }
-          else
-            if(le.MouseCursor(btnSelectRiver))
-            {
-              btnSizeSmall.SetDisable(true);
-              btnSizeMedium.SetDisable(true);
-              btnSizeLarge.SetDisable(true);
-              btnSizeManual.SetDisable(true);
+        spritePanelInfo.Blit(dstPanel);
+        DEBUG(DBG_GAME , DBG_INFO, "select Detail Mode");
+      }
+      else if (le.MouseCursor(btnSelectRiver))
+      {
+        btnSizeSmall.SetDisable(true);
+        btnSizeMedium.SetDisable(true);
+        btnSizeLarge.SetDisable(true);
+        btnSizeManual.SetDisable(true);
 
-              btnSelectRiver.Press();
-              btnSelectRiver.Draw();
+        btnSelectRiver.Press();
+        btnSelectRiver.Draw();
 
-              spritePanelRiver.Blit(dstPanel);
-              DEBUG(DBG_GAME , DBG_INFO, "select Stream Mode");
-            }
-            else
-              if(le.MouseCursor(btnSelectRoad))
-              {
-                btnSizeSmall.SetDisable(true);
-                btnSizeMedium.SetDisable(true);
-                btnSizeLarge.SetDisable(true);
-                btnSizeManual.SetDisable(true);
+        spritePanelRiver.Blit(dstPanel);
+        DEBUG(DBG_GAME , DBG_INFO, "select Stream Mode");
+      }
+      else if (le.MouseCursor(btnSelectRoad))
+      {
+        btnSizeSmall.SetDisable(true);
+        btnSizeMedium.SetDisable(true);
+        btnSizeLarge.SetDisable(true);
+        btnSizeManual.SetDisable(true);
 
-                btnSelectRoad.Press();
-                btnSelectRoad.Draw();
+        btnSelectRoad.Press();
+        btnSelectRoad.Draw();
 
-                spritePanelRoad.Blit(dstPanel       );
-                DEBUG(DBG_GAME , DBG_INFO, "select Road Mode");
-              }
-              else
-                if(le.MouseCursor(btnSelectClear))
-                {
-                  btnSizeSmall.SetDisable(false);
-                  btnSizeMedium.SetDisable(false);
-                  btnSizeLarge.SetDisable(false);
-                  btnSizeManual.SetDisable(false);
+        spritePanelRoad.Blit(dstPanel       );
+        DEBUG(DBG_GAME , DBG_INFO, "select Road Mode");
+      }
+      else if (le.MouseCursor(btnSelectClear))
+      {
+        btnSizeSmall.SetDisable(false);
+        btnSizeMedium.SetDisable(false);
+        btnSizeLarge.SetDisable(false);
+        btnSizeManual.SetDisable(false);
 
-                  btnSelectClear.Press();
-                  btnSelectClear.Draw();
+        btnSelectClear.Press();
+        btnSelectClear.Draw();
 
-                  spritePanelClear.Blit(dstPanel);
-                  DEBUG(DBG_GAME , DBG_INFO, "Erase Mode");
-                }
+        spritePanelClear.Blit(dstPanel);
+        DEBUG(DBG_GAME , DBG_INFO, "Erase Mode");
+      }
 
 
-      if(btnSizeSmall.isEnable()) btnSizeSmall.isPressed() ? btnSizeSmall.Press() : btnSizeSmall.Release();
-      if(btnSizeMedium.isEnable()) btnSizeMedium.isPressed() ? btnSizeMedium.Press() : btnSizeMedium.Release();
-      if(btnSizeLarge.isEnable()) btnSizeLarge.isPressed() ? btnSizeLarge.Press() : btnSizeLarge.Release();
-      if(btnSizeManual.isEnable()) btnSizeManual.isPressed() ? btnSizeManual.Press() : btnSizeManual.Release();
+      if (btnSizeSmall.isEnable())  btnSizeSmall.isPressed()  ? btnSizeSmall.Press()  : btnSizeSmall.Release();
+      if (btnSizeMedium.isEnable()) btnSizeMedium.isPressed() ? btnSizeMedium.Press() : btnSizeMedium.Release();
+      if (btnSizeLarge.isEnable())  btnSizeLarge.isPressed()  ? btnSizeLarge.Press()  : btnSizeLarge.Release();
+      if (btnSizeManual.isEnable()) btnSizeManual.isPressed() ? btnSizeManual.Press() : btnSizeManual.Release();
 
-      if(btnSizeSmall.isEnable()) btnSizeSmall.Draw();
-      if(btnSizeMedium.isEnable()) btnSizeMedium.Draw();
-      if(btnSizeLarge.isEnable()) btnSizeLarge.Draw();
-      if(btnSizeManual.isEnable()) btnSizeManual.Draw();
+      if (btnSizeSmall.isEnable())  btnSizeSmall.Draw();
+      if (btnSizeMedium.isEnable()) btnSizeMedium.Draw();
+      if (btnSizeLarge.isEnable())  btnSizeLarge.Draw();
+      if (btnSizeManual.isEnable()) btnSizeManual.Draw();
 
       cursor.Show();
       display.Flip();
     }
 
     // click select size button
-    if((btnSizeSmall.isEnable() && le.MouseClickLeft(btnSizeSmall)) ||
+    if ((btnSizeSmall.isEnable() && le.MouseClickLeft(btnSizeSmall)) ||
         (btnSizeMedium.isEnable() && le.MouseClickLeft(btnSizeMedium)) ||
         (btnSizeLarge.isEnable() && le.MouseClickLeft(btnSizeLarge)) ||
         (btnSizeManual.isEnable() && le.MouseClickLeft(btnSizeManual)))
@@ -590,13 +598,22 @@ Game::menu_t Game::Editor::StartGame()
       btnSizeLarge.Release();
       btnSizeManual.Release();
 
-      if(le.MouseCursor(btnSizeSmall)){ btnSizeSmall.Press(); sizeCursor.ModifySize(1, 1); }
-      else
-        if(le.MouseCursor(btnSizeMedium)){ btnSizeMedium.Press(); sizeCursor.ModifySize(2, 2); }
-        else
-          if(le.MouseCursor(btnSizeLarge)){ btnSizeLarge.Press(); sizeCursor.ModifySize(4, 4); }
-          else
-            if(le.MouseCursor(btnSizeManual)){ btnSizeManual.Press(); sizeCursor.ModifySize(2, 2); }
+      if (le.MouseCursor(btnSizeSmall))
+      {
+        btnSizeSmall.Press(); sizeCursor.ModifySize(1, 1);
+      }
+      else if (le.MouseCursor(btnSizeMedium))
+      {
+        btnSizeMedium.Press(); sizeCursor.ModifySize(2, 2);
+      }
+      else if (le.MouseCursor(btnSizeLarge))
+      {
+        btnSizeLarge.Press(); sizeCursor.ModifySize(4, 4);
+      }
+      else if (le.MouseCursor(btnSizeManual))
+      {
+        btnSizeManual.Press(); sizeCursor.ModifySize(2, 2);
+      }
 
       btnSizeSmall.Draw();
       btnSizeMedium.Draw();
@@ -608,7 +625,7 @@ Game::menu_t Game::Editor::StartGame()
     }
 
     // click select terrain
-    if(btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainWater))
+    if (btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainWater))
     {
       selectTerrain = 0;
       cursor.Hide();
@@ -617,89 +634,81 @@ Game::menu_t Game::Editor::StartGame()
       display.Flip();
       DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "water");
     }
-    else
-      if(btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainGrass))
-      {
-        selectTerrain = 1;
-        cursor.Hide();
-        selectTerrainCursor.Move(rectTerrainGrass.x - 1, rectTerrainGrass.y - 1);
-        cursor.Show();
-        display.Flip();
-        DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "grass");
-      }
-      else
-        if(btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainSnow))
-        {
-          selectTerrain = 2;
-          cursor.Hide();
-          selectTerrainCursor.Move(rectTerrainSnow.x - 1, rectTerrainSnow.y - 1);
-          cursor.Show();
-          display.Flip();
-          DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "snow");
-        }
-        else
-          if(btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainSwamp))
-          {
-            selectTerrain = 3;
-            cursor.Hide();
-            selectTerrainCursor.Move(rectTerrainSwamp.x - 1, rectTerrainSwamp.y - 1);
-            cursor.Show();
-            display.Flip();
-            DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "swamp");
-          }
-          else
-            if(btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainLava))
-            {
-              selectTerrain = 4;
-              cursor.Hide();
-              selectTerrainCursor.Move(rectTerrainLava.x - 1, rectTerrainLava.y - 1);
-              cursor.Show();
-              display.Flip();
-              DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "lava");
-            }
-            else
-              if(btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainBeach))
-              {
-                selectTerrain = 5;
-                cursor.Hide();
-                selectTerrainCursor.Move(rectTerrainBeach.x - 1, rectTerrainBeach.y - 1);
-                cursor.Show();
-                display.Flip();
-                DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "beach");
-              }
-              else
-                if(btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainDirt))
-                {
-                  selectTerrain = 6;
-                  cursor.Hide();
-                  selectTerrainCursor.Move(rectTerrainDirt.x - 1, rectTerrainDirt.y - 1);
-                  cursor.Show();
-                  display.Flip();
-                  DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "dirt");
-                }
-                else
-                  if(btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainWasteland))
-                  {
-                    selectTerrain = 7;
-                    cursor.Hide();
-                    selectTerrainCursor.Move(rectTerrainWasteland.x - 1, rectTerrainWasteland.y - 1);
-                    cursor.Show();
-                    display.Flip();
-                    DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "wasteland");
-                  }
-                  else
-                    if(btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainDesert))
-                    {
-                      selectTerrain = 8;
-                      cursor.Hide();
-                      selectTerrainCursor.Move(rectTerrainDesert.x - 1, rectTerrainDesert.y - 1);
-                      cursor.Show();
-                      display.Flip();
-                      DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "desert");
-                    }
+    else if (btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainGrass))
+    {
+      selectTerrain = 1;
+      cursor.Hide();
+      selectTerrainCursor.Move(rectTerrainGrass.x - 1, rectTerrainGrass.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "grass");
+    }
+    else if (btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainSnow))
+    {
+      selectTerrain = 2;
+      cursor.Hide();
+      selectTerrainCursor.Move(rectTerrainSnow.x - 1, rectTerrainSnow.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "snow");
+    }
+    else if (btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainSwamp))
+    {
+      selectTerrain = 3;
+      cursor.Hide();
+      selectTerrainCursor.Move(rectTerrainSwamp.x - 1, rectTerrainSwamp.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "swamp");
+    }
+    else if (btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainLava))
+    {
+      selectTerrain = 4;
+      cursor.Hide();
+      selectTerrainCursor.Move(rectTerrainLava.x - 1, rectTerrainLava.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "lava");
+    }
+    else if (btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainBeach))
+    {
+      selectTerrain = 5;
+      cursor.Hide();
+      selectTerrainCursor.Move(rectTerrainBeach.x - 1, rectTerrainBeach.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "beach");
+    }
+    else if (btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainDirt))
+    {
+      selectTerrain = 6;
+      cursor.Hide();
+      selectTerrainCursor.Move(rectTerrainDirt.x - 1, rectTerrainDirt.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "dirt");
+    }
+    else if (btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainWasteland))
+    {
+      selectTerrain = 7;
+      cursor.Hide();
+      selectTerrainCursor.Move(rectTerrainWasteland.x - 1, rectTerrainWasteland.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "wasteland");
+    }
+    else if (btnSelectGround.isPressed() && le.MouseClickLeft(rectTerrainDesert))
+    {
+      selectTerrain = 8;
+      cursor.Hide();
+      selectTerrainCursor.Move(rectTerrainDesert.x - 1, rectTerrainDesert.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select terrain: " << "desert");
+    }
 
     // click select object
-    if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectWater))
+    if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectWater))
     {
       selectObject = 0;
       cursor.Hide();
@@ -708,155 +717,142 @@ Game::menu_t Game::Editor::StartGame()
       display.Flip();
       DEBUG(DBG_GAME , DBG_INFO, "select object: " << "water");
     }
-    else
-      if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectGrass))
-      {
-        selectObject = 1;
-        cursor.Hide();
-        selectObjectCursor.Move(rectObjectGrass.x - 1, rectObjectGrass.y - 1);
-        cursor.Show();
-        display.Flip();
-        DEBUG(DBG_GAME , DBG_INFO, "select object: " << "grass");
-      }
-      else
-        if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectSnow))
-        {
-          selectObject = 2;
-          cursor.Hide();
-          selectObjectCursor.Move(rectObjectSnow.x - 1, rectObjectSnow.y - 1);
-          cursor.Show();
-          display.Flip();
-          DEBUG(DBG_GAME , DBG_INFO, "select object: " << "snow");
-        }
-        else
-          if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectSwamp))
-          {
-            selectObject = 3;
-            cursor.Hide();
-            selectObjectCursor.Move(rectObjectSwamp.x - 1, rectObjectSwamp.y - 1);
-            cursor.Show();
-            display.Flip();
-            DEBUG(DBG_GAME , DBG_INFO, "select object: " << "swamp");
-          }
-          else
-            if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectLava))
-            {
-              selectObject = 4;
-              cursor.Hide();
-              selectObjectCursor.Move(rectObjectLava.x - 1, rectObjectLava.y - 1);
-              cursor.Show();
-              display.Flip();
-              DEBUG(DBG_GAME , DBG_INFO, "select object: " << "lava");
-            }
-            else
-              if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectDesert))
-              {
-                selectObject = 5;
-                cursor.Hide();
-                selectObjectCursor.Move(rectObjectDesert.x - 1, rectObjectDesert.y - 1);
-                cursor.Show();
-                display.Flip();
-                DEBUG(DBG_GAME , DBG_INFO, "select object: " << "desert");
-              }
-              else
-                if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectDirt))
-                {
-                  selectObject = 6;
-                  cursor.Hide();
-                  selectObjectCursor.Move(rectObjectDirt.x - 1, rectObjectDirt.y - 1);
-                  cursor.Show();
-                  display.Flip();
-                  DEBUG(DBG_GAME , DBG_INFO, "select object: " << "dirt");
-                }
-                else
-                  if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectWasteland))
-                  {
-                    selectObject = 7;
-                    cursor.Hide();
-                    selectObjectCursor.Move(rectObjectWasteland.x - 1, rectObjectWasteland.y - 1);
-                    cursor.Show();
-                    display.Flip();
-                    DEBUG(DBG_GAME , DBG_INFO, "select object: " << "wasteland");
-                  }
-                  else
-                    if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectBeach))
-                    {
-                      selectObject = 8;
-                      cursor.Hide();
-                      selectObjectCursor.Move(rectObjectBeach.x - 1, rectObjectBeach.y - 1);
-                      cursor.Show();
-                      display.Flip();
-                      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "beach");
-                    }
-                    else
-                      if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectTown))
-                      {
-                        selectObject = 9;
-                        cursor.Hide();
-                        selectObjectCursor.Move(rectObjectTown.x - 1, rectObjectTown.y - 1);
-                        cursor.Show();
-                        display.Flip();
-                        DEBUG(DBG_GAME , DBG_INFO, "select object: " << "town");
-                      }
-                      else
-                        if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectMonster))
-                        {
-                          selectObject = 10;
-                          cursor.Hide();
-                          selectObjectCursor.Move(rectObjectMonster.x - 1, rectObjectMonster.y - 1);
-                          cursor.Show();
-                          display.Flip();
-                          DEBUG(DBG_GAME , DBG_INFO, "select object: " << "monster");
-                        }
-                        else
-                          if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectHero))
-                          {
-                            selectObject = 11;
-                            cursor.Hide();
-                            selectObjectCursor.Move(rectObjectHero.x - 1, rectObjectHero.y - 1);
-                            cursor.Show();
-                            display.Flip();
-                            DEBUG(DBG_GAME , DBG_INFO, "select object: " << "hero");
-                          }
-                          else
-                            if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectArtifact))
-                            {
-                              selectObject = 12;
-                              cursor.Hide();
-                              selectObjectCursor.Move(rectObjectArtifact.x - 1, rectObjectArtifact.y - 1);
-                              cursor.Show();
-                              display.Flip();
-                              DEBUG(DBG_GAME , DBG_INFO, "select object: " << "artifact");
-                            }
-                            else
-                              if(btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectResource))
-                              {
-                                selectObject = 13;
-                                cursor.Hide();
-                                selectObjectCursor.Move(rectObjectResource.x - 1, rectObjectResource.y - 1);
-                                cursor.Show();
-                                display.Flip();
-                                DEBUG(DBG_GAME , DBG_INFO, "select object: " << "resource");
-                              }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectGrass))
+    {
+      selectObject = 1;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectGrass.x - 1, rectObjectGrass.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "grass");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectSnow))
+    {
+      selectObject = 2;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectSnow.x - 1, rectObjectSnow.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "snow");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectSwamp))
+    {
+      selectObject = 3;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectSwamp.x - 1, rectObjectSwamp.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "swamp");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectLava))
+    {
+      selectObject = 4;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectLava.x - 1, rectObjectLava.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "lava");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectDesert))
+    {
+      selectObject = 5;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectDesert.x - 1, rectObjectDesert.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "desert");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectDirt))
+    {
+      selectObject = 6;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectDirt.x - 1, rectObjectDirt.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "dirt");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectWasteland))
+    {
+      selectObject = 7;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectWasteland.x - 1, rectObjectWasteland.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "wasteland");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectBeach))
+    {
+      selectObject = 8;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectBeach.x - 1, rectObjectBeach.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "beach");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectTown))
+    {
+      selectObject = 9;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectTown.x - 1, rectObjectTown.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "town");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectMonster))
+    {
+      selectObject = 10;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectMonster.x - 1, rectObjectMonster.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "monster");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectHero))
+    {
+      selectObject = 11;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectHero.x - 1, rectObjectHero.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "hero");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectArtifact))
+    {
+      selectObject = 12;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectArtifact.x - 1, rectObjectArtifact.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "artifact");
+    }
+    else if (btnSelectObject.isPressed() && le.MouseClickLeft(rectObjectResource))
+    {
+      selectObject = 13;
+      cursor.Hide();
+      selectObjectCursor.Move(rectObjectResource.x - 1, rectObjectResource.y - 1);
+      cursor.Show();
+      display.Flip();
+      DEBUG(DBG_GAME , DBG_INFO, "select object: " << "resource");
+    }
 
     // button click
-    if(le.MouseClickLeft(btnZoom))
+    if (le.MouseClickLeft(btnZoom))
     {
       VERBOSE("Game::Editor::StartGame: FIXME: click button Zoom");
     }
-    if(le.MouseClickLeft(btnUndo))
+    if (le.MouseClickLeft(btnUndo))
     {
       VERBOSE("Game::Editor::StartGame: FIXME: click button Undo");
     }
-    if(le.MouseClickLeft(btnNew))
+    if (le.MouseClickLeft(btnNew))
     {
       return EDITNEWMAP;
     }
-    if(le.MouseClickLeft(btnSpec))
+    if (le.MouseClickLeft(btnSpec))
     {
       VERBOSE("Game::Editor::StartGame: FIXME: click button Spec");
     }
-    if(le.MouseClickLeft(btnFile))
+    if (le.MouseClickLeft(btnFile))
     {
       switch(Dialog::FileOptions())
       {
@@ -868,118 +864,118 @@ Game::menu_t Game::Editor::StartGame()
         default: break;
       }
     }
-    if(le.MouseClickLeft(btnSystem))
+    if (le.MouseClickLeft(btnSystem))
     {
       VERBOSE("Game::Editor::StartGame: FIXME: click button Options");
     }
 
     // press right info
-    if(le.MousePressRight(btnZoom))
+    if (le.MousePressRight(btnZoom))
       Dialog::Message(_("Magnify"), _("Change between zoom and normal view."), Font::BIG);
-    else
-      if(le.MousePressRight(btnUndo))
-        Dialog::Message(_("Undo"), _("Undo your last action. Press againt to redo the action."), Font::BIG);
-      else
-        if(le.MousePressRight(btnNew))
-          Dialog::Message(_("New"), _("Start a new map from scratch."), Font::BIG);
-        else
-          if(le.MousePressRight(btnSpec))
-            Dialog::Message(_("Specifications"), _("Edit maps title, description, and other general information."), Font::BIG);
-          else
-            if(le.MousePressRight(btnFile))
-              Dialog::Message(_("File Options"), _("Open the file options menu, where you can save or load maps, or quit out of the editor."), Font::BIG);
-            else
-              if(le.MousePressRight(btnSystem))
-                Dialog::Message(_("System Options"), _("View the editor system options, which let you customize the editor."), Font::BIG);
-              else
-                if(le.MousePressRight(btnSelectGround))
-                  Dialog::Message(_("Terrain Mode"), _("Used to draw the underlying grass, dirt, water, etc. on the map."), Font::BIG);
-                else
-                  if(le.MousePressRight(btnSelectObject))
-                    Dialog::Message(_("Object Mode"), _("Used to place objects (mountains, trees, treasure, etc.) on the map."), Font::BIG);
-                  else
-                    if(le.MousePressRight(btnSelectInfo))
-                      Dialog::Message(_("Detail Mode"), _("Used for special editing of monsters, heroes and towns."), Font::BIG);
-                    else
-                      if(le.MousePressRight(btnSelectRiver))
-                        Dialog::Message(_("Stream Mode"), _("Allows you to draw streams by clicking and dragging."), Font::BIG);
-                      else
-                        if(le.MousePressRight(btnSelectRoad))
-                          Dialog::Message(_("Road Mode"), _("Allows you to draw roads by clicking and dragging."), Font::BIG);
-                        else
-                          if(le.MousePressRight(btnSelectClear))
-                            Dialog::Message(_("Erase Mode"), _("Used to erase objects of the map."), Font::BIG);
-                          else
-                            if(btnSelectGround.isPressed() && le.MousePressRight(rectTerrainWater))
-                              Dialog::Message(_("Water"), _("Traversable only by boat."), Font::BIG);
-                            else
-                              if(btnSelectGround.isPressed() && le.MousePressRight(rectTerrainGrass))
-                                Dialog::Message(_("Grass"), _("No special modifiers."), Font::BIG);
-                              else
-                                if(btnSelectGround.isPressed() && le.MousePressRight(rectTerrainSnow))
-                                  Dialog::Message(_("Snow"), _("Cost 1.5 times normal movement for all heroes. (Pathfinding reduces or eliminates the penalty.)"), Font::BIG);
-                                else
-                                  if(btnSelectGround.isPressed() && le.MousePressRight(rectTerrainSwamp))
-                                    Dialog::Message(_("Swamp"), _("Cost 1.75 times normal movement for all heroes. (Pathfinding reduces or eliminates the penalty.)"), Font::BIG);
-                                  else
-                                    if(btnSelectGround.isPressed() && le.MousePressRight(rectTerrainLava))
-                                      Dialog::Message(_("Lava"), _("No special modifiers."), Font::BIG);
-                                    else
-                                      if(btnSelectGround.isPressed() && le.MousePressRight(rectTerrainBeach))
-                                        Dialog::Message(_("Beach"), _("Cost 1.25 times normal movement for all heroes. (Pathfinding reduces or eliminates the penalty.)"), Font::BIG);
-                                      else
-                                        if(btnSelectGround.isPressed() && le.MousePressRight(rectTerrainDirt))
-                                          Dialog::Message(_("Dirt"), _("No special modifiers."), Font::BIG);
-                                        else
-                                          if(btnSelectGround.isPressed() && le.MousePressRight(rectTerrainWasteland))
-                                            Dialog::Message(_("Wasteland"), _("Cost 1.25 times normal movement for all heroes. (Pathfinding reduces or eliminates the penalty.)"), Font::BIG);
-                                          else
-                                            if(btnSelectGround.isPressed() && le.MousePressRight(rectTerrainDesert))
-                                              Dialog::Message(_("Desert"), _("Cost 2 times normal movement for all heroes. (Pathfinding reduces or eliminates the penalty.)"), Font::BIG);
-                                            else
-                                              if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectWater))
-                                                Dialog::Message(_("Water Objects"), _("Used to select objects most appropriate for use on water."), Font::BIG);
-                                              else
-                                                if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectGrass))
-                                                  Dialog::Message(_("Grass Objects"), _("Used to select objects most appropriate for use on grass."), Font::BIG);
-                                                else
-                                                  if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectSnow))
-                                                    Dialog::Message(_("Snow Objects"), _("Used to select objects most appropriate for use on snow."), Font::BIG);
-                                                  else
-                                                    if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectSwamp))
-                                                      Dialog::Message(_("Swamp Objects"), _("Used to select objects most appropriate for use on swamp."), Font::BIG);
-                                                    else
-                                                      if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectLava))
-                                                        Dialog::Message(_("Lava Objects"), _("Used to select objects most appropriate for use on lava."), Font::BIG);
-                                                      else
-                                                        if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectDesert))
-                                                          Dialog::Message(_("Desert Objects"), _("Used to select objects most appropriate for use on desert."), Font::BIG);
-                                                        else
-                                                          if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectDirt))
-                                                            Dialog::Message(_("Dirt Objects"), _("Used to select objects most appropriate for use on dirt."), Font::BIG);
-                                                          else
-                                                            if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectWasteland))
-                                                              Dialog::Message(_("Wasteland Objects"), _("Used to select objects most appropriate for use on wasteland."), Font::BIG);
-                                                            else
-                                                              if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectBeach))
-                                                                Dialog::Message(_("Beach Objects"), _("Used to select objects most appropriate for use on beach."), Font::BIG);
-                                                              else
-                                                                if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectTown))
-                                                                  Dialog::Message(_("Towns"), _("Used to place a town or castle."), Font::BIG);
-                                                                else
-                                                                  if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectMonster))
-                                                                    Dialog::Message(_("Monsters"), _("Used to place a monster group."), Font::BIG);
-                                                                  else
-                                                                    if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectHero))
-                                                                      Dialog::Message(_("Heroes"), _("Used to place a hero."), Font::BIG);
-                                                                    else
-                                                                      if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectArtifact))
-                                                                        Dialog::Message(_("Artifact"), _("Used to place an artifact."), Font::BIG);
-                                                                      else
-                                                                        if(btnSelectObject.isPressed() && le.MousePressRight(rectObjectResource))
-                                                                          Dialog::Message(_("Treasures"), _("Used to place a resource or treasure."), Font::BIG);
 
-    if(gameArea.NeedScroll())
+    else if (le.MousePressRight(btnUndo))
+      Dialog::Message(_("Undo"), _("Undo your last action. Press againt to redo the action."), Font::BIG);
+
+    else if (le.MousePressRight(btnNew))
+      Dialog::Message(_("New"), _("Start a new map from scratch."), Font::BIG);
+
+    else if (le.MousePressRight(btnSpec))
+      Dialog::Message(_("Specifications"), _("Edit maps title, description, and other general information."), Font::BIG);
+
+    else if (le.MousePressRight(btnFile))
+      Dialog::Message(_("File Options"), _("Open the file options menu, where you can save or load maps, or quit out of the editor."), Font::BIG);
+
+    else if (le.MousePressRight(btnSystem))
+      Dialog::Message(_("System Options"), _("View the editor system options, which let you customize the editor."), Font::BIG);
+
+    else if (le.MousePressRight(btnSelectGround))
+      Dialog::Message(_("Terrain Mode"), _("Used to draw the underlying grass, dirt, water, etc. on the map."), Font::BIG);
+
+    else if (le.MousePressRight(btnSelectObject))
+      Dialog::Message(_("Object Mode"), _("Used to place objects (mountains, trees, treasure, etc.) on the map."), Font::BIG);
+
+    else if (le.MousePressRight(btnSelectInfo))
+      Dialog::Message(_("Detail Mode"), _("Used for special editing of monsters, heroes and towns."), Font::BIG);
+
+    else if (le.MousePressRight(btnSelectRiver))
+      Dialog::Message(_("Stream Mode"), _("Allows you to draw streams by clicking and dragging."), Font::BIG);
+
+    else if (le.MousePressRight(btnSelectRoad))
+      Dialog::Message(_("Road Mode"), _("Allows you to draw roads by clicking and dragging."), Font::BIG);
+
+    else if (le.MousePressRight(btnSelectClear))
+      Dialog::Message(_("Erase Mode"), _("Used to erase objects of the map."), Font::BIG);
+
+    else if (btnSelectGround.isPressed() && le.MousePressRight(rectTerrainWater))
+      Dialog::Message(_("Water"), _("Traversable only by boat."), Font::BIG);
+
+    else if (btnSelectGround.isPressed() && le.MousePressRight(rectTerrainGrass))
+      Dialog::Message(_("Grass"), _("No special modifiers."), Font::BIG);
+
+    else if (btnSelectGround.isPressed() && le.MousePressRight(rectTerrainSnow))
+      Dialog::Message(_("Snow"), _("Cost 1.5 times normal movement for all heroes. (Pathfinding reduces or eliminates the penalty.)"), Font::BIG);
+
+    else if (btnSelectGround.isPressed() && le.MousePressRight(rectTerrainSwamp))
+      Dialog::Message(_("Swamp"), _("Cost 1.75 times normal movement for all heroes. (Pathfinding reduces or eliminates the penalty.)"), Font::BIG);
+
+    else if (btnSelectGround.isPressed() && le.MousePressRight(rectTerrainLava))
+      Dialog::Message(_("Lava"), _("No special modifiers."), Font::BIG);
+
+    else if (btnSelectGround.isPressed() && le.MousePressRight(rectTerrainBeach))
+      Dialog::Message(_("Beach"), _("Cost 1.25 times normal movement for all heroes. (Pathfinding reduces or eliminates the penalty.)"), Font::BIG);
+
+    else if (btnSelectGround.isPressed() && le.MousePressRight(rectTerrainDirt))
+      Dialog::Message(_("Dirt"), _("No special modifiers."), Font::BIG);
+
+    else if (btnSelectGround.isPressed() && le.MousePressRight(rectTerrainWasteland))
+      Dialog::Message(_("Wasteland"), _("Cost 1.25 times normal movement for all heroes. (Pathfinding reduces or eliminates the penalty.)"), Font::BIG);
+
+    else if (btnSelectGround.isPressed() && le.MousePressRight(rectTerrainDesert))
+      Dialog::Message(_("Desert"), _("Cost 2 times normal movement for all heroes. (Pathfinding reduces or eliminates the penalty.)"), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectWater))
+      Dialog::Message(_("Water Objects"), _("Used to select objects most appropriate for use on water."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectGrass))
+      Dialog::Message(_("Grass Objects"), _("Used to select objects most appropriate for use on grass."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectSnow))
+      Dialog::Message(_("Snow Objects"), _("Used to select objects most appropriate for use on snow."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectSwamp))
+      Dialog::Message(_("Swamp Objects"), _("Used to select objects most appropriate for use on swamp."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectLava))
+      Dialog::Message(_("Lava Objects"), _("Used to select objects most appropriate for use on lava."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectDesert))
+      Dialog::Message(_("Desert Objects"), _("Used to select objects most appropriate for use on desert."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectDirt))
+      Dialog::Message(_("Dirt Objects"), _("Used to select objects most appropriate for use on dirt."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectWasteland))
+      Dialog::Message(_("Wasteland Objects"), _("Used to select objects most appropriate for use on wasteland."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectBeach))
+      Dialog::Message(_("Beach Objects"), _("Used to select objects most appropriate for use on beach."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectTown))
+      Dialog::Message(_("Towns"), _("Used to place a town or castle."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectMonster))
+      Dialog::Message(_("Monsters"), _("Used to place a monster group."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectHero))
+      Dialog::Message(_("Heroes"), _("Used to place a hero."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectArtifact))
+      Dialog::Message(_("Artifact"), _("Used to place an artifact."), Font::BIG);
+
+    else if (btnSelectObject.isPressed() && le.MousePressRight(rectObjectResource))
+      Dialog::Message(_("Treasures"), _("Used to place a resource or treasure."), Font::BIG);
+
+    if (gameArea.NeedScroll())
     {
       cursor.Hide();
       sizeCursor.Hide();
@@ -996,7 +992,6 @@ Game::menu_t Game::Editor::StartGame()
       display.Flip();
     }
   }
-
   return QUITGAME;
 }
 
@@ -1008,9 +1003,9 @@ void Game::Editor::ModifySingleTile(Maps::Tiles & tile)
   const u16 max = Maps::GetMaxGroundAround(center);
   Display & display = Display::Get();
 
-  if(max & ground) return;
+  if (max & ground) return;
 
-  if((ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::TOP)).GetGround() &&
+  if ((ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::TOP)).GetGround() &&
         ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::LEFT)).GetGround()) ||
       (ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::TOP)).GetGround() &&
        ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::RIGHT)).GetGround()) ||
@@ -1021,25 +1016,25 @@ void Game::Editor::ModifySingleTile(Maps::Tiles & tile)
 
   u16 index = 0;
 
-  if(max & Maps::Ground::DESERT)  index = 300;
+  if (max & Maps::Ground::DESERT)  index = 300;
   else
-    if(max & Maps::Ground::SNOW)    index = 130;
-    else
-      if(max & Maps::Ground::SWAMP)   index = 184;
-      else
-        if(max & Maps::Ground::WASTELAND)   index = 399;
-        else
-          if(max & Maps::Ground::BEACH)   index = 415;
-          else
-            if(max & Maps::Ground::LAVA)    index = 246;
-            else
-              if(max & Maps::Ground::DIRT)    index = 337;
-              else
-                if(max & Maps::Ground::GRASS)   index =  68;
-                else
-                  if(max & Maps::Ground::WATER)   index =  16;
+  if (max & Maps::Ground::SNOW)    index = 130;
+  else
+  if (max & Maps::Ground::SWAMP)   index = 184;
+  else
+  if (max & Maps::Ground::WASTELAND)   index = 399;
+  else
+  if (max & Maps::Ground::BEACH)   index = 415;
+  else
+  if (max & Maps::Ground::LAVA)    index = 246;
+  else
+  if (max & Maps::Ground::DIRT)    index = 337;
+  else
+  if (max & Maps::Ground::GRASS)   index =  68;
+  else
+  if (max & Maps::Ground::WATER)   index =  16;
 
-  if(index)
+  if (index)
   {
     tile.SetTile(Rand::Get(index, index + 7), 0);
     tile.RedrawTile(display);
@@ -1054,7 +1049,7 @@ void Game::Editor::ModifyTileAbroad(Maps::Tiles & tile)
   Display & display = Display::Get();
 
   // fix
-  if(Maps::Ground::WATER != tile.GetGround()) return;
+  if (Maps::Ground::WATER != tile.GetGround()) return;
 
   const MapsIndexes & v = Maps::GetAroundIndexes(center);
   for(MapsIndexes::const_iterator
@@ -1085,55 +1080,41 @@ void Game::Editor::ModifyTileAbroad(Maps::Tiles & tile)
     bool fix = false;
     u8 revert = 0;
 
-    // sprite small corner
-    if(around == (DIRECTION_ALL & (~(Direction::TOP_RIGHT | Direction::CENTER))))
-    { fix = true; index += 12; revert = 0; }
-    else
-      if(around == (DIRECTION_ALL & (~(Direction::TOP_LEFT | Direction::CENTER))))
+    if (around == (DIRECTION_ALL & (~(Direction::TOP_RIGHT | Direction::CENTER))))
+      // sprite small corner
+      { fix = true; index += 12; revert = 0; }
+    else if (around == (DIRECTION_ALL & (~(Direction::TOP_LEFT | Direction::CENTER))))
       { fix = true; index += 12; revert = 2; }
-      else
-        if(around == (DIRECTION_ALL & (~(Direction::BOTTOM_RIGHT | Direction::CENTER))))
-        { fix = true; index += 12; revert = 1; }
-        else
-          if(around == (DIRECTION_ALL & (~(Direction::BOTTOM_LEFT | Direction::CENTER))))
-          { fix = true; index += 12; revert = 3; }
-          else
-            // sprite row
-            if(around & (DIRECTION_CENTER_ROW | DIRECTION_BOTTOM_ROW) &&
-                !(around & (Direction::TOP)))
-            { fix = true; index += 0; revert = 0; }
-            else
-              if(around & (DIRECTION_CENTER_ROW | DIRECTION_TOP_ROW) &&
-                  !(around & (Direction::BOTTOM)))
-              { fix = true; index += 0; revert = 1; }
-              else
-                // sprite col
-                if(around & (DIRECTION_CENTER_COL | DIRECTION_LEFT_COL) &&
-                    !(around & (Direction::RIGHT)))
-                { fix = true; index += 8; revert = 0; }
-                else
-                  if(around & (DIRECTION_CENTER_COL | DIRECTION_RIGHT_COL) &&
-                      !(around & (Direction::LEFT)))
-                  { fix = true; index += 8; revert = 2; }
-    // sprite small corner
-    if(around & (Direction::CENTER | Direction::LEFT | Direction::BOTTOM_LEFT | Direction::BOTTOM) &&
+    else if (around == (DIRECTION_ALL & (~(Direction::BOTTOM_RIGHT | Direction::CENTER))))
+      { fix = true; index += 12; revert = 1; }
+    else if (around == (DIRECTION_ALL & (~(Direction::BOTTOM_LEFT | Direction::CENTER))))
+      { fix = true; index += 12; revert = 3; }
+    else if (around & (DIRECTION_CENTER_ROW | DIRECTION_BOTTOM_ROW) && !(around & (Direction::TOP)))
+      // sprite row
+      { fix = true; index += 0; revert = 0; }
+    else if (around & (DIRECTION_CENTER_ROW | DIRECTION_TOP_ROW) && !(around & (Direction::BOTTOM)))
+      { fix = true; index += 0; revert = 1; }
+    else if (around & (DIRECTION_CENTER_COL | DIRECTION_LEFT_COL) && !(around & (Direction::RIGHT)))
+      // sprite col
+      { fix = true; index += 8; revert = 0; }
+    else if (around & (DIRECTION_CENTER_COL | DIRECTION_RIGHT_COL) && !(around & (Direction::LEFT)))
+      { fix = true; index += 8; revert = 2; }
+    if (around & (Direction::CENTER | Direction::LEFT | Direction::BOTTOM_LEFT | Direction::BOTTOM) &&
         !(around & (Direction::TOP | Direction::TOP_RIGHT | Direction::RIGHT)))
-    { fix = true; index += 4; revert = 0; }
-    else
-      if(around & (Direction::CENTER | Direction::RIGHT | Direction::BOTTOM_RIGHT | Direction::BOTTOM) &&
+    // sprite small corner
+      { fix = true; index += 4; revert = 0; }
+    else if (around & (Direction::CENTER | Direction::RIGHT | Direction::BOTTOM_RIGHT | Direction::BOTTOM) &&
           !(around & (Direction::TOP | Direction::TOP_LEFT | Direction::LEFT)))
       { fix = true; index += 4; revert = 2; }
-      else
-        if(around & (Direction::CENTER | Direction::LEFT | Direction::TOP_LEFT | Direction::TOP) &&
-            !(around & (Direction::BOTTOM | Direction::BOTTOM_RIGHT | Direction::RIGHT)))
-        { fix = true; index += 4; revert = 1; }
-        else
-          if(around & (Direction::CENTER | Direction::RIGHT | Direction::TOP_RIGHT | Direction::TOP) &&
-              !(around & (Direction::BOTTOM | Direction::BOTTOM_LEFT | Direction::LEFT)))
-          { fix = true; index += 4; revert = 3; }
+    else if (around & (Direction::CENTER | Direction::LEFT | Direction::TOP_LEFT | Direction::TOP) &&
+          !(around & (Direction::BOTTOM | Direction::BOTTOM_RIGHT | Direction::RIGHT)))
+      { fix = true; index += 4; revert = 1; }
+    else if (around & (Direction::CENTER | Direction::RIGHT | Direction::TOP_RIGHT | Direction::TOP) &&
+          !(around & (Direction::BOTTOM | Direction::BOTTOM_LEFT | Direction::LEFT)))
+      { fix = true; index += 4; revert = 3; }
 
     // fix random
-    if(fix)
+    if (fix)
     {
       tile.SetTile(Rand::Get(index, index + 3), revert);
       tile.RedrawTile(display);
@@ -1149,7 +1130,7 @@ void Game::Editor::SetGroundToTile(Maps::Tiles & tile, const Maps::Ground::groun
   const u16 around = Maps::GetDirectionAroundGround(tile.GetIndex(), ground);
 
   // simply set
-  if(ground == around)
+  if (ground == around)
   {
     u16 index_ground = 0;
 

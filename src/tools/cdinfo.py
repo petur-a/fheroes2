@@ -23,7 +23,7 @@
     you should set the address to 'localhost', and the port to 8880, and the ripper should then
     have all the proper track information that the fheroes2 music system wants.  Then rip to OGG
     format, and place the files in the data/ subdirectory of fheroes2.
-    
+
     For reference, the final ripped music files should follow this pattern:
       02 Battle (1).ogg
       ...
@@ -105,11 +105,11 @@ class Client:
         self.addr = addr
         self.data = ""
         self.http = False
-    
+
     def send(self, data):
         self.data += data
         self.data += "\n"
-    
+
     def httpFlush(self):
         response = "HTTP/1.1 200 OK\r\n"
         response += "Content-Type: text/plain\r\n"
@@ -117,21 +117,21 @@ class Client:
         response += self.data + "\r\n"
         debug("sending response (%s)" % response)
         self.sock.send(response)
-    
+
     def flush(self):
         if not self.data:
             return
-    
+
         if not self.http:
             debug("sending response (%s)" % self.data.strip())
             self.sock.send(self.data)
         else:
             self.httpFlush()
         self.data = ""
-    
+
     def close(self):
         self.sock.close()
-    
+
     def recv(self, size):
         return self.sock.recv(size)
 
@@ -201,7 +201,7 @@ def actHTTPcmd(client, data):
 def parseMessage(client, data):
     if not data:
         return False
-    
+
     handled = False
     ret = True
     handlers = {

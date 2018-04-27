@@ -77,7 +77,7 @@ const char* Game::EventsName(events_t evnt)
     case EVENT_SYSTEM_DEBUG2:   return "system debug2";
 
     case EVENT_SLEEPHERO:       return "sleep hero";
-    case EVENT_ENDTURN:     return "end turn";
+    case EVENT_ENDTURN:         return "end turn";
     case EVENT_NEXTHERO:        return "next hero";
     case EVENT_NEXTTOWN:        return "next town";
     case EVENT_CONTINUE:        return "continue move";
@@ -101,7 +101,7 @@ const char* Game::EventsName(events_t evnt)
 
     case EVENT_MOVELEFT:        return "move left";
     case EVENT_MOVERIGHT:       return "move right";
-    case EVENT_MOVETOP:     return "move top";
+    case EVENT_MOVETOP:         return "move top";
     case EVENT_MOVEBOTTOM:      return "move bottom";
     case EVENT_MOVETOPLEFT:     return "move top left";
     case EVENT_MOVETOPRIGHT:    return "move top right";
@@ -124,7 +124,7 @@ const char* Game::EventsName(events_t evnt)
   return NULL;
 }
 
-void Game::HotKeysDefaults(void)
+void Game::HotKeysDefaults()
 {
   std::fill(&key_events[0], &key_events[EVENT_LAST], KEY_NONE);
 
