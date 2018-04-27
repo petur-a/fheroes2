@@ -24,7 +24,7 @@ TARGET	:= fheroes2
 MAKE	:= make
 
 all:
-	$(MAKE) -C src WITH_AI=simple
+	$(MAKE) -C src WITH_AI=simple DEBUG=1
 	@cp src/dist/$(TARGET) .
 
 clean:

@@ -130,22 +130,15 @@ bool Maps::isValidDirection(const s32 & from, u16 vector)
 {
   switch(vector)
   {
-    case Direction::TOP:            return (from >= world.w());
-    case Direction::RIGHT:          return ((from % world.w()) < (world.w() - 1));
-    case Direction::BOTTOM:         return (from < world.w() * (world.h() - 1));
-    case Direction::LEFT:           return (from % world.w());
+    case Direction::TOP:          return (from >= world.w());
+    case Direction::RIGHT:        return ((from % world.w()) < (world.w() - 1));
+    case Direction::BOTTOM:       return (from < world.w() * (world.h() - 1));
+    case Direction::LEFT:         return (from % world.w());
 
-    case Direction::TOP_RIGHT:
-                                    return isValidDirection(from, Direction::TOP) && isValidDirection(from, Direction::RIGHT);
-
-    case Direction::BOTTOM_RIGHT:
-                                    return isValidDirection(from, Direction::BOTTOM) && isValidDirection(from, Direction::RIGHT);
-
-    case Direction::BOTTOM_LEFT:
-                                    return isValidDirection(from, Direction::BOTTOM) && isValidDirection(from, Direction::LEFT);
-
-    case Direction::TOP_LEFT:
-                                    return isValidDirection(from, Direction::TOP) && isValidDirection(from, Direction::LEFT);
+    case Direction::TOP_RIGHT:    return isValidDirection(from, Direction::TOP) && isValidDirection(from, Direction::RIGHT);
+    case Direction::BOTTOM_RIGHT: return isValidDirection(from, Direction::BOTTOM) && isValidDirection(from, Direction::RIGHT);
+    case Direction::BOTTOM_LEFT:  return isValidDirection(from, Direction::BOTTOM) && isValidDirection(from, Direction::LEFT);
+    case Direction::TOP_LEFT:     return isValidDirection(from, Direction::TOP) && isValidDirection(from, Direction::LEFT);
 
     default: break;
   }

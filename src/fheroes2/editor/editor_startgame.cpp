@@ -69,7 +69,7 @@ u16 Maps::GetDirectionAroundGround(const s32 center, const u16 ground)
 
   u16 result = 0;
 
-  for(Direction::vector_t direct = Direction::TOP_LEFT; direct != Direction::CENTER; ++direct)
+  for (Direction::vector_t direct = Direction::TOP_LEFT; direct != Direction::CENTER; ++direct)
     if (!isValidDirection(center, direct))
       result |= direct;
     else
@@ -84,7 +84,7 @@ u8 Maps::GetCountAroundGround(const s32 center, const u16 ground)
 
   u8 result = 0;
 
-  for(Direction::vector_t direct = Direction::TOP_LEFT; direct != Direction::CENTER; ++direct)
+  for (Direction::vector_t direct = Direction::TOP_LEFT; direct != Direction::CENTER; ++direct)
     if (!isValidDirection(center, direct))
       ++result;
     else
@@ -100,10 +100,10 @@ u16 Maps::GetMaxGroundAround(const s32 center)
   std::vector<u8> grounds(9, 0);
   u16 result = 0;
 
-  for(Direction::vector_t direct = Direction::TOP_LEFT; direct != Direction::CENTER; ++direct)
+  for (Direction::vector_t direct = Direction::TOP_LEFT; direct != Direction::CENTER; ++direct)
   {
     const Maps::Tiles & tile = (isValidDirection(center, direct) ?
-        world.GetTiles(GetDirectionIndex(center, direct)) : world.GetTiles(center));
+      world.GetTiles(GetDirectionIndex(center, direct)) : world.GetTiles(center));
 
     switch(tile.GetGround())
     {
@@ -343,9 +343,9 @@ Game::menu_t Game::Editor::StartGame()
             const Point topleft(gameArea.GetRectMaps().x + (div_x - BORDERWIDTH) / 32,
                 gameArea.GetRectMaps().y + (div_y - BORDERWIDTH) / 32);
 
-            for(u8 iy = 0; iy < sizeCursor.h(); ++iy)
+            for (u8 iy = 0; iy < sizeCursor.h(); ++iy)
             {
-              for(u8 ix = 0; ix < sizeCursor.w(); ++ix)
+              for (u8 ix = 0; ix < sizeCursor.w(); ++ix)
               {
                 Maps::Tiles & newtile = world.GetTiles(topleft.x + ix, topleft.y + iy);
 
@@ -371,10 +371,10 @@ Game::menu_t Game::Editor::StartGame()
             }
 
             // modify single tiles
-            for(int ii = 0; ii < world.w() * world.h(); ++ii) ModifySingleTile(world.GetTiles(ii));
+            for (int ii = 0; ii < world.w() * world.h(); ++ii) ModifySingleTile(world.GetTiles(ii));
 
             // modify all tiles abroad
-            for(int ii = 0; ii < world.w() * world.h(); ++ii) ModifyTileAbroad(world.GetTiles(ii));
+            for (int ii = 0; ii < world.w() * world.h(); ++ii) ModifyTileAbroad(world.GetTiles(ii));
 
             sizeCursor.Show();
             cursor.Show();
@@ -553,7 +553,7 @@ Game::menu_t Game::Editor::StartGame()
         btnSelectRoad.Press();
         btnSelectRoad.Draw();
 
-        spritePanelRoad.Blit(dstPanel       );
+        spritePanelRoad.Blit(dstPanel);
         DEBUG(DBG_GAME , DBG_INFO, "select Road Mode");
       }
       else if (le.MouseCursor(btnSelectClear))
@@ -997,7 +997,7 @@ Game::menu_t Game::Editor::StartGame()
 
 void Game::Editor::ModifySingleTile(Maps::Tiles & tile)
 {
-  //u8 count = Maps::GetCountAroundGround(tile.GetIndex(), tile.GetGround());
+  // u8 count = Maps::GetCountAroundGround(tile.GetIndex(), tile.GetGround());
   const s32 center = tile.GetIndex();
   const Maps::Ground::ground_t ground = tile.GetGround();
   const u16 max = Maps::GetMaxGroundAround(center);
@@ -1005,8 +1005,9 @@ void Game::Editor::ModifySingleTile(Maps::Tiles & tile)
 
   if (max & ground) return;
 
+  // is tile already correct in certain combinations around this tile, it must be correct here
   if ((ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::TOP)).GetGround() &&
-        ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::LEFT)).GetGround()) ||
+       ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::LEFT)).GetGround()) ||
       (ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::TOP)).GetGround() &&
        ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::RIGHT)).GetGround()) ||
       (ground == world.GetTiles(Maps::GetDirectionIndex(center, Direction::BOTTOM)).GetGround() &&
@@ -1016,23 +1017,15 @@ void Game::Editor::ModifySingleTile(Maps::Tiles & tile)
 
   u16 index = 0;
 
-  if (max & Maps::Ground::DESERT)  index = 300;
-  else
-  if (max & Maps::Ground::SNOW)    index = 130;
-  else
-  if (max & Maps::Ground::SWAMP)   index = 184;
-  else
-  if (max & Maps::Ground::WASTELAND)   index = 399;
-  else
-  if (max & Maps::Ground::BEACH)   index = 415;
-  else
-  if (max & Maps::Ground::LAVA)    index = 246;
-  else
-  if (max & Maps::Ground::DIRT)    index = 337;
-  else
-  if (max & Maps::Ground::GRASS)   index =  68;
-  else
-  if (max & Maps::Ground::WATER)   index =  16;
+  if      (max & Maps::Ground::DESERT)  index = 300;
+  else if (max & Maps::Ground::SNOW)    index = 130;
+  else if (max & Maps::Ground::SWAMP)   index = 184;
+  else if (max & Maps::Ground::WASTELAND)   index = 399;
+  else if (max & Maps::Ground::BEACH)   index = 415;
+  else if (max & Maps::Ground::LAVA)    index = 246;
+  else if (max & Maps::Ground::DIRT)    index = 337;
+  else if (max & Maps::Ground::GRASS)   index =  68;
+  else if (max & Maps::Ground::WATER)   index =  16;
 
   if (index)
   {
@@ -1052,8 +1045,7 @@ void Game::Editor::ModifyTileAbroad(Maps::Tiles & tile)
   if (Maps::Ground::WATER != tile.GetGround()) return;
 
   const MapsIndexes & v = Maps::GetAroundIndexes(center);
-  for(MapsIndexes::const_iterator
-      it = v.begin(); it != v.end(); ++it)
+  for (MapsIndexes::const_iterator it = v.begin(); it != v.end(); ++it)
   {
     const Maps::Tiles & opposition = world.GetTiles(*it);
     u16 index = 0;
